@@ -2,14 +2,16 @@
 #define _OBJECT_H
 
 #include "face.h"
+#include "material.h"
 
 class Object {
 public:
 	Object();
-	inline void addFace(Face* f) { faces.push_back(f); };
+	void addFace(Face* f);
 	inline std::vector<Face*> getFaces() const { return faces; };
 private:
 	std::vector<Face*> faces;
+	Material* material;
 };
 
 #endif

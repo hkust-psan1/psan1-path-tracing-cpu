@@ -8,6 +8,10 @@ namespace Parser {
 	void parse(char* filename) {
 		std::ifstream input(filename);
 
+		if (!input) { // file does not exist
+			throw "file does not exist";
+		}
+
 		for (std::string line; getline(input, line); ) {
 			std::stringstream ss(line);
 			std::string item;

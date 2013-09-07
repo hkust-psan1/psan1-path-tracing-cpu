@@ -13,8 +13,14 @@ int main(int argc, char** argv) {
 
 	filename = argv[1];
 
-	Parser::parse(filename);
+	try {
+		Parser::parse(filename);
+	} catch (const char* e) {
+		cout << e << endl;
+		exit(1);
+	}
 
+	/*
 	for (auto i : Parser::objects) {
 		for (auto j : i->getFaces()) {
 			for (auto k : j->getVertices()) {
@@ -22,6 +28,7 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
+	*/
 
 	return 0;
 }
