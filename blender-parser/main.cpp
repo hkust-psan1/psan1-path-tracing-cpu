@@ -8,23 +8,20 @@ int main(int argc, char** argv) {
 
 	if (argc < 2) {
 		cout << "Specify filename" << endl;
+		exit(1);
 	}
 
 	filename = argv[1];
 
-	Parser parser;
-	parser.parse(filename);
+	Parser::parse(filename);
 
-	/*
-	for (auto i : parser.getObjects()) {
+	for (auto i : Parser::objects) {
 		for (auto j : i->getFaces()) {
-			cout << "face" << endl;
 			for (auto k : j->getVertices()) {
 				cout << k->getPos().x << endl;
 			}
 		}
 	}
-	*/
 
 	return 0;
 }

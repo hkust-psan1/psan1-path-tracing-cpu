@@ -1,47 +1,45 @@
 #include "parser.h"
 
-Parser::Parser() {
+namespace Parser {
+	std::vector<Object*> objects;
+	Object* currObj;
+	std::vector<Vertex*> vertices;
 
-}
+	void parse(char* filename) {
+		std::ifstream input(filename);
 
-Parser::~Parser() {
-	
-}
+		for (std::string line; getline(input, line); ) {
+			std::stringstream ss(line);
+			std::string item;
 
-void Parser::parse(char* filename) {
-	std::ifstream input(filename);
+			getline(ss, item, ' ');
 
-	for (std::string line; getline(input, line); ) {
-		std::stringstream ss(line);
-		std::string item;
+			if (item == "o") { // start of a new object
+				if (currObj) { // if it's not the first object parsed
+					objects.push_back(currObj); // add old object to list
+				}
 
-		getline(ss, item, ' ');
+				currObj = new Object;
+			} else if (item == "v") { // vertex
+				float coords[3];
 
-		if (item == "o") { // start of a new object
-			if (currObj) { // if it's not the first object parsed
-				objects.push_back(currObj); // add old object to list
+				for (int i = 0; getline(ss, item, ' '); i++) {
+					coords[i] = atof(item.c_str());
+				}
+
+				vertices.push_back(new Vertex(coords));
+
+			} else if (item == "f") { // face
+				Face* f = new Face;
+				while (getline(ss, item, ' ')) {
+					int index = atoi(item.c_str());
+					f->addVertex(vertices[index]);
+				}
+
+				currObj->addFace(f);
 			}
-
-			currObj = new Object;
-		} else if (item == "v") { // vertex
-			float coords[3];
-
-			for (int i = 0; getline(ss, item, ' '); i++) {
-				coords[i] = atof(item.c_str());
-			}
-
-			vertices.push_back(new Vertex(coords));
-
-		} else if (item == "f") { // face
-			Face* f = new Face;
-			while (getline(ss, item, ' ')) {
-				int index = atoi(item.c_str());
-				f->addVertex(vertices[index]);
-			}
-
-			currObj->addFace(f);
 		}
-	}
 
-	objects.push_back(currObj); // add the last object to the list
-}
+		objects.push_back(currObj); // add the last object to the list
+	}
+};
