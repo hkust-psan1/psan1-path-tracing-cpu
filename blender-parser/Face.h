@@ -5,8 +5,9 @@
 
 class Face {
 public:
-	Face();
-	void addVertex(const Vertex* v);
+	// Face();
+	inline void addVertex(Vertex* v) { vertices.push_back(v); };
+	inline std::vector<Vertex*> getVertices() const { return vertices; };
 private:
 	std::vector<Vertex*> vertices;
 };

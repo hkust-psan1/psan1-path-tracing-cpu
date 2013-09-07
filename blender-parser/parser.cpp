@@ -18,7 +18,10 @@ void Parser::parse(char* filename) {
 		getline(ss, item, ' ');
 
 		if (item == "o") { // start of a new object
-			objects.push_back(currObj);
+			if (currObj) { // if it's not the first object parsed
+				objects.push_back(currObj); // add old object to list
+			}
+
 			currObj = new Object;
 		} else if (item == "v") { // vertex
 			float coords[3];
@@ -27,20 +30,18 @@ void Parser::parse(char* filename) {
 				coords[i] = atof(item.c_str());
 			}
 
-			Vertex* v = new Vertex(coords);
-			v->getPos();
 			vertices.push_back(new Vertex(coords));
 
-			for (auto i : vertices) {
-				// i->getPos();
-				// cout << i->getPos().getX() << endl;
+		} else if (item == "f") { // face
+			Face* f = new Face;
+			while (getline(ss, item, ' ')) {
+				int index = atoi(item.c_str());
+				f->addVertex(vertices[index]);
 			}
 
-		} else if (item == "f") { // face
-			while (getline(ss, item, ' ')) {
-				cout << item << endl;
-			}
+			currObj->addFace(f);
 		}
 	}
 
+	objects.push_back(currObj); // add the last object to the list
 }

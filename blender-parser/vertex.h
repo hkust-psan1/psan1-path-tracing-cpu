@@ -6,7 +6,7 @@
 class Vertex {
 public:
 	Vertex(const Vec3& pos);
-	inline const Vec3& getPos() { return pos; };
+	inline const Vec3& getPos() const { return pos; };
 private:
 	Vec3 pos;
 	// Vec3 normal;

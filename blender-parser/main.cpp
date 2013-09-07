@@ -15,5 +15,16 @@ int main(int argc, char** argv) {
 	Parser parser;
 	parser.parse(filename);
 
+	/*
+	for (auto i : parser.getObjects()) {
+		for (auto j : i->getFaces()) {
+			cout << "face" << endl;
+			for (auto k : j->getVertices()) {
+				cout << k->getPos().x << endl;
+			}
+		}
+	}
+	*/
+
 	return 0;
 }

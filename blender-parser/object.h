@@ -6,7 +6,8 @@
 class Object {
 public:
 	Object();
-	void addFace(Face* f);
+	inline void addFace(Face* f) { faces.push_back(f); };
+	inline std::vector<Face*> getFaces() const { return faces; };
 private:
 	std::vector<Face*> faces;
 };
