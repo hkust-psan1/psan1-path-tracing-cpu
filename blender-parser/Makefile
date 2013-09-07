@@ -1,5 +1,5 @@
-CC = g++
-OBJS = parser.o vec3.o main.o object.o
+CC = clang++
+OBJS = main.o parser.o object.o face.o vertex.o vec3.o
 DEBUG = -g
 CFLAGS = -Wall -c $(DEBUG)
 LFLAGS = -Wall $(DEBUG)
@@ -18,7 +18,13 @@ parser.o: parser.cpp parser.h object.h
 object.o: object.cpp object.h face.h
 	$(CC) $(CFLAGS) object.cpp
 
-vec3.o: vec3.cpp vec3.h
+face.o: face.cpp face.h vertex.h
+	$(CC) $(CFLAGS) face.cpp
+
+vertex.o: vertex.cpp vertex.h vec3.h
+	$(CC) $(CFLAGS) vertex.cpp
+
+vec3.o: vec3.cpp vec3.h includes.h
 	$(CC) $(CFLAGS) vec3.cpp
 
 clean:

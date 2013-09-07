@@ -21,13 +21,26 @@ void Parser::parse(char* filename) {
 			objects.push_back(currObj);
 			currObj = new Object;
 		} else if (item == "v") { // vertex
-			while (getline(ss, item, ' ')) {
-				cout << item << endl;
+			float coords[3];
+
+			for (int i = 0; getline(ss, item, ' '); i++) {
+				coords[i] = atof(item.c_str());
 			}
+
+			Vertex* v = new Vertex(coords);
+			v->getPos();
+			vertices.push_back(new Vertex(coords));
+
+			for (auto i : vertices) {
+				// i->getPos();
+				// cout << i->getPos().getX() << endl;
+			}
+
 		} else if (item == "f") { // face
 			while (getline(ss, item, ' ')) {
 				cout << item << endl;
 			}
 		}
 	}
+
 }

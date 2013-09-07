@@ -5,11 +5,12 @@
 
 class Vertex {
 public:
-	Vertex();
+	Vertex(const Vec3& pos);
+	inline const Vec3& getPos() { return pos; };
 private:
 	Vec3 pos;
-	Vec3 normal;
-	Vec3 texCoords;
+	// Vec3 normal;
+	// Vec3 texCoords;
 };
 
 #endif

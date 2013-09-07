@@ -13,4 +13,6 @@ public:
 private:
 	std::vector<Object*> objects;
 	Object* currObj; // current object being parsed
+
+	std::vector<Vertex*> vertices;
 };

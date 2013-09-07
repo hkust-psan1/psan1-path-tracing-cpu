@@ -1,5 +1,5 @@
 #include "vertex.h"
 
-Vertex::Vertex() {
-	
+Vertex::Vertex(const Vec3& p) : pos(p) {
+
 }
