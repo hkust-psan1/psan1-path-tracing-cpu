@@ -20,6 +20,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -42,6 +43,7 @@ public:
     QDockWidget *dockWidget;
     QWidget *dockWidgetContents;
     QCheckBox *checkBox;
+    QPushButton *pushButton;
 
     void setupUi(QMainWindow *MainWindowClass)
     {
@@ -59,7 +61,7 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         graphicsView = new QGraphicsView(centralWidget);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(20, 20, 501, 431));
+        graphicsView->setGeometry(QRect(40, 10, 601, 481));
         graphicsView->setMinimumSize(QSize(471, 411));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
@@ -83,7 +85,11 @@ public:
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         checkBox = new QCheckBox(dockWidgetContents);
         checkBox->setObjectName(QStringLiteral("checkBox"));
-        checkBox->setGeometry(QRect(10, 10, 70, 17));
+        checkBox->setGeometry(QRect(10, 40, 70, 17));
+        pushButton = new QPushButton(dockWidgetContents);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(0, 270, 75, 23));
+        pushButton->setCursor(QCursor(Qt::PointingHandCursor));
         dockWidget->setWidget(dockWidgetContents);
         MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
 
@@ -98,6 +104,7 @@ public:
         QObject::connect(actionAbout, SIGNAL(triggered()), MainWindowClass, SLOT(about()));
         QObject::connect(actionLoad_Scene, SIGNAL(triggered()), MainWindowClass, SLOT(load_scene()));
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindowClass, SLOT(close()));
+        QObject::connect(pushButton, SIGNAL(clicked()), MainWindowClass, SLOT(render()));
 
         QMetaObject::connectSlotsByName(MainWindowClass);
     } // setupUi
@@ -113,6 +120,8 @@ public:
         menuStart->setTitle(QApplication::translate("MainWindowClass", "Start", 0));
         menuHelp->setTitle(QApplication::translate("MainWindowClass", "About", 0));
         checkBox->setText(QApplication::translate("MainWindowClass", "HBV", 0));
+        pushButton->setText(QApplication::translate("MainWindowClass", "Render", 0));
+        pushButton->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+R", 0));
     } // retranslateUi
 
 };

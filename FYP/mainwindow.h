@@ -6,6 +6,9 @@
 #include "ui_mainwindow.h"
 #include "qfiledialog.h"
 #include "QGraphicsScene.h"
+#include <QGraphicsPixmapItem> 
+#include "parser.h"
+#include "RayTracer.h"
 
 class MainWindow : public QMainWindow
 {
@@ -14,6 +17,7 @@ class MainWindow : public QMainWindow
 private slots:
 	void load_scene();
 	void about(); 
+	void render();
 
 public:
 	MainWindow(QWidget *parent = 0);
@@ -21,6 +25,7 @@ public:
 
 private:
 	Ui::MainWindowClass ui;
+	RayTracer tracer;
 };
 
 #endif // MAINWINDOW_H

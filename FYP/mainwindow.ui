@@ -20,10 +20,10 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>501</width>
-      <height>431</height>
+      <x>40</x>
+      <y>10</y>
+      <width>601</width>
+      <height>481</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -81,13 +81,32 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>10</y>
+       <y>40</y>
        <width>70</width>
        <height>17</height>
       </rect>
      </property>
      <property name="text">
       <string>HBV</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>270</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="text">
+      <string>Render</string>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+R</string>
      </property>
     </widget>
    </widget>
@@ -167,9 +186,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>render()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>37</x>
+     <y>336</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>about()</slot>
   <slot>load_scene()</slot>
+  <slot>render()</slot>
  </slots>
 </ui>
