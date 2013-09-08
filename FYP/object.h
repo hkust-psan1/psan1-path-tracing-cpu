@@ -9,6 +9,7 @@ public:
 	Object();
 	void addFace(Face* f);
 	inline std::vector<Face*> getFaces() const { return faces; };
+
 private:
 	std::vector<Face*> faces;
 	Material* material;

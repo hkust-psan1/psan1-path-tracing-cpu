@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "object.h"
+#include "scene.h"
 using namespace std;
 
 namespace Parser {
@@ -11,7 +12,7 @@ namespace Parser {
 	extern std::vector<Vertex*> vertices;
 
 	/* parse obj file for object geometry */
-	void parseObjFile(const char* filename);
+	Scene parseObjFile(const char* filename);
 
 	/* parse mtl file for material */
 	void parseMtlFile(const char* filename);

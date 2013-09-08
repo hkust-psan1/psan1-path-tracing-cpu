@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="face.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_mainwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -156,6 +157,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="intersection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="material.cpp" />
@@ -163,6 +165,7 @@
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="ray.cpp" />
     <ClCompile Include="RayTracer.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="vec3.cpp" />
     <ClCompile Include="vertex.cpp" />
   </ItemGroup>
@@ -207,13 +210,16 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
+    <ClInclude Include="intersection.h" />
     <ClInclude Include="material.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="RayTracer.h" />
+    <ClInclude Include="scene.h" />
     <ClInclude Include="vec3.h" />
     <ClInclude Include="vertex.h" />
   </ItemGroup>

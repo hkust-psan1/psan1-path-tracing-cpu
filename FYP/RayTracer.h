@@ -5,7 +5,10 @@
 
 #include "ray.h"
 #include "vec3.h"
+#include "camera.h"
 #include "qimage.h"
+#include "parser.h"
+#include "scene.h"
 
 class RayTracer
 {
@@ -17,7 +20,9 @@ public:
 	void render();
 
     Vec3 trace(double x, double y );
-	Vec3 traceRay(const Vec3& thresh, int depth);
+	Vec3 traceRay(const Ray& ray, int depth = 0);
+	void setScene(Scene* scene){this->scene = scene;};
+	bool sceneLoaded(){return scene != NULL;};
 
 
 	void getBuffer( unsigned char *&buf, int &w, int &h );
@@ -30,8 +35,6 @@ public:
 	bool loadScene( char* fn );
 
 	void setMaxDepth(int m){maxDepth = m;}
-
-	bool sceneLoaded();
 	
 	
 	QImage image;
@@ -39,5 +42,8 @@ private:
 	int maxDepth;
 	int width;
 	int height;
+
+	Camera* camera;
+	Scene* scene;
 };
 #endif // __RAYTRACER_H__

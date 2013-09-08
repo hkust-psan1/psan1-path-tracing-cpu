@@ -1,13 +1,15 @@
-﻿生成启动时间为 2013/9/8 15:37:50。
+﻿生成启动时间为 2013/9/8 20:15:37。
      1>项目“E:\GitHub\FYP\FYP\FYP.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          E:\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IE:\Qt\Qt5.1.1\5.1.1\msvc2012_64\include /I.\GeneratedFiles\Debug /IE:\Qt\Qt5.1.1\5.1.1\msvc2012_64\include\QtCore /IE:\Qt\Qt5.1.1\5.1.1\msvc2012_64\include\QtGui /IE:\Qt\Qt5.1.1\5.1.1\msvc2012_64\include\QtWidgets /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /Gd /TP /errorReport:prompt mainwindow.cpp
          mainwindow.cpp
        Link:
          E:\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\GitHub\FYP\x64\Debug\\FYP.exe" /NOLOGO /LIBPATH:E:\Qt\Qt5.1.1\5.1.1\msvc2012_64\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\GitHub\FYP\x64\Debug\FYP.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\GitHub\FYP\x64\Debug\FYP.lib" /MACHINE:X64 x64\Debug\FYP.res
+         x64\Debug\camera.obj
          x64\Debug\face.obj
          x64\Debug\moc_mainwindow.obj
          x64\Debug\qrc_mainwindow.obj
+         x64\Debug\intersection.obj
          x64\Debug\main.obj
          x64\Debug\mainwindow.obj
          x64\Debug\material.obj
@@ -15,6 +17,7 @@
          x64\Debug\parser.obj
          x64\Debug\ray.obj
          x64\Debug\RayTracer.obj
+         x64\Debug\scene.obj
          x64\Debug\vec3.obj
          x64\Debug\vertex.obj
          FYP.vcxproj -> E:\GitHub\FYP\x64\Debug\FYP.exe
@@ -22,4 +25,4 @@
 
 生成成功。
 
-已用时间 00:00:01.69
+已用时间 00:00:01.78

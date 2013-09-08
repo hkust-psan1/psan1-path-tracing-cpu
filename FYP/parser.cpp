@@ -5,7 +5,7 @@ namespace Parser {
 	Object* currObj;
 	std::vector<Vertex*> vertices;
 
-	void parseObjFile(const char* filename) {
+	Scene parseObjFile(const char* filename) {
 		std::cout << filename;
 		std::ifstream input(filename);
 
@@ -65,6 +65,8 @@ namespace Parser {
 		}
 
 		objects.push_back(currObj); // add the last object to the list
+
+		return Scene(objects);
 	}
 
 	void parseMtlFile(const char* filename) {

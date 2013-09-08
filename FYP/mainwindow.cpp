@@ -19,7 +19,7 @@ void MainWindow::load_scene()
 	QString filename = QFileDialog::getOpenFileName(this, "Load Scene",  QDir::currentPath(), "Blender File(*.obj);;All files(*.*)");
 	if (!filename.isNull()) 
 	{
-		Parser::parseObjFile(filename.toStdString().c_str());
+		tracer.setScene(&Parser::parseObjFile(filename.toStdString().c_str()));
 	}
 }
 
@@ -30,10 +30,13 @@ void MainWindow::about()
 
 void MainWindow::render()
 {
+	if (!tracer.sceneLoaded())
+	{
+		load_scene();
+	}
 	tracer.render();
 	QPixmap pixmap = QPixmap::fromImage(tracer.image);
     QGraphicsScene* scene = new QGraphicsScene(this);
     scene->addPixmap(pixmap);
 	ui.graphicsView->setScene(scene);
-	//ui.graphicsView->repaint();
 }
