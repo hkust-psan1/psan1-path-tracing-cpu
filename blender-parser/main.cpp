@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 	filename = argv[1];
 
 	try {
-		Parser::parse(filename);
+		Parser::parseObjFile(filename);
 	} catch (const char* e) {
 		cout << e << endl;
 		exit(1);

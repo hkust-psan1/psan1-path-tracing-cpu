@@ -14,6 +14,8 @@ public:
 	inline Object* getObject() const { return obj; };
 private:
 	std::vector<Vertex*> vertices;
+
+	/* a pointer to the obj the face belongs to */
 	Object* obj;
 };
 

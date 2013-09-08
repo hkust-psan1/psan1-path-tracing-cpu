@@ -5,7 +5,7 @@ namespace Parser {
 	Object* currObj;
 	std::vector<Vertex*> vertices;
 
-	void parse(char* filename) {
+	void parseObjFile(char* filename) {
 		std::ifstream input(filename);
 
 		if (!input) { // file does not exist
@@ -34,16 +34,43 @@ namespace Parser {
 				vertices.push_back(new Vertex(coords));
 
 			} else if (item == "f") { // face
+				int firstVertexIndex, lastVertexIndex;
+
+				for (int i = 0; getline(ss, item, ' '); i++) {
+					int vertexIndex = atoi(item.c_str());
+					if (i == 0) {
+						firstVertexIndex = vertexIndex;
+					} else if (i >= 2) {
+						Face* f = new Face;
+						f->addVertex(vertices[firstVertexIndex]);
+						f->addVertex(vertices[lastVertexIndex]);
+						f->addVertex(vertices[vertexIndex]);
+
+						currObj->addFace(f);
+					}
+					lastVertexIndex = vertexIndex;
+				}
+				/*
 				Face* f = new Face;
+
 				while (getline(ss, item, ' ')) {
 					int index = atoi(item.c_str());
 					f->addVertex(vertices[index]);
 				}
 
 				currObj->addFace(f);
+				*/
 			}
 		}
 
 		objects.push_back(currObj); // add the last object to the list
+	}
+
+	void parseMtlFile(char* filename) {
+		std::ifstream input(filename);
+
+		if (!input) { // file does not exist
+			throw "file does not exist";
+		}
 	}
 };

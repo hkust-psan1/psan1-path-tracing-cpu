@@ -29,3 +29,46 @@ void Vec3::normalize() {
 	y /= l;
 	z /= l;
 }
+
+Vec3& Vec3::operator+=(const Vec3& v) {
+	x += v.x;
+	y += v.y;
+	z += v.z;
+	return *this;
+}
+
+Vec3& Vec3::operator-=(const Vec3& v) {
+	x -= v.x;
+	y -= v.y;
+	z -= v.z;
+	return *this;
+}
+
+Vec3& Vec3::operator*=(const Vec3& v) {
+	x *= v.x;
+	y *= v.y;
+	z *= v.z;
+	return *this;
+}
+
+Vec3 operator+(const Vec3& v1, const Vec3& v2) {
+	return Vec3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+}
+
+Vec3 operator-(const Vec3& v1, const Vec3& v2) {
+	return Vec3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+}
+
+Vec3 operator*(const Vec3& v1, const Vec3& v2) {
+	return Vec3(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
+}
+
+float dot(const Vec3& v1, const Vec3& v2) {
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+Vec3 cross(const Vec3& v1, const Vec3& v2) {
+	return Vec3(v1.y * v2.z - v1.z * v2.y,
+		v1.z * v2.x - v1.x - v2.z,
+		v1.x * v2.y - v1.y - v2.x);
+}

@@ -10,6 +10,10 @@ namespace Parser {
 	extern Object* currObj; // current object being parsed
 	extern std::vector<Vertex*> vertices;
 
-	void parse(char* filename);
+	/* parse obj file for object geometry */
+	void parseObjFile(char* filename);
+
+	/* parse mtl file for material */
+	void parseMtlFile(char* filename);
 };
 
