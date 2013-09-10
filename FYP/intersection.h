@@ -5,12 +5,12 @@
 #include "Material.h"
 #include "object.h"
 
+class Object;
 
 class Intersection {
 public:
 	Intersection(Object* obj, Material* mat, const Vec3& normal, const Vec3& position, float t)
 		: obj(obj), mat(mat), normal(normal), position(position), t(t){};
-
 	Object* obj;
 	Material* mat;
 	Vec3 normal;

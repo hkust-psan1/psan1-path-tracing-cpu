@@ -4,6 +4,8 @@
 #include "face.h"
 #include "material.h"
 
+class Face;
+
 class Object {
 public:
 	Object();

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 
-
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -19,7 +18,7 @@ void MainWindow::load_scene()
 	QString filename = QFileDialog::getOpenFileName(this, "Load Scene",  QDir::currentPath(), "Blender File(*.obj);;All files(*.*)");
 	if (!filename.isNull()) 
 	{
-		tracer.setScene(&Parser::parseObjFile(filename.toStdString().c_str()));
+		tracer.setScene(Parser::parseObjFile(filename.toStdString().c_str()));
 	}
 }
 

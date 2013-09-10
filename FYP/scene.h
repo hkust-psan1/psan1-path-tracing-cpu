@@ -7,7 +7,8 @@
 
 class Scene {
 public:
-	Scene(std::vector<Object*> obj): objects(obj){};
+	Scene(std::vector<Object*> obj): objects(obj){
+	};
 	Intersection* intersect(const Ray& r);
 private:
 	std::vector<Object*> objects;

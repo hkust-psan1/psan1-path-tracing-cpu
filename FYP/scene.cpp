@@ -4,6 +4,8 @@ Intersection* Scene::intersect(const Ray& r)
 {
 	float min = FLT_MAX;
 	Intersection* intc = NULL;
+	objects.size();
+
 	for (Object* obj : objects)
 	{
 		for (Face* f : obj->getFaces())
@@ -14,6 +16,7 @@ Intersection* Scene::intersect(const Ray& r)
 				if (intc != NULL)
 					delete intc;
 				intc = temp;
+				min  = intc->t;
 			}
 		}
 	}

@@ -3,7 +3,7 @@
 
 #include "vertex.h"
 #include "ray.h"
-//#include "intersection.h"
+#include "intersection.h"
 class Intersection;
 class Object;
 

@@ -36,7 +36,8 @@ Intersection* Face::intersect(const Ray& r, float t_min)
   t = dot(e2, Q) * inv_det;
  
   if(t > EPSILON && t < t_min) { //ray intersection
-    return NULL;
+	  Intersection* i = new Intersection(obj, NULL, Vec3(), Vec3(), t); 
+	  return i;
   }
  
   // No hit, no win

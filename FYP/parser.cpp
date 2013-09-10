@@ -1,11 +1,13 @@
 #include "parser.h"
 
 namespace Parser {
-	std::vector<Object*> objects;
-	Object* currObj;
-	std::vector<Vertex*> vertices;
 
-	Scene parseObjFile(const char* filename) {
+
+	Scene* parseObjFile(const char* filename) {
+		std::vector<Object*> sceneObjects;
+		Object* currObj = 0;
+		std::vector<Vertex*> vertices;
+
 		std::cout << filename;
 		std::ifstream input(filename);
 
@@ -21,7 +23,7 @@ namespace Parser {
 
 			if (item == "o") { // start of a new object
 				if (currObj) { // if it's not the first object parsed
-					objects.push_back(currObj); // add old object to list
+					sceneObjects.push_back(currObj); // add old object to list
 				}
 
 				currObj = new Object;
@@ -62,11 +64,11 @@ namespace Parser {
 				currObj->addFace(f);
 				*/
 			}
-		}
+		} 
 
-		objects.push_back(currObj); // add the last object to the list
-
-		return Scene(objects);
+		sceneObjects.push_back(currObj); // add the last object to the list
+		Scene* s = new Scene(sceneObjects);
+		return s;
 	}
 
 	void parseMtlFile(const char* filename) {
