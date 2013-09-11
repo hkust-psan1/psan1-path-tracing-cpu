@@ -34,13 +34,16 @@ namespace Parser {
 					coords[i] = atof(item.c_str());
 				}
 
-				vertices.push_back(new Vertex(coords));
+				Vertex* newVertex = new Vertex(coords);
+
+				vertices.push_back(newVertex);
 
 			} else if (item == "f") { // face
 				int firstVertexIndex, lastVertexIndex;
 
 				for (int i = 0; getline(ss, item, ' '); i++) {
 					int vertexIndex = atoi(item.c_str());
+					std::cout << "is a face" << std::endl;
 					if (i == 0) {
 						firstVertexIndex = vertexIndex;
 					} else if (i >= 2) {
@@ -49,6 +52,7 @@ namespace Parser {
 						f->addVertex(vertices[lastVertexIndex - 1]);
 						f->addVertex(vertices[vertexIndex - 1]);
 
+						std::cout << *f;
 						currObj->addFace(f);
 					}
 					lastVertexIndex = vertexIndex;

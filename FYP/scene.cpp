@@ -8,7 +8,6 @@ Intersection* Scene::intersect(const Ray& r)
 {
 	float min = FLT_MAX;
 	Intersection* intc = NULL;
-	objects.size();
 
 	for (Object* obj : objects)
 	{
@@ -17,8 +16,9 @@ Intersection* Scene::intersect(const Ray& r)
 			Intersection* temp = f->intersect(r, min);
 			if (temp != NULL)
 			{
-				if (intc != NULL)
+				if (intc != NULL) {
 					delete intc;
+				}
 				intc = temp;
 				min  = intc->t;
 			}

@@ -6,6 +6,7 @@ TEMPLATE = app
 TARGET = 
 DEPENDPATH += . GeneratedFiles
 INCLUDEPATH += . GeneratedFiles
+CONFIG += console
 
 # Input
 HEADERS += camera.h \

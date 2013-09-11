@@ -5,7 +5,7 @@ RayTracer::RayTracer(int width, int height)
 {
 	this->height = height;
 	this->width = width;
-	this->camera = new Camera(Vec3(0, 0, -1), Vec3(0, 0, 1));
+	this->camera = new Camera(Vec3(0, 0, -1), Vec3(0, 0, 1), width, height);
 	scene = NULL;
 	image = QImage(width, height, QImage::Format_RGB32);
 }
@@ -24,7 +24,8 @@ void RayTracer::render() {
 Vec3 RayTracer::traceRay(const Ray& ray, int depth) 
 {
 	Intersection* intc = scene->intersect(ray);
-	if (intc != NULL)
+	if (intc != NULL) {
 		return Vec3(1, 1, 1);
+	}
 	return Vec3(0, 0, 0);
 }
