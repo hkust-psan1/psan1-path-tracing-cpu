@@ -1,5 +1,9 @@
 #include "scene.h"
 
+#ifdef __APPLE__
+	#include <float.h>
+#endif
+
 Intersection* Scene::intersect(const Ray& r)
 {
 	float min = FLT_MAX;

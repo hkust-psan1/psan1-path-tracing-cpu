@@ -1,7 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtWidgets/QMainWindow>
+#ifdef __APPLE__
+	#include <QMainWindow>
+#else
+	#include <QtWidgets/QMainWindow>
+#endif
+
 #include <qmessagebox.h>
 #include "ui_mainwindow.h"
 #include "qfiledialog.h"

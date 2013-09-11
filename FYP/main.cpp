@@ -1,5 +1,10 @@
 #include "mainwindow.h"
-#include <QtWidgets/QApplication>
+
+#ifdef __APPLE__
+	#include <QApplication>
+#else
+	#include <QtWidgets/QApplication>
+#endif
 
 int main(int argc, char *argv[])
 {
