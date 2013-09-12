@@ -23,7 +23,7 @@ class DirectionalLight
 {
 public:
 	DirectionalLight(const Vec3& d, const Vec3& color )
-		: Light(color ), direction( d ) {}
+		: Light(color ), direction( d ) {direction.normalize();}
 	virtual Vec3 shadowAttenuation(const Vec3& P) const;
 	virtual double distanceAttenuation( const Vec3& P ) const {return 1.0;};
 	virtual Vec3 getDirection( const Vec3& P ) const {return direction;};

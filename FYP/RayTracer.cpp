@@ -44,10 +44,10 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	{
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
-		double NL = dot(intc->normal, L);
+		float NL = abs(dot(intc->normal, L));
 
 		//diffuse
-		Vec3 diffuse = (l->getColor(ray.pos) * mat->kd * NL);
+		Vec3 diffuse = (atten * mat->kd * NL);
 		diffuse.clamp();
 		I += diffuse;
 	}
@@ -60,7 +60,9 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	const float NL = -dot(intc->normal, ray.dir);
 	Vec3 ref = intc->normal * (2 * NL) + ray.dir;
 	Ray R = Ray(point, ref);
-	//I += (m.kr.time(traceRay(scene, R, thresh, depth - 1))).clamp(); 
+	Vec3 reflection = mat->kr * (traceRay(R, depth - 1)); 
+	reflection.clamp();
+	I += reflection;
 	
 	I.clamp();
 	return I;
