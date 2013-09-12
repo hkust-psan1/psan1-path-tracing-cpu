@@ -1,6 +1,8 @@
 #include <cmath>
 #include "vec3.h"
 
+#define min(a, b) (a < b ? a : b)
+
 Vec3::Vec3(float x, float y, float z) {
 	this->x = x;
 	this->y = y;
@@ -36,6 +38,13 @@ void Vec3::normalize() {
 	y /= l;
 	z /= l;
 }
+
+void Vec3::clamp() {
+	x = min(x, 1.0f);
+	y = min(y, 1.0f);
+	z = min(z, 1.0f);
+}
+
 
 Vec3& Vec3::operator+=(const Vec3& v) {
 	x += v.x;

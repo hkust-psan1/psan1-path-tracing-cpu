@@ -10,25 +10,27 @@ public:
 	virtual double distanceAttenuation( const Vec3& P ) const = 0;
 	virtual Vec3 getColor( const Vec3& P ) const = 0;
 	virtual Vec3 getDirection( const Vec3& P ) const = 0;
+	static void setScene(Scene* c) {scene = c;}
 
 protected:
 	Light(const Vec3& col ): color( col ) {}
 	Vec3 color;
+	static Scene* scene;
 };
 
 class DirectionalLight
 	: public Light
 {
 public:
-	DirectionalLight(const Vec3& orien, const Vec3& color )
-		: Light(color ), orientation( orien ) {}
-	virtual Vec3 shadowAttenuation(const Vec3& P) const {return NULL;};
+	DirectionalLight(const Vec3& d, const Vec3& color )
+		: Light(color ), direction( d ) {}
+	virtual Vec3 shadowAttenuation(const Vec3& P) const;
 	virtual double distanceAttenuation( const Vec3& P ) const {return 1.0;};
 	virtual Vec3 getColor( const Vec3& P ) const {return color;};
-	virtual Vec3 getDirection( const Vec3& P ) const {return orientation;};
+	virtual Vec3 getDirection( const Vec3& P ) const {return direction;};
 
 protected:
-	Vec3 orientation;
+	Vec3 direction;
 };
 
 class PointLight

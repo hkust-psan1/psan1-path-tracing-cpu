@@ -6,9 +6,13 @@
 class Material {
 public:
 	Material();
-	Vec3 kAmbient;
-	Vec3 kDiffuse;
-	Vec3 kSpecular;
+    Vec3 ke;  // emissive
+    Vec3 ka;  // ambient
+    Vec3 ks;  // specular
+    Vec3 kd;  // diffuse
+    Vec3 kr;  // reflective
+    Vec3 kt;  // transmissive
+	bool isTransmissive;
 };
 
 #endif
