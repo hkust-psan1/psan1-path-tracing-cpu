@@ -1,8 +1,6 @@
 #include "parser.h"
 
 namespace Parser {
-
-
 	Scene* parseObjFile(const char* filename) {
 		std::vector<Object*> sceneObjects;
 		Object* currObj = 0;
@@ -43,7 +41,6 @@ namespace Parser {
 
 				for (int i = 0; getline(ss, item, ' '); i++) {
 					int vertexIndex = atoi(item.c_str());
-					std::cout << "is a face" << std::endl;
 					if (i == 0) {
 						firstVertexIndex = vertexIndex;
 					} else if (i >= 2) {
@@ -52,21 +49,10 @@ namespace Parser {
 						f->addVertex(vertices[lastVertexIndex - 1]);
 						f->addVertex(vertices[vertexIndex - 1]);
 
-						std::cout << *f;
 						currObj->addFace(f);
 					}
 					lastVertexIndex = vertexIndex;
 				}
-				/*
-				Face* f = new Face;
-
-				while (getline(ss, item, ' ')) {
-					int index = atoi(item.c_str());
-					f->addVertex(vertices[index]);
-				}
-
-				currObj->addFace(f);
-				*/
 			}
 		} 
 
@@ -75,7 +61,7 @@ namespace Parser {
 		return s;
 	}
 
-	void parseMtlFile(const char* filename) {
+	Material* parseMtlFile(const char* filename) {
 		std::ifstream input(filename);
 
 		if (!input) { // file does not exist

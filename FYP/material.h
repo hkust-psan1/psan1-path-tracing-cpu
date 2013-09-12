@@ -6,7 +6,6 @@
 class Material {
 public:
 	Material();
-private:
 	Vec3 kAmbient;
 	Vec3 kDiffuse;
 	Vec3 kSpecular;

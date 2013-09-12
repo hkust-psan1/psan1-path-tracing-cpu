@@ -25,7 +25,7 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 {
 	Intersection* intc = scene->intersect(ray);
 	if (intc != NULL) {
-		return Vec3(1, 1, 1);
+		return intc->obj->getMaterial()->kDiffuse;
 	}
 	return Vec3(0, 0, 0);
 }

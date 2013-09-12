@@ -10,11 +10,14 @@ class Object {
 public:
 	Object();
 	void addFace(Face* f);
+    inline std::string getName() const { return name; };
 	inline std::vector<Face*> getFaces() const { return faces; };
+    inline Material* getMaterial() const { return mat; };
 
 private:
+    std::string name;
 	std::vector<Face*> faces;
-	Material* material;
+	Material* mat;
 };
 
 #endif
