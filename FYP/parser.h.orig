@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+#include "object.h"
+#include "scene.h"
+using namespace std;
+
+namespace Parser {
+<<<<<<< HEAD
+=======
+	/*
+	extern std::vector<Object*> objects;
+	extern Object* currObj; // current object being parsed
+	extern std::vector<Vertex*> vertices;
+	*/
+
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
+	/* parse obj file for object geometry */
+	Scene* parseObjFile(const char* filename);
+
+	/* parse mtl file for material */
+<<<<<<< HEAD
+	Material* parseMtlFile(const char* filename);
+=======
+	void parseMtlFile(const char* filename);
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
+};
+

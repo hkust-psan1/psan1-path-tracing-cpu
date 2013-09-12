@@ -1,7 +1,11 @@
 #include "object.h"
 
 Object::Object() {
+<<<<<<< HEAD
     mat = new Material();
+=======
+
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 }
 
 void Object::addFace(Face* f) {

@@ -10,6 +10,7 @@ class Object {
 public:
 	Object();
 	void addFace(Face* f);
+<<<<<<< HEAD
     inline std::string getName() const { return name; };
 	inline std::vector<Face*> getFaces() const { return faces; };
     inline Material* getMaterial() const { return mat; };
@@ -18,6 +19,13 @@ private:
     std::string name;
 	std::vector<Face*> faces;
 	Material* mat;
+=======
+	inline std::vector<Face*> getFaces() const { return faces; };
+
+private:
+	std::vector<Face*> faces;
+	Material* material;
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 };
 
 #endif

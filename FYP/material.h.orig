@@ -6,6 +6,10 @@
 class Material {
 public:
 	Material();
+<<<<<<< HEAD
+=======
+private:
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 	Vec3 kAmbient;
 	Vec3 kDiffuse;
 	Vec3 kSpecular;
