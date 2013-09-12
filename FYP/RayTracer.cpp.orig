@@ -24,6 +24,10 @@ void RayTracer::render() {
 Vec3 RayTracer::traceRay(const Ray& ray, int depth) 
 {
 	Intersection* intc = scene->intersect(ray);
+<<<<<<< HEAD
+	if (intc != NULL) {
+		return intc->obj->getMaterial()->kDiffuse;
+=======
 	if (intc != NULL) 
 	{
 		Vec3 r = Vec3(0, 0, 0);
@@ -32,6 +36,7 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 			r += l->getColor(ray.pos);
 		}
 		return r;
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 	}
 	return Vec3(0, 0, 0);
 }

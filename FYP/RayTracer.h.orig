@@ -9,7 +9,10 @@
 #include "qimage.h"
 #include "parser.h"
 #include "scene.h"
+<<<<<<< HEAD
+=======
 #include "light.h"
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 
 class RayTracer
 {
@@ -25,7 +28,10 @@ public:
 	void setScene(Scene* scene){this->scene = scene;};
 	bool sceneLoaded(){return scene != NULL;};
 
+<<<<<<< HEAD
+=======
 	void addLight(Light* l) {lights.push_back(l);};
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 
 	void getBuffer( unsigned char *&buf, int &w, int &h );
 	double aspectRatio();
@@ -47,6 +53,9 @@ private:
 
 	Camera* camera;
 	Scene* scene;
+<<<<<<< HEAD
+=======
 	std::vector<Light*> lights;
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 };
 #endif // __RAYTRACER_H__

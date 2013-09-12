@@ -30,15 +30,25 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
+<<<<<<< HEAD
+      12,   11,   11,   11, 0x08,
+      25,   11,   11,   11, 0x08,
+      33,   11,   11,   11, 0x08,
+=======
       11,   24,   24,   24, 0x08,
       25,   24,   24,   24, 0x08,
       33,   24,   24,   24, 0x08,
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
+<<<<<<< HEAD
+    "MainWindow\0\0load_scene()\0about()\0"
+=======
     "MainWindow\0load_scene()\0\0about()\0"
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
     "render()\0"
 };
 
