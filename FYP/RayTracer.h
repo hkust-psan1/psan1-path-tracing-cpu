@@ -36,12 +36,12 @@ public:
 
 	bool loadScene( char* fn );
 
-	void setMaxDepth(int m){maxDepth = m;}
+	//void setMaxDepth(int m){maxDepth = m;}
 	
 	
 	QImage image;
 private:
-	int maxDepth;
+	static const int maxDepth = 10;
 	int width;
 	int height;
 
