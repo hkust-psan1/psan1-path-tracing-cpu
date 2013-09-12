@@ -24,14 +24,28 @@ void RayTracer::render() {
 Vec3 RayTracer::traceRay(const Ray& ray, int depth) 
 {
 	Intersection* intc = scene->intersect(ray);
-	if (intc != NULL) 
+	// no hit
+	if (intc == NULL) 
+		return Vec3(0, 0, 0);
+
+	
+	Vec3 I = Vec3(0, 0, 0);
+	for (Light* l : lights)
 	{
-		Vec3 r = Vec3(0, 0, 0);
-		for (Light* l : lights)
-		{
-			r += l->getColor(ray.pos);
-		}
-		return r;
+		I += l->getColor(ray.pos);
 	}
-	return Vec3(0, 0, 0);
+
+	// max depth
+	if (depth <= 0)
+		return I;
+	
+	//reflection
+	const float NL = -dot(intc->normal, ray.dir);
+	Vec3 ref = intc->normal * (2 * NL) + ray.dir;
+	Vec3 intp = ray.at(intc->t);
+	Ray R = Ray(intp, ref);
+	//I += (m.kr.time(traceRay(scene, R, thresh, depth - 1))).clamp(); 
+	
+
+	return I;
 }

@@ -20,6 +20,7 @@ public:
 	friend Vec3 operator+(const Vec3& v1, const Vec3& v2);
 	friend Vec3 operator-(const Vec3& v1, const Vec3& v2);
 	friend Vec3 operator*(const Vec3& v1, const Vec3& v2);
+	friend Vec3 operator*(const Vec3& v1, const float& f);
 
 	friend float dot(const Vec3& v1, const Vec3& v2);
 	friend Vec3 cross(const Vec3& v1, const Vec3& v2);
