@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "material.h"
 
 Material::Material() {
@@ -6,3 +7,6 @@ Material::Material() {
     kDiffuse = Vec3(0.8, 0.4, 0.4);
     kSpecular = Vec3(1.0, 1.0, 0.5);
 }
+=======
+#include "material.h"
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b

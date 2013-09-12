@@ -14,9 +14,6 @@
 
 # Build results
 
-blender-parser/
-gerGeneratedFiles/
-
 [Dd]ebug/
 [Rr]elease/
 x64/
@@ -157,6 +154,4 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # Mac crap
-.DS_Store*.o
-*.swp
-parser/parser
+.DS_Store

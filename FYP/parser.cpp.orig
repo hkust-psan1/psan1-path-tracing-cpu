@@ -1,6 +1,11 @@
 #include "parser.h"
 
 namespace Parser {
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 	Scene* parseObjFile(const char* filename) {
 		std::vector<Object*> sceneObjects;
 		Object* currObj = 0;
@@ -41,6 +46,10 @@ namespace Parser {
 
 				for (int i = 0; getline(ss, item, ' '); i++) {
 					int vertexIndex = atoi(item.c_str());
+<<<<<<< HEAD
+=======
+					std::cout << "is a face" << std::endl;
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 					if (i == 0) {
 						firstVertexIndex = vertexIndex;
 					} else if (i >= 2) {
@@ -49,10 +58,27 @@ namespace Parser {
 						f->addVertex(vertices[lastVertexIndex - 1]);
 						f->addVertex(vertices[vertexIndex - 1]);
 
+<<<<<<< HEAD
+=======
+						std::cout << *f;
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 						currObj->addFace(f);
 					}
 					lastVertexIndex = vertexIndex;
 				}
+<<<<<<< HEAD
+=======
+				/*
+				Face* f = new Face;
+
+				while (getline(ss, item, ' ')) {
+					int index = atoi(item.c_str());
+					f->addVertex(vertices[index]);
+				}
+
+				currObj->addFace(f);
+				*/
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 			}
 		} 
 
@@ -61,11 +87,19 @@ namespace Parser {
 		return s;
 	}
 
+<<<<<<< HEAD
 	Material* parseMtlFile(const char* filename) {
+=======
+	void parseMtlFile(const char* filename) {
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
 		std::ifstream input(filename);
 
 		if (!input) { // file does not exist
 			throw "file does not exist";
 		}
 	}
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> dc45e7c46656daf7b2166739aeb7d3ce3bff442b
