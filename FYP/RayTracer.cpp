@@ -45,6 +45,7 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
 		double NL = dot(intc->normal, L);
+        std::cout << NL << std::endl;
 
 		//difffuse
 		I += l->getColor(ray.pos) * mat->kd * NL;
