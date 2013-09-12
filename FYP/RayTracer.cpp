@@ -37,7 +37,7 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	Vec3 I = Vec3(intc->mat->ke);
 
 	//ambient
-	if (mat->isTransmissive) ;
+	if (mat->isTransmissive) I += Vec3();
 	else I += scene->ambient * mat->ka;
 
 	for (Light* l : lights)
@@ -46,8 +46,10 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 		Vec3 L = l->getDirection(point);
 		double NL = dot(intc->normal, L);
 
-		//difffuse
-		I += l->getColor(ray.pos) * mat->kd * NL;
+		//diffuse
+		Vec3 diffuse = (l->getColor(ray.pos) * mat->kd * NL);
+		diffuse.clamp();
+		I += diffuse;
 	}
 
 	// max depth

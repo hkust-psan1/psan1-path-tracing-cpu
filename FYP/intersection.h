@@ -9,7 +9,7 @@ class Object;
 
 class Intersection {
 public:
-	Intersection(Object* obj, Material* mat, const Vec3& normal, const Vec3& position, float t)
+	Intersection(Object* obj, Material* mat, const Vec3& normal, float t)
 		: obj(obj), mat(mat), normal(normal), position(position), t(t){};
 	Object* obj;
 	Material* mat;

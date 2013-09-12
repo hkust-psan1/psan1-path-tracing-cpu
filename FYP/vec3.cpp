@@ -2,6 +2,7 @@
 #include "vec3.h"
 
 #define min(a, b) (a < b ? a : b)
+#define max(a, b) (a > b ? a : b)
 
 Vec3::Vec3(float x, float y, float z) {
 	this->x = x;
@@ -43,6 +44,9 @@ void Vec3::clamp() {
 	x = min(x, 1.0f);
 	y = min(y, 1.0f);
 	z = min(z, 1.0f);
+	x = max(x, .0f);
+	y = max(y, .0f);
+	z = max(z, .0f);
 }
 
 
