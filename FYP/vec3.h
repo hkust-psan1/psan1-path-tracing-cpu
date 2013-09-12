@@ -12,6 +12,7 @@ public:
 
 	inline float length() const;
 	void normalize();
+	void clamp();
 
 	Vec3& operator+=(const Vec3& v);
 	Vec3& operator-=(const Vec3& v);

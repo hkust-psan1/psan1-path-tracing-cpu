@@ -67,5 +67,6 @@ namespace Parser {
 		if (!input) { // file does not exist
 			throw "file does not exist";
 		}
+		return NULL;
 	}
 };
