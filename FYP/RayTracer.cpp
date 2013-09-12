@@ -44,11 +44,16 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	{
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
+        L.normalize();
+        intc->normal.normalize();
 		double NL = dot(intc->normal, L);
 
 		//diffuse
-		Vec3 diffuse = (l->getColor(ray.pos) * mat->kd * NL);
+		Vec3 diffuse = (atten * mat->kd * NL);
+        
+
 		diffuse.clamp();
+        std::cout << intc->normal << std::endl;
 		I += diffuse;
 	}
 
