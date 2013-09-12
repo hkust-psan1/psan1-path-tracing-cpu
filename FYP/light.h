@@ -8,7 +8,7 @@ class Light
 public:
 	virtual Vec3 shadowAttenuation(const Vec3& P) const = 0;
 	virtual double distanceAttenuation( const Vec3& P ) const = 0;
-	virtual Vec3 getColor( const Vec3& P ) const = 0;
+	virtual Vec3 getColor( const Vec3& P ) const {return color;};
 	virtual Vec3 getDirection( const Vec3& P ) const = 0;
 	static void setScene(Scene* c) {scene = c;}
 
@@ -26,7 +26,6 @@ public:
 		: Light(color ), direction( d ) {}
 	virtual Vec3 shadowAttenuation(const Vec3& P) const;
 	virtual double distanceAttenuation( const Vec3& P ) const {return 1.0;};
-	virtual Vec3 getColor( const Vec3& P ) const {return color;};
 	virtual Vec3 getDirection( const Vec3& P ) const {return direction;};
 
 protected:
