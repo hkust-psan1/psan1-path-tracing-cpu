@@ -5,7 +5,8 @@ RayTracer::RayTracer(int width, int height)
 {
 	this->height = height;
 	this->width = width;
-	this->camera = new Camera(Vec3(0, 0, -1), Vec3(0, 0, 1), width, height);
+	this->camera = new Camera(Vec3(3, 3, 3), Vec3(0, 0, 0), Vec3(0, 0, 1));
+    this->camera->setSize(width, height);
 	scene = NULL;
 	image = QImage(width, height, QImage::Format_RGB32);
 }
