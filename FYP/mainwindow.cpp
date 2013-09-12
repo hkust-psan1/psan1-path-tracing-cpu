@@ -19,7 +19,7 @@ void MainWindow::load_scene()
 	if (!filename.isNull()) 
 	{
 		tracer.setScene(Parser::parseObjFile(filename.toStdString().c_str()));
-		DirectionalLight* l = new DirectionalLight(Vec3(0, 0, -100), Vec3(1.0, 0.7, 0.6));
+		DirectionalLight* l = new DirectionalLight(Vec3(0, 0, -100), Vec3(1.0, 1.0, 1.0));
 		tracer.addLight(l);
 	}
 }
