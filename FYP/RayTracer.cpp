@@ -16,8 +16,35 @@ RayTracer::~RayTracer() {
 
 }
 
+void RayTracer::renderWithGridSize(int gridSize) {
+    int offset = gridSize / 2;
+    
+    for (int i = 0; i < height; i += gridSize) {
+        for (int j = 0; j < width; j += gridSize) {
+            int x = j + offset;
+            int y = i + offset;
+            
+            Vec3 color = traceRay(camera->getCameraRay(x, y), maxDepth);
+            pixelRendered[i][j] = true; // mark as rendered
+            
+            for (int k = 0; k < gridSize && i + k < height; k++) {
+                for (int l = 0; l < gridSize && j + l < width; l++) {
+                    image.setPixel(j + l, i + k, qRgb(color.x * 255, color.y * 255, color.z * 255));
+                }
+            }
+        }
+    }
+    
+    emit rowCompleted();
+}
+
 void RayTracer::render()
 {
+    /*
+    SubdivisionRenderer* sr = new SubdivisionRenderer(width, height);
+    sr->render();
+    */
+    /*
 	Light::setScene(scene);
 	for (int i = 0; i < width; i++)
 	{
@@ -29,6 +56,19 @@ void RayTracer::render()
 		// window->updateScreen();
 		emit rowCompleted();
 	}
+	*/
+	
+	Light::setScene(scene);
+	
+    /* initialize the 2d array */
+    pixelRendered = new bool*[height];
+    for (int i = 0; i < height; i++) {
+        pixelRendered[i] = new bool[width];
+    }
+	
+    for (int gridSize = 64; gridSize != 0; gridSize /= 2) {
+        renderWithGridSize(gridSize);
+    }
 }
 
 Vec3 RayTracer::traceRay(const Ray& ray, int depth) 

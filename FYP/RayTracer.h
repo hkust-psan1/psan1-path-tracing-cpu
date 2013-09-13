@@ -10,6 +10,7 @@
 #include "parser.h"
 #include "scene.h"
 #include "light.h"
+#include "subdivision_renderer.h"
 
 class MainWindow;
 
@@ -26,6 +27,8 @@ public:
 	inline bool sceneLoaded() { return scene != NULL; };
 
 	inline void addLight(Light* l) { lights.push_back(l); };
+	
+    void renderWithGridSize(int gridSize);
 
     /*
 	inline void setMaxDepth(int m) { maxDepth = m; }
@@ -58,6 +61,8 @@ private:
 	Scene* scene;
 	std::vector<Light*> lights;
 	MainWindow* window;
+	
+    bool** pixelRendered;
 };
 
 #endif // __RAYTRACER_H__

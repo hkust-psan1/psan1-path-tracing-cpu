@@ -4,7 +4,6 @@ namespace Parser {
     Scene* parseScene(std::string filename) {
         Scene* s = parseObjFile(filename);
         filename.replace(filename.length() - 3, 3, "mtl");
-        std::cout << filename << std::endl;
         parseMtlFile(filename, s);
         return s;
     }
