@@ -1,6 +1,6 @@
 #include "material.h"
 
-Material::Material() {
+Material::Material(std::string n) : name(n) {
 	ke = Vec3(0, 0, 0);
     ka = Vec3(0, 0, 0);
 	kd = Vec3(0, 0, 0);
