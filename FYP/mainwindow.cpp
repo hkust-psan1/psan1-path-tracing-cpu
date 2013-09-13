@@ -40,7 +40,6 @@ void MainWindow::render()
 	}
 	
 	QThread* rendererThread = new QThread;
-	// tracer->render();
 	
 	tracer->moveToThread(rendererThread);
 	connect(rendererThread, SIGNAL(started()), tracer, SLOT(render()));
