@@ -50,7 +50,7 @@ public:
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QString::fromUtf8("MainWindowClass"));
         MainWindowClass->setWindowModality(Qt::NonModal);
-        MainWindowClass->resize(973, 543);
+        MainWindowClass->resize(973, 639);
         actionLoad_Scene = new QAction(MainWindowClass);
         actionLoad_Scene->setObjectName(QString::fromUtf8("actionLoad_Scene"));
         actionAbout = new QAction(MainWindowClass);
@@ -61,7 +61,7 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pixmapLabel = new QLabel(centralWidget);
         pixmapLabel->setObjectName(QString::fromUtf8("pixmapLabel"));
-        pixmapLabel->setGeometry(QRect(100, 40, 500, 400));
+        pixmapLabel->setGeometry(QRect(100, 40, 500, 500));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
