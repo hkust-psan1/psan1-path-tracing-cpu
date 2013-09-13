@@ -34,7 +34,7 @@ public:
 	void traceSetup( int w, int h );
 	void traceLines( int start = 0, int stop = 10000000 );
 	void tracePixel( int i, int j );
-	void antiAliasing(int part);j
+	void antiAliasing(int part);
 	*/
 
 	// bool loadScene( char* fn );
