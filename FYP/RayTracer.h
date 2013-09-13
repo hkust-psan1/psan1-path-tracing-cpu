@@ -11,35 +11,44 @@
 #include "scene.h"
 #include "light.h"
 
-class RayTracer
-{
+class MainWindow;
+
+class RayTracer : public QObject {
+    Q_OBJECT
 public:
-	RayTracer(){};
+    RayTracer(QObject* parent = 0) : QObject(parent) { };
 	RayTracer(int width, int height);
-	~RayTracer(){};
+	~RayTracer();
 
-	void render();
-
-    Vec3 trace(double x, double y );
+    // Vec3 trace(double x, double y );
 	Vec3 traceRay(const Ray& ray, int depth = 0);
-	void setScene(Scene* scene){this->scene = scene;};
-	bool sceneLoaded(){return scene != NULL;};
+	inline void setScene(Scene* scene) { this->scene = scene; };
+	inline bool sceneLoaded() { return scene != NULL; };
 
-	void addLight(Light* l) {lights.push_back(l);};
+	inline void addLight(Light* l) { lights.push_back(l); };
 
+    /*
+	inline void setMaxDepth(int m) { maxDepth = m; }
 	void getBuffer( unsigned char *&buf, int &w, int &h );
 	double aspectRatio();
 	void traceSetup( int w, int h );
 	void traceLines( int start = 0, int stop = 10000000 );
 	void tracePixel( int i, int j );
-	void antiAliasing(int part);
+	void antiAliasing(int part);j
+	*/
 
-	bool loadScene( char* fn );
-
-	//void setMaxDepth(int m){maxDepth = m;}
+	// bool loadScene( char* fn );
 	
+    inline void setMainWindow(MainWindow* w) { window = w; };
 	
 	QImage image;
+	
+public slots:
+	void render();
+	
+signals:
+    void rowCompleted();
+
 private:
 	static const int maxDepth = 2;
 	int width;
@@ -48,5 +57,7 @@ private:
 	Camera* camera;
 	Scene* scene;
 	std::vector<Light*> lights;
+	MainWindow* window;
 };
+
 #endif // __RAYTRACER_H__

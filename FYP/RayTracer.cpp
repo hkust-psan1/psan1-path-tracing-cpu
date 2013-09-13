@@ -1,4 +1,5 @@
 #include "RayTracer.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 RayTracer::RayTracer(int width, int height)
@@ -11,7 +12,11 @@ RayTracer::RayTracer(int width, int height)
 	image = QImage(width, height, QImage::Format_RGB32);
 }
 
-void RayTracer::render() 
+RayTracer::~RayTracer() {
+
+}
+
+void RayTracer::render()
 {
 	Light::setScene(scene);
 	for (int i = 0; i < width; i++)
@@ -21,6 +26,8 @@ void RayTracer::render()
 			Vec3 color = traceRay(camera->getCameraRay(i, j), maxDepth);
 			image.setPixel(i, j, qRgb(color.x * 255, color.y * 255, color.z * 255));
 		}
+		// window->updateScreen();
+		emit rowCompleted();
 	}
 }
 
@@ -61,7 +68,7 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	Vec3 ref = intc->normal * (2 * NL) + ray.dir;
 	Ray R = Ray(point, ref);
 	Vec3 reflection = mat->kr * (traceRay(R, depth - 1));
-    // std::cout << reflection;
+	
 	reflection.clamp();
 	I += reflection;
 	

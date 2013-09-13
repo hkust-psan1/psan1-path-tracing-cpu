@@ -90,14 +90,6 @@ namespace Parser {
 			
             if (item == "newmtl") {
                 getline(ss, item, ' ');
-                /*
-                for (Object* obj : scene->getObjects()) {
-                    if (obj->materialName == item) {
-                        currObj = obj;
-                        currObj->mat = new Material();
-                    }
-                }
-                */
                 
                 if (currMat) {
                     materials.push_back(currMat);
