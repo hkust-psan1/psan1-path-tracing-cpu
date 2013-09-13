@@ -15,8 +15,8 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDockWidget>
-#include <QtGui/QGraphicsView>
 #include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -34,7 +34,7 @@ public:
     QAction *actionAbout;
     QAction *actionExit;
     QWidget *centralWidget;
-    QGraphicsView *graphicsView;
+    QLabel *pixmapLabel;
     QMenuBar *menuBar;
     QMenu *menuStart;
     QMenu *menuHelp;
@@ -59,14 +59,13 @@ public:
         actionExit->setObjectName(QString::fromUtf8("actionExit"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        graphicsView = new QGraphicsView(centralWidget);
-        graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
-        graphicsView->setGeometry(QRect(40, 10, 601, 481));
-        graphicsView->setMinimumSize(QSize(471, 411));
+        pixmapLabel = new QLabel(centralWidget);
+        pixmapLabel->setObjectName(QString::fromUtf8("pixmapLabel"));
+        pixmapLabel->setGeometry(QRect(100, 40, 500, 400));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 973, 21));
+        menuBar->setGeometry(QRect(0, 0, 973, 22));
         menuStart = new QMenu(menuBar);
         menuStart->setObjectName(QString::fromUtf8("menuStart"));
         menuHelp = new QMenu(menuBar);
@@ -117,6 +116,7 @@ public:
         actionAbout->setText(QApplication::translate("MainWindowClass", "About", 0, QApplication::UnicodeUTF8));
         actionExit->setText(QApplication::translate("MainWindowClass", "Exit", 0, QApplication::UnicodeUTF8));
         actionExit->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+W", 0, QApplication::UnicodeUTF8));
+        pixmapLabel->setText(QString());
         menuStart->setTitle(QApplication::translate("MainWindowClass", "Start", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindowClass", "About", 0, QApplication::UnicodeUTF8));
         checkBox->setText(QApplication::translate("MainWindowClass", "HBV", 0, QApplication::UnicodeUTF8));
