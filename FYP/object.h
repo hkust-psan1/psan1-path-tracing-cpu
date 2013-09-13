@@ -12,12 +12,16 @@ public:
 	void addFace(Face* f);
     inline std::string getName() const { return name; };
 	inline std::vector<Face*> getFaces() const { return faces; };
+	/*
     inline Material* getMaterial() const { return mat; };
+    inline void setMaterial(Material* mtl) { mat = mtl; };
+    */
 
+	Material* mat;
+    std::string materialName;
 private:
     std::string name;
 	std::vector<Face*> faces;
-	Material* mat;
 };
 
 #endif

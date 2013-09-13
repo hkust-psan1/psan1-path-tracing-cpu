@@ -1,5 +1,5 @@
 #include "face.h"
-#define EPSILON 0.0000001 
+#define EPSILON 0.00001 
 
 void Face::addVertex(Vertex* v)
 {
@@ -8,6 +8,8 @@ void Face::addVertex(Vertex* v)
 	{
 		e1 = vertices[2]->getPos() - vertices[0]->getPos();
 		e2 = vertices[1]->getPos() - vertices[0]->getPos();
+		normal = cross(e1, e2);
+		normal.normalize();
 	}
 }
 
@@ -44,7 +46,7 @@ Intersection* Face::intersect(const Ray& r, float t_min)
     t = dot(e2, Q) * inv_det;
     
     if(t > EPSILON && t < t_min) { //ray intersection
-		Intersection* i = new Intersection(obj, obj->getMaterial(), cross(e1, e2), t);
+		Intersection* i = new Intersection(obj, obj->mat, normal, t);
         return i;
     }
     

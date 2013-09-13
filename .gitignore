@@ -2,8 +2,6 @@
 *.o
 *.app/
 
-*.xcodeproj/*
-
 *.orig
 
 *.remote

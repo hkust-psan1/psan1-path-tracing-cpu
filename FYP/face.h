@@ -28,6 +28,7 @@ private:
 	std::vector<Vertex*> vertices;
 	Vec3 e1;
 	Vec3 e2;
+	Vec3 normal;
 
 	/* a pointer to the obj the face belongs to */
 	Object* obj;

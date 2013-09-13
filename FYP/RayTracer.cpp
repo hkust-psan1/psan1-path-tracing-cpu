@@ -18,7 +18,7 @@ void RayTracer::render()
 	{
 		for( int j = 0; j < height; j++)
 		{
-			Vec3 color = traceRay(camera->getCameraRay(i, j), 0); 
+			Vec3 color = traceRay(camera->getCameraRay(i, j), maxDepth);
 			image.setPixel(i, j, qRgb(color.x * 255, color.y * 255, color.z * 255));
 		}
 	}
@@ -29,7 +29,7 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	Intersection* intc = scene->intersect(ray);
 	// no hit
 	if (intc == NULL) 
-		return Vec3(0, 0, 0);
+		return Vec3();
 	
 	Vec3 point = ray.at(intc->t);
 	
@@ -44,16 +44,11 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	{
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
-        L.normalize();
-        intc->normal.normalize();
-		double NL = dot(intc->normal, L);
+		float NL = abs(dot(intc->normal, L));
 
 		//diffuse
 		Vec3 diffuse = (atten * mat->kd * NL);
-        
-
 		diffuse.clamp();
-        std::cout << intc->normal << std::endl;
 		I += diffuse;
 	}
 
@@ -65,7 +60,10 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	const float NL = -dot(intc->normal, ray.dir);
 	Vec3 ref = intc->normal * (2 * NL) + ray.dir;
 	Ray R = Ray(point, ref);
-	//I += (m.kr.time(traceRay(scene, R, thresh, depth - 1))).clamp(); 
+	Vec3 reflection = mat->kr * (traceRay(R, depth - 1));
+    // std::cout << reflection;
+	reflection.clamp();
+	I += reflection;
 	
 	I.clamp();
 	return I;

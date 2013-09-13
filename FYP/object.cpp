@@ -1,7 +1,7 @@
 #include "object.h"
 
 Object::Object() {
-    mat = new Material();
+    // mat = new Material();
 }
 
 void Object::addFace(Face* f) {

@@ -7,10 +7,12 @@
 using namespace std;
 
 namespace Parser {
+    Scene* parseScene(std::string filename);
+    
 	/* parse obj file for object geometry */
-	Scene* parseObjFile(const char* filename);
+	Scene* parseObjFile(std::string filename);
 
 	/* parse mtl file for material */
-	Material* parseMtlFile(const char* filename);
+	void parseMtlFile(std::string filename, Scene* scene);
 };
 

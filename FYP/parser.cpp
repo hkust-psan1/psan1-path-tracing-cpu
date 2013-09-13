@@ -1,18 +1,25 @@
 #include "parser.h"
 
 namespace Parser {
-	Scene* parseObjFile(const char* filename) {
-		std::vector<Object*> sceneObjects;
-		Object* currObj = 0;
-		std::vector<Vertex*> vertices;
-
-		std::cout << filename;
-		std::ifstream input(filename);
+    Scene* parseScene(std::string filename) {
+        Scene* s = parseObjFile(filename);
+        filename.replace(filename.length() - 3, 3, "mtl");
+        std::cout << filename << std::endl;
+        parseMtlFile(filename, s);
+        return s;
+    }
+    
+	Scene* parseObjFile(std::string filename) {
+		std::ifstream input(filename.c_str());
 
 		if (!input) { // file does not exist
 			throw "file does not exist";
 		}
 
+		std::vector<Object*> sceneObjects;
+		Object* currObj = NULL;
+		std::vector<Vertex*> vertices;
+		
 		for (std::string line; getline(input, line); ) {
 			std::stringstream ss(line);
 			std::string item;
@@ -53,20 +60,64 @@ namespace Parser {
 					}
 					lastVertexIndex = vertexIndex;
 				}
-			}
+			} else if (item == "usemtl") { // material
+                getline(ss, item, ' ');
+                currObj->materialName = item;
+            }
 		} 
 
 		sceneObjects.push_back(currObj); // add the last object to the list
 		Scene* s = new Scene(sceneObjects);
+		
 		return s;
 	}
 
-	Material* parseMtlFile(const char* filename) {
-		std::ifstream input(filename);
+	void parseMtlFile(std::string filename, Scene* scene) {
+		std::ifstream input(filename.c_str());
 
 		if (!input) { // file does not exist
 			throw "file does not exist";
 		}
-		return NULL;
+		
+		// Material* mat;
+		Object* currObj = NULL;
+        
+		for (std::string line; getline(input, line); ) {
+            std::stringstream ss(line);
+			std::string item;
+            
+			getline(ss, item, ' ');
+			
+            if (item == "newmtl") {
+                getline(ss, item, ' ');
+                for (Object* obj : scene->getObjects()) {
+                    if (obj->materialName == item) {
+                        currObj = obj;
+                        currObj->mat = new Material();
+                    }
+                }
+            } else if (item == "Ka") {
+                float rgb[3];
+                for (int i = 0; getline(ss, item, ' '); i++) {
+                    rgb[i] = atof(item.c_str());
+                }
+                
+                currObj->mat->ka = Vec3(rgb);
+            } else if (item == "Kd") {
+                float rgb[3];
+                for (int i = 0; getline(ss, item, ' '); i++) {
+                    rgb[i] = atof(item.c_str());
+                }
+                
+                currObj->mat->kd = Vec3(rgb);
+            } else if (item == "Ks") {
+                float rgb[3];
+                for (int i = 0; getline(ss, item, ' '); i++) {
+                    rgb[i] = atof(item.c_str());
+                }
+                
+                currObj->mat->ks = Vec3(rgb);
+            }
+		}
 	}
 };

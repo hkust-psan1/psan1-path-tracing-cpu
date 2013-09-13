@@ -41,7 +41,7 @@ public:
 	
 	QImage image;
 private:
-	static const int maxDepth = 10;
+	static const int maxDepth = 2;
 	int width;
 	int height;
 
