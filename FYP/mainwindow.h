@@ -3,15 +3,17 @@
 
 #ifdef __APPLE__
 	#include <QMainWindow>
+    #include <QLabel>
 #else
 	#include <QtWidgets/QMainWindow>
+    #include <QtWidgets/QLabel>
 #endif
 
-#include <qmessagebox.h>
+#include <QMessageBox>
+#include <QThread>
 #include "ui_mainwindow.h"
 #include "qfiledialog.h"
 #include "QGraphicsScene.h"
-#include <QGraphicsPixmapItem> 
 #include "parser.h"
 #include "RayTracer.h"
 
@@ -27,10 +29,15 @@ private slots:
 public:
 	MainWindow(QWidget *parent = 0);
 	~MainWindow();
+	
+public slots:
+	void updateScreen();
 
 private:
 	Ui::MainWindowClass ui;
-	RayTracer tracer;
+	QPixmap pixmap;
+	
+	RayTracer* tracer;
 };
 
 #endif // MAINWINDOW_H
