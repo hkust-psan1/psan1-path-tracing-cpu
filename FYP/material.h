@@ -5,7 +5,7 @@
 
 class Material {
 public:
-	Material();
+	Material(std::string n);
     Vec3 ke;  // emissive
     Vec3 ka;  // ambient
     Vec3 ks;  // specular
@@ -13,6 +13,7 @@ public:
     Vec3 kr;  // reflective
     Vec3 kt;  // transmissive
 	bool isTransmissive;
+    std::string name;
 };
 
 #endif

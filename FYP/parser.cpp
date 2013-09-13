@@ -79,8 +79,8 @@ namespace Parser {
 			throw "file does not exist";
 		}
 		
-		// Material* mat;
-		Object* currObj = NULL;
+        std::vector<Material*> materials;
+		Material* currMat = NULL;
         
 		for (std::string line; getline(input, line); ) {
             std::stringstream ss(line);
@@ -90,34 +90,50 @@ namespace Parser {
 			
             if (item == "newmtl") {
                 getline(ss, item, ' ');
+                /*
                 for (Object* obj : scene->getObjects()) {
                     if (obj->materialName == item) {
                         currObj = obj;
                         currObj->mat = new Material();
                     }
                 }
+                */
+                
+                if (currMat) {
+                    materials.push_back(currMat);
+                }
+                currMat = new Material(item);
             } else if (item == "Ka") {
                 float rgb[3];
                 for (int i = 0; getline(ss, item, ' '); i++) {
                     rgb[i] = atof(item.c_str());
                 }
                 
-                currObj->mat->ka = Vec3(rgb);
+                currMat->ka = Vec3(rgb);
             } else if (item == "Kd") {
                 float rgb[3];
                 for (int i = 0; getline(ss, item, ' '); i++) {
                     rgb[i] = atof(item.c_str());
                 }
                 
-                currObj->mat->kd = Vec3(rgb);
+                currMat->kd = Vec3(rgb);
             } else if (item == "Ks") {
                 float rgb[3];
                 for (int i = 0; getline(ss, item, ' '); i++) {
                     rgb[i] = atof(item.c_str());
                 }
                 
-                currObj->mat->ks = Vec3(rgb);
+                currMat->ks = Vec3(rgb);
             }
 		}
+		materials.push_back(currMat);
+		
+        for (Material* mat : materials) {
+            for (Object* obj : scene->getObjects()) {
+                if (obj->materialName == mat->name) {
+                    obj->mat = mat;
+                }
+            }
+        }
 	}
 };
