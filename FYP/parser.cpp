@@ -21,6 +21,7 @@ namespace Parser {
         
         std::vector<Vec3> vertexCoords;
         std::vector<Vec3> vertexNormals;
+        std::vector<Vec3> vertexTexCoords;
         
         // map from vertex coord index to vertex
         std::map<int, Vertex*> vertices;
@@ -46,10 +47,6 @@ namespace Parser {
                 
                 vertexCoords.push_back(Vec3(coords));
 
-				// Vertex* newVertex = new Vertex(coords);
-
-				// vertices.push_back(newVertex);
-
             } else if (item == "vn") { // vertex normal
                 float normals[3];
                 
@@ -58,34 +55,50 @@ namespace Parser {
                 }
                 
                 vertexNormals.push_back(Vec3(normals));
+            
+            } else if (item == "vt") { // texture coordinate
+                float texCoords[2];
                 
+                for (int i = 0; getline(ss, item, ' '); i++) {
+                    texCoords[i] = atof(item.c_str());
+                }
+                
+                vertexTexCoords.push_back(Vec3(texCoords[0], texCoords[1], 0)); // texture coords are 2D
+            
 			} else if (item == "f") { // face
                 Face* f = new Face;
 
-				for (int i = 0; getline(ss, item, ' '); i++) {
-                    char str[item.length()];
-                    std::strcpy(str, item.c_str());
+				for (int i = 0; getline(ss, item, ' '); i++) { // item is in the format <P>/<T>/<N>
+                    std::stringstream _ss(item);
+                    std::string index; // index of the vectors parsed
                     
-                    char* pch;
+                    getline(_ss, index, '/');
+                    int vertexIndex = atof(index.c_str()) - 1;
+
+                    getline(_ss, index, '/');
+                    int texIndex = -1;
+                    if (index.length() != 0) {
+                        texIndex = atof(index.c_str()) - 1;
+                    }
                     
-                    pch = std::strtok(str, "//");
-                    int vertexIndex = atof(pch) - 1;
-                    
-                    pch = std::strtok(NULL, "//");
-                    int normalIndex = atof(pch) - 1;
-                    
+                    getline(_ss, index, '/');
+                    int normalIndex = atof(index.c_str()) - 1;
+
                     Vertex* v;
                     auto result = vertices.find(vertexIndex);
                     
                     if (result == vertices.end()) { // cannot find vertex with index
                         v = new Vertex(vertexCoords[vertexIndex], vertexNormals[normalIndex]);
                         vertices.insert(std::pair<int, Vertex*>(vertexIndex, v));
-                    } else {
+                        
+                        if (texIndex != -1) {
+                            v->setTexCoords(vertexTexCoords[texIndex]);
+                        }
+                    } else { // found vertex with index
                         v = result->second;
                     }
-                    
+                                        
                     f->addVertex(v);
-                    // std::cout << *f << std::cout;
 				}
                 currObj->addFace(f);
 			} else if (item == "usemtl") { // material
@@ -94,9 +107,11 @@ namespace Parser {
             }
 		}
         
+        /*
         for (Face* f : currObj->getFaces()) {
             std::cout << *f << std::endl;
         }
+        */
         
 		sceneObjects.push_back(currObj); // add the last object to the list
 		Scene* s = new Scene(sceneObjects);
