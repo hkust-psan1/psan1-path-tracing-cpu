@@ -40,24 +40,6 @@ void RayTracer::renderWithGridSize(int gridSize) {
 
 void RayTracer::render()
 {
-    /*
-    SubdivisionRenderer* sr = new SubdivisionRenderer(width, height);
-    sr->render();
-    */
-    /*
-	Light::setScene(scene);
-	for (int i = 0; i < width; i++)
-	{
-		for( int j = 0; j < height; j++)
-		{
-			Vec3 color = traceRay(camera->getCameraRay(i, j), maxDepth);
-			image.setPixel(i, j, qRgb(color.x * 255, color.y * 255, color.z * 255));
-		}
-		// window->updateScreen();
-		emit rowCompleted();
-	}
-	*/
-	
 	Light::setScene(scene);
 	
     /* initialize the 2d array */

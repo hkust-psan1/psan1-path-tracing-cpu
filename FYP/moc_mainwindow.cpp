@@ -22,25 +22,30 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      12,   11,   11,   11, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      12,   11,   11,   11, 0x08,
-      25,   11,   11,   11, 0x08,
-      33,   11,   11,   11, 0x08,
-      42,   11,   11,   11, 0x0a,
+      22,   11,   11,   11, 0x08,
+      35,   11,   11,   11, 0x08,
+      43,   11,   11,   11, 0x08,
+      52,   11,   11,   11, 0x0a,
+      67,   11,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
-    "MainWindow\0\0load_scene()\0about()\0"
-    "render()\0updateScreen()\0"
+    "MainWindow\0\0pressed()\0load_scene()\0"
+    "about()\0render()\0updateScreen()\0"
+    "threadTerminated()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -49,10 +54,12 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_ASSERT(staticMetaObject.cast(_o));
         MainWindow *_t = static_cast<MainWindow *>(_o);
         switch (_id) {
-        case 0: _t->load_scene(); break;
-        case 1: _t->about(); break;
-        case 2: _t->render(); break;
-        case 3: _t->updateScreen(); break;
+        case 0: _t->pressed(); break;
+        case 1: _t->load_scene(); break;
+        case 2: _t->about(); break;
+        case 3: _t->render(); break;
+        case 4: _t->updateScreen(); break;
+        case 5: _t->threadTerminated(); break;
         default: ;
         }
     }
@@ -91,10 +98,16 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 6;
     }
     return _id;
+}
+
+// SIGNAL 0
+void MainWindow::pressed()
+{
+    QMetaObject::activate(this, &staticMetaObject, 0, 0);
 }
 QT_END_MOC_NAMESPACE

@@ -28,6 +28,8 @@ public:
 
 	inline void addLight(Light* l) { lights.push_back(l); };
 	
+    inline Camera* getCamera() const { return camera; };
+	
     void renderWithGridSize(int gridSize);
 
     /*
