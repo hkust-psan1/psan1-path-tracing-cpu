@@ -13,17 +13,15 @@ Intersection* Scene::intersect(const Ray& r)
 
 	for (Object* obj : objects)
 	{
-		for (Face* f : obj->getFaces())
+		Intersection* temp = obj->intersect(r, min);
+		if (temp != NULL)
 		{
-			Intersection* temp = f->intersect(r, min);
-			if (temp != NULL)
+			if (intc != NULL) 
 			{
-				if (intc != NULL) {
-					delete intc;
-				}
-				intc = temp;
-				min  = intc->t;
+				delete intc;
 			}
+			intc = temp;
+			min  = intc->t;
 		}
 	}
 	return intc;

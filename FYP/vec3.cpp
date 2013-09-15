@@ -96,3 +96,16 @@ Vec3 cross(const Vec3& v1, const Vec3& v2) {
 		v1.z * v2.x - v1.x * v2.z,
 		v1.x * v2.y - v1.y * v2.x);
 }
+
+float& Vec3::operator[](int n)
+{
+	switch(n)
+	{
+	default:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	}
+}

@@ -1,6 +1,7 @@
 #include "RayTracer.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <ctime>
 #define EPSILON 0.00001 
 #define SPECULAR_N 64
 
@@ -12,6 +13,8 @@ RayTracer::RayTracer(int width, int height)
     this->camera->setSize(width, height);
 	scene = NULL;
 	image = QImage(width, height, QImage::Format_RGB32);
+    
+    rendering = false;
 }
 
 RayTracer::~RayTracer() {
@@ -21,8 +24,8 @@ RayTracer::~RayTracer() {
 void RayTracer::renderWithGridSize(int gridSize) {
     int offset = gridSize / 2;
     
-    for (int i = 0; i < height; i += gridSize) {
-        for (int j = 0; j < width; j += gridSize) {
+    for (int i = 0; i < height && rendering; i += gridSize) {
+        for (int j = 0; j < width && rendering; j += gridSize) {
             int x = j + offset;
             int y = i + offset;
             
@@ -43,16 +46,24 @@ void RayTracer::renderWithGridSize(int gridSize) {
 void RayTracer::render()
 {
 	Light::setScene(scene);
+    
+    rendering = true;
 	
     /* initialize the 2d array */
     pixelRendered = new bool*[height];
     for (int i = 0; i < height; i++) {
         pixelRendered[i] = new bool[width];
     }
+    
+    const clock_t begin_time = clock();
 	
     for (int gridSize = 64; gridSize != 0; gridSize /= 2) {
         renderWithGridSize(gridSize);
     }
+    
+    std::cout << "time elapsed: " << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
+    
+    rendering = false;
 }
 
 Vec3 RayTracer::traceRay(const Ray& ray, int depth) 
@@ -82,7 +93,16 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 		Vec3 diffuse = (atten * mat->kd * NL);
 		diffuse.clamp();
 		I += diffuse;
-		
+        
+//        int x = mat->diffuseMap->width() * intc->texCoord.x;
+//      int y = mat->diffuseMap->height() * intc->texCoord.y;
+        
+       // QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
+        //Vec3 diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+
+        
+        diffuse.clamp();
+        I += diffuse;
 		//specular
 		Vec3 R = intc->normal * (2 * NL) - L;
 		double RV = -dot(R, ray.dir);
