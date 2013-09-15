@@ -1,6 +1,7 @@
 #include "RayTracer.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <ctime>
 #define EPSILON 0.00001 
 #define SPECULAR_N 64
 
