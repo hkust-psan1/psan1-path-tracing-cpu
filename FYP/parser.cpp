@@ -116,8 +116,8 @@ namespace Parser {
         
         /* DO move this piece of code to other places!!! */
         for (Object* obj : s->getObjects()) {
-            int maxX = FLT_MIN, maxY = FLT_MIN, maxZ = FLT_MIN;
-            int minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
+            float maxX = FLT_MIN, maxY = FLT_MIN, maxZ = FLT_MIN;
+            float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
             
             for (Face* f : obj->getFaces()) {
                 for (Vertex* v : f->getVertices()) {

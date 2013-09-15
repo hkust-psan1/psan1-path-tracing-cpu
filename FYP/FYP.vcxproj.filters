@@ -129,9 +129,6 @@
     <ClInclude Include="parser.h">
       <Filter>Header Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="Face.h">
-      <Filter>Header Files\scene</Filter>
-    </ClInclude>
     <ClInclude Include="object.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
@@ -157,6 +154,9 @@
       <Filter>Header Files\scene</Filter>
     </ClInclude>
     <ClInclude Include="light.h">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="face.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>

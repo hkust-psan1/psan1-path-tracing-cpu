@@ -2,9 +2,11 @@
 #define _OBJECT_H
 
 #include "face.h"
+#include "intersection.h"
 #include "material.h"
 
 class Face;
+class Intersection;
 
 class Object {
 public:
@@ -22,6 +24,8 @@ public:
     
     Vec3 boundingBoxMax;
     Vec3 boundingBoxMin;
+	
+	Intersection* intersect(const Ray& r, float T_min);
 private:
     std::string name;
 	std::vector<Face*> faces;
