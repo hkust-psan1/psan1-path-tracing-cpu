@@ -53,12 +53,14 @@ void RayTracer::render()
     for (int i = 0; i < height; i++) {
         pixelRendered[i] = new bool[width];
     }
+    
+    const clock_t begin_time = clock();
 	
     for (int gridSize = 64; gridSize != 0; gridSize /= 2) {
         renderWithGridSize(gridSize);
     }
     
-    std::cout << "rendering completed" << std::endl;
+    std::cout << "time elapsed: " << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
     
     rendering = false;
 }
