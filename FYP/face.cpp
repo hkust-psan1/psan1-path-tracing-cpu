@@ -1,5 +1,5 @@
 #include "face.h"
-#define EPSILON 0.00001 
+#define EPSILON 0.0001 
 
 void Face::addVertex(Vertex* v)
 {
