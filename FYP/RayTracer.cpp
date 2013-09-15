@@ -12,6 +12,8 @@ RayTracer::RayTracer(int width, int height)
     this->camera->setSize(width, height);
 	scene = NULL;
 	image = QImage(width, height, QImage::Format_RGB32);
+    
+    rendering = false;
 }
 
 RayTracer::~RayTracer() {
@@ -21,8 +23,8 @@ RayTracer::~RayTracer() {
 void RayTracer::renderWithGridSize(int gridSize) {
     int offset = gridSize / 2;
     
-    for (int i = 0; i < height; i += gridSize) {
-        for (int j = 0; j < width; j += gridSize) {
+    for (int i = 0; i < height && rendering; i += gridSize) {
+        for (int j = 0; j < width && rendering; j += gridSize) {
             int x = j + offset;
             int y = i + offset;
             
@@ -43,6 +45,8 @@ void RayTracer::renderWithGridSize(int gridSize) {
 void RayTracer::render()
 {
 	Light::setScene(scene);
+    
+    rendering = true;
 	
     /* initialize the 2d array */
     pixelRendered = new bool*[height];
@@ -53,6 +57,10 @@ void RayTracer::render()
     for (int gridSize = 64; gridSize != 0; gridSize /= 2) {
         renderWithGridSize(gridSize);
     }
+    
+    std::cout << "rendering completed" << std::endl;
+    
+    rendering = false;
 }
 
 Vec3 RayTracer::traceRay(const Ray& ray, int depth) 
