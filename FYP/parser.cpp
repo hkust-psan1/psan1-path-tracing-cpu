@@ -101,7 +101,7 @@ namespace Parser {
                     } else { // found vertex with index
                         v = result->second; // get vertex from map
                     }
-                                        
+
                     f->addVertex(v);
 				}
                 currObj->addFace(f);

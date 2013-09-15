@@ -7,8 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 	QSize size = ui.pixmapLabel->size();
 	tracer = new RayTracer(size.width() - 2, size.height() - 2);
 	tracer->setMainWindow(this);
-	
-    connect(this, SIGNAL(pressed()), this, SLOT(render()));
+    lastPos = NULL;
 }
 
 MainWindow::~MainWindow()
@@ -39,35 +38,63 @@ void MainWindow::render()
 	if (!tracer->sceneLoaded()) {
 		load_scene();
 	}
-	
+
 	rendererThread = new QThread;
-	
+
 	tracer->moveToThread(rendererThread);
 	connect(rendererThread, SIGNAL(started()), tracer, SLOT(render()));
 	connect(tracer, SIGNAL(rowCompleted()), this, SLOT(updateScreen()));
-	connect(rendererThread, SIGNAL(finished()), this, SLOT(threadTerminated()));
+	// connect(rendererThread, SIGNAL(finished()), this, SLOT(threadTerminated()));
 	
+    frameReady = false;
+    
 	rendererThread->start();
 }
 
 void MainWindow::threadTerminated() {
     std::cout << "thread terminated" << std::endl;
+    render();
 }
 
 void MainWindow::updateScreen() {
 	pixmap = QPixmap::fromImage(tracer->image);
 	ui.pixmapLabel->setPixmap(pixmap);
+    
+    frameReady = true;
 }
 
-/*
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Left) {
+    if (frameReady) {
         Camera* cam = tracer->getCamera();
-        cam->setEyePos(cam->getEyePos() + Vec3(0.03, 0, 0));
-        rendererThread->terminate();
-        std::cout << rendererThread->isRunning() << std::endl;
         
-        // emit pressed();
+        if (event->key() == Qt::Key_Left) {
+            cam->setEyePos(cam->getEyePos() - Vec3(0.3, 0, 0));
+            tracer->stopRendering();
+            render();
+        } else if (event->key() == Qt::Key_Right) {
+            cam->setEyePos(cam->getEyePos() + Vec3(0.3, 0, 0));
+            tracer->stopRendering();
+            render();
+        }
     }
 }
-*/ 
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event) {    
+    if (lastPos == NULL) {
+        lastPos = new QPoint(event->pos());
+    }
+    
+    Camera* cam = tracer->getCamera();
+        
+    int xDiff = event->x() - lastPos->x();
+    int yDiff = event->y() - lastPos->y();
+    // std::cout << xDiff << '\t' << yDiff << std::endl;
+    
+    cam->setEyePos(cam->getEyePos() - Vec3(0.1 * xDiff, 0.1 * yDiff, 0));
+    tracer->stopRendering();
+    render();
+
+    lastPos = new QPoint(event->pos());
+    lastX = event->x();
+    lastY = event->y();
+}

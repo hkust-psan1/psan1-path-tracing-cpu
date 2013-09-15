@@ -46,10 +46,13 @@ public:
 	
     inline void setMainWindow(MainWindow* w) { window = w; };
 	
-	QImage image;
+	
+    inline void stopRendering() { rendering = false; };
+    QImage image;
 	
 public slots:
 	void render();
+    
 	
 signals:
     void rowCompleted();
@@ -65,6 +68,8 @@ private:
 	MainWindow* window;
 	
     bool** pixelRendered;
+    
+    bool rendering;
 };
 
 #endif // __RAYTRACER_H__

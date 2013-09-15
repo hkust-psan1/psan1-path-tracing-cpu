@@ -39,7 +39,9 @@ signals:
     void pressed();
 	
 protected:
-    // void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent* event);
+    
+    void mouseMoveEvent(QMouseEvent* event);
 
 private:
 	Ui::MainWindowClass ui;
@@ -48,6 +50,11 @@ private:
 	RayTracer* tracer;
 	
     QThread* rendererThread;
+    
+    bool frameReady;
+    
+    int lastX, lastY;
+    QPoint* lastPos;
 };
 
 #endif // MAINWINDOW_H

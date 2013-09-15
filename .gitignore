@@ -1,6 +1,7 @@
 *.swp
 *.o
 *.app/
+.DS_Store
 
 *.orig
 
