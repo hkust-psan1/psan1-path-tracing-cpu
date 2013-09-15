@@ -14,5 +14,7 @@ namespace Parser {
 
 	/* parse mtl file for material */
 	void parseMtlFile(std::string filename, Scene* scene);
+    
+    // std::vector<std::string> split(std::string str, std::string del);
 };
 
