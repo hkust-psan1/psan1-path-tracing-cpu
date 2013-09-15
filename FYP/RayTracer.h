@@ -10,6 +10,7 @@
 #include "parser.h"
 #include "scene.h"
 #include "light.h"
+#include "qobject.h"
 
 class MainWindow;
 
@@ -50,7 +51,7 @@ signals:
     void rowCompleted();
 
 private:
-	static const int maxDepth = 2;
+	static const int maxDepth = 10;
 	int width;
 	int height;
 

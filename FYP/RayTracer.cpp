@@ -1,6 +1,7 @@
 #include "RayTracer.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#define EPSILON 0.00001 
 
 RayTracer::RayTracer(int width, int height)
 {
@@ -41,10 +42,10 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	Vec3 point = ray.at(intc->t);
 	
 	Material* mat = intc->mat;
-	Vec3 I = Vec3(intc->mat->ke);
+	Vec3 I = Vec3(mat->ke);
 
 	//ambient
-	if (mat->isTransmissive) I += Vec3();
+	if (mat->isTransmissive) I += scene->ambient * mat->ka * mat->rate;
 	else I += scene->ambient * mat->ka;
 
 	for (Light* l : lights)
@@ -61,7 +62,10 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 
 	// max depth
 	if (depth <= 0)
+	{
+		I.clamp();
 		return I;
+	}
 	
 	//reflection
 	const float NL = -dot(intc->normal, ray.dir);
@@ -69,8 +73,40 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	Ray R = Ray(point, ref);
 	Vec3 reflection = mat->kr * (traceRay(R, depth - 1));
 	
-	reflection.clamp();
 	I += reflection;
+
+	//refraction		
+	if (!mat->isTransmissive)
+	{
+		I.clamp();
+		return I;
+	}
+	
+	Vec3 refraction;
+	float n;
+	
+	if (NL > 0)
+	{
+		n = mat->index_inverse;
+		float LONG_TERM = n * NL - sqrt(1 - n * n * (1 - NL * NL));
+		Ray T = Ray(point, (intc->normal * LONG_TERM + ray.dir * n));
+		refraction = mat->kt * (traceRay(T, depth - 1));
+		I += refraction;
+	}
+	else
+	{
+		n = mat->index;
+		if (1 - n * n * (1 - NL * NL) < EPSILON)
+		{
+			I.clamp();
+			return I;
+		}			
+		
+		float LONG_TERM = -(n * (-NL) - sqrt(1 - n * n * (1 - NL * NL)));
+		Ray T = Ray(point, (intc->normal * LONG_TERM + ray.dir * n));
+		refraction = mat->kt * (traceRay(T, depth - 1));
+		I += refraction;
+	} 
 	
 	I.clamp();
 	return I;

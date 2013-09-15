@@ -12,8 +12,11 @@ public:
     Vec3 kd;  // diffuse
     Vec3 kr;  // reflective
     Vec3 kt;  // transmissive
+	Vec3 rate;
 	bool isTransmissive;
     std::string name;
+	float index;
+	float index_inverse;
 };
 
 #endif

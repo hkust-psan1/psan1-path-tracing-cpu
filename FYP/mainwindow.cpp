@@ -21,10 +21,10 @@ void MainWindow::load_scene()
 	if (!filename.isNull()) 
 	{
 		tracer->setScene(Parser::parseScene(filename.toStdString().c_str()));
-		DirectionalLight* l1 = new DirectionalLight(Vec3(88, 99, 100), Vec3(1.0, 1.0, 1.0));
-		DirectionalLight* l2 = new DirectionalLight(Vec3(-66, -77, -100), Vec3(1.0, 1.0, 1.0));
+		DirectionalLight* l1 = new DirectionalLight(Vec3(88, 99, 100), Vec3(1, 1, 1));
+		DirectionalLight* l2 = new DirectionalLight(Vec3(-66, -77, -100), Vec3(0, 0, .8f));
 		tracer->addLight(l1);
-		tracer->addLight(l2);
+		//tracer->addLight(l2);
 	}
 }
 
