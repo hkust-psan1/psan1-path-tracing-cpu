@@ -129,6 +129,8 @@ namespace Parser {
                     minX = pos.x < minX ? pos.x : minX;
                     minY = pos.y < minY ? pos.y : minY;
                     minZ = pos.z < minZ ? pos.z : minZ;
+                    
+                    std::cout << maxZ << std::endl;
                 }
             }
             
