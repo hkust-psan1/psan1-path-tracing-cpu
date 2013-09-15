@@ -8,7 +8,7 @@ void Face::addVertex(Vertex* v)
 	{
 		e1 = vertices[1]->getPos() - vertices[0]->getPos();
 		e2 = vertices[2]->getPos() - vertices[0]->getPos();
-		normal = cross(e1, e2);
+		normal = cross(e2, e1);
 		normal.normalize();
 	}
 }
@@ -20,7 +20,10 @@ Intersection* Face::intersect(const Ray& r, float t_min)
     
     Vec3 P = cross(r.dir, e2);
     det = dot(e1, P);
-    if (det > -EPSILON && det < EPSILON) {
+
+	//no intersection with the plane
+    if (det > -EPSILON && det < EPSILON) 
+	{
         return NULL;
     }
     
@@ -45,8 +48,10 @@ Intersection* Face::intersect(const Ray& r, float t_min)
     
     t = dot(e2, Q) * inv_det;
     
+	Vec3 N = vertices[1]->getNormal() * u + vertices[2]->getNormal() * v + vertices[0]->getNormal() * (1 - u - v);
+
     if(t > EPSILON && t < t_min) { //ray intersection
-		Intersection* i = new Intersection(obj, obj->mat, normal, t);
+		Intersection* i = new Intersection(obj, obj->mat, N, t);
         return i;
     }
     

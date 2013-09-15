@@ -2,12 +2,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #define EPSILON 0.00001 
+#define SPECULAR_N 64
 
 RayTracer::RayTracer(int width, int height)
 {
 	this->height = height;
 	this->width = width;
-	this->camera = new Camera(Vec3(3, 3, 3), Vec3(0, 0, 0), Vec3(0, 0, 1));
+	this->camera = new Camera(Vec3(6, 0, 0), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setSize(width, height);
 	scene = NULL;
 	image = QImage(width, height, QImage::Format_RGB32);
@@ -70,17 +71,23 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	//ambient
 	if (mat->isTransmissive) I += scene->ambient * mat->ka * mat->rate;
 	else I += scene->ambient * mat->ka;
-
+	
 	for (Light* l : lights)
 	{
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
-		float NL = abs(dot(intc->normal, L));
+		float NL = dot(intc->normal, L);
 
 		//diffuse
 		Vec3 diffuse = (atten * mat->kd * NL);
 		diffuse.clamp();
 		I += diffuse;
+		
+		//specular
+		Vec3 R = intc->normal * (2 * NL) - L;
+		double RV = -dot(R, ray.dir);
+
+		I += (atten * pow(RV, SPECULAR_N)) * mat->ks;
 	}
 
 	// max depth

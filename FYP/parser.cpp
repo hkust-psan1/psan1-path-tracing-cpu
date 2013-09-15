@@ -161,6 +161,7 @@ namespace Parser {
                 }
                 
                 currMat->ks = Vec3(rgb);
+				currMat->kr = Vec3(rgb);
             } else if (item == "map_Kd") {
                 getline(ss, item, ' ');
                 currMat->diffuseMap = new QPixmap(item.c_str());

@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -42,7 +41,6 @@ public:
     QToolBar *mainToolBar;
     QDockWidget *dockWidget;
     QWidget *dockWidgetContents;
-    QCheckBox *checkBox;
     QPushButton *pushButton;
 
     void setupUi(QMainWindow *MainWindowClass)
@@ -61,11 +59,11 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pixmapLabel = new QLabel(centralWidget);
         pixmapLabel->setObjectName(QStringLiteral("pixmapLabel"));
-        pixmapLabel->setGeometry(QRect(100, 40, 500, 500));
+        pixmapLabel->setGeometry(QRect(10, 20, 500, 500));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 973, 22));
+        menuBar->setGeometry(QRect(0, 0, 973, 21));
         menuStart = new QMenu(menuBar);
         menuStart->setObjectName(QStringLiteral("menuStart"));
         menuHelp = new QMenu(menuBar);
@@ -82,9 +80,6 @@ public:
         dockWidget->setObjectName(QStringLiteral("dockWidget"));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
-        checkBox = new QCheckBox(dockWidgetContents);
-        checkBox->setObjectName(QStringLiteral("checkBox"));
-        checkBox->setGeometry(QRect(10, 40, 70, 17));
         pushButton = new QPushButton(dockWidgetContents);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(0, 270, 75, 23));
@@ -119,7 +114,6 @@ public:
         pixmapLabel->setText(QString());
         menuStart->setTitle(QApplication::translate("MainWindowClass", "Start", 0));
         menuHelp->setTitle(QApplication::translate("MainWindowClass", "About", 0));
-        checkBox->setText(QApplication::translate("MainWindowClass", "HBV", 0));
         pushButton->setText(QApplication::translate("MainWindowClass", "Render", 0));
         pushButton->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+R", 0));
     } // retranslateUi

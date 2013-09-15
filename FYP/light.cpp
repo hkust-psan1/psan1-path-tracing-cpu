@@ -1,6 +1,10 @@
 #include "light.h"
 
 Scene* Light::scene = NULL;
+#define  ATTENU_CONSTANT 0.25
+#define  ATTENU_LINEAR 0.25
+#define  ATTENU_QUAD 0.5
+
 
 Vec3 DirectionalLight::shadowAttenuation(const Vec3& P ) const
 {
@@ -8,4 +12,19 @@ Vec3 DirectionalLight::shadowAttenuation(const Vec3& P ) const
 	float t = FLT_MAX; //large
     //return scene->shadowAttenuation(r, t);
 	return Vec3(1, 1, 1);
+}
+
+Vec3 PointLight::shadowAttenuation(const Vec3& P ) const
+{
+	return Vec3(1, 1, 1);
+}
+
+double PointLight::distanceAttenuation(const Vec3& P ) const
+{
+	
+	double t = (position - P).length();
+	double d = 1.0 / (ATTENU_CONSTANT + ATTENU_LINEAR * t + ATTENU_QUAD * t * t);
+	if (d < 1) d = 1.0;
+
+	return d;
 }
