@@ -8,4 +8,6 @@ Material::Material(std::string n) : name(n) {
 	kt = Vec3(0, 0, 0);
     kr = Vec3(0.5, 0.5, 0.5);
 	isTransmissive = false;
+    
+    diffuseMap = NULL;
 }

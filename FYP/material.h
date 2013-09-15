@@ -2,6 +2,7 @@
 #define _MATERIAL_H
 
 #include "vec3.h"
+#include <QPixmap>
 
 class Material {
 public:
@@ -14,6 +15,8 @@ public:
     Vec3 kt;  // transmissive
 	bool isTransmissive;
     std::string name;
+    
+    QPixmap* diffuseMap;
 };
 
 #endif

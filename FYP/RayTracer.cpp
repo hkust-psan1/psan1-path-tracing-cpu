@@ -57,8 +57,9 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 {
 	Intersection* intc = scene->intersect(ray);
 	// no hit
-	if (intc == NULL) 
+	if (intc == NULL) {
 		return Vec3();
+    }   
 	
 	Vec3 point = ray.at(intc->t);
 	
