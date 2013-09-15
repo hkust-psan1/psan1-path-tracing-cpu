@@ -9,8 +9,6 @@ Camera::Camera(const Vec3& e, const Vec3& c, const Vec3& u)
     view.normalize();
     cameraLeft.normalize();
     cameraUp.normalize();
-    
-    std::cout << view << cameraLeft << cameraUp;
 }
 
 Ray Camera::getCameraRay(int x, int y) const

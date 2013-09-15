@@ -11,6 +11,7 @@
 
 #include <QMessageBox>
 #include <QThread>
+#include <QKeyEvent>
 #include "ui_mainwindow.h"
 #include "qfiledialog.h"
 #include "QGraphicsScene.h"
@@ -32,12 +33,21 @@ public:
 	
 public slots:
 	void updateScreen();
+	void threadTerminated();
+	
+signals:
+    void pressed();
+	
+protected:
+    // void keyPressEvent(QKeyEvent* event);
 
 private:
 	Ui::MainWindowClass ui;
 	QPixmap pixmap;
 	
 	RayTracer* tracer;
+	
+    QThread* rendererThread;
 };
 
 #endif // MAINWINDOW_H
