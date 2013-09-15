@@ -72,30 +72,34 @@ namespace Parser {
                     std::stringstream _ss(item);
                     std::string index; // index of the vectors parsed
                     
+                    /* parsing for position */
                     getline(_ss, index, '/');
                     int vertexIndex = atof(index.c_str()) - 1;
 
+                    /* parsing for texture coords */
                     getline(_ss, index, '/');
                     int texIndex = -1;
                     if (index.length() != 0) {
                         texIndex = atof(index.c_str()) - 1;
                     }
                     
+                    /* parsing for normal */
                     getline(_ss, index, '/');
                     int normalIndex = atof(index.c_str()) - 1;
 
+                    /* find vertex already created or create new vertex */
                     Vertex* v;
-                    auto result = vertices.find(vertexIndex);
+                    auto result = vertices.find(vertexIndex); // the pair found
                     
                     if (result == vertices.end()) { // cannot find vertex with index
                         v = new Vertex(vertexCoords[vertexIndex], vertexNormals[normalIndex]);
                         vertices.insert(std::pair<int, Vertex*>(vertexIndex, v));
                         
-                        if (texIndex != -1) {
+                        if (texIndex != -1) { // if texture coords is defined
                             v->setTexCoords(vertexTexCoords[texIndex]);
                         }
                     } else { // found vertex with index
-                        v = result->second;
+                        v = result->second; // get vertex from map
                     }
                                         
                     f->addVertex(v);
@@ -106,12 +110,6 @@ namespace Parser {
                 currObj->materialName = item;
             }
 		}
-        
-        /*
-        for (Face* f : currObj->getFaces()) {
-            std::cout << *f << std::endl;
-        }
-        */
         
 		sceneObjects.push_back(currObj); // add the last object to the list
 		Scene* s = new Scene(sceneObjects);
@@ -163,6 +161,9 @@ namespace Parser {
                 }
                 
                 currMat->ks = Vec3(rgb);
+            } else if (item == "map_Kd") {
+                getline(ss, item, ' ');
+                currMat->diffuseMap = new QPixmap(item.c_str());
             }
 		}
 		materials.push_back(currMat);

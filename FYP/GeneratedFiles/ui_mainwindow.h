@@ -15,8 +15,8 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDockWidget>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -34,7 +34,7 @@ public:
     QAction *actionAbout;
     QAction *actionExit;
     QWidget *centralWidget;
-    QGraphicsView *graphicsView;
+    QLabel *pixmapLabel;
     QMenuBar *menuBar;
     QMenu *menuStart;
     QMenu *menuHelp;
@@ -50,7 +50,7 @@ public:
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
         MainWindowClass->setWindowModality(Qt::NonModal);
-        MainWindowClass->resize(973, 543);
+        MainWindowClass->resize(973, 639);
         actionLoad_Scene = new QAction(MainWindowClass);
         actionLoad_Scene->setObjectName(QStringLiteral("actionLoad_Scene"));
         actionAbout = new QAction(MainWindowClass);
@@ -59,14 +59,13 @@ public:
         actionExit->setObjectName(QStringLiteral("actionExit"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        graphicsView = new QGraphicsView(centralWidget);
-        graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(40, 10, 601, 481));
-        graphicsView->setMinimumSize(QSize(471, 411));
+        pixmapLabel = new QLabel(centralWidget);
+        pixmapLabel->setObjectName(QStringLiteral("pixmapLabel"));
+        pixmapLabel->setGeometry(QRect(100, 40, 500, 500));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 973, 21));
+        menuBar->setGeometry(QRect(0, 0, 973, 22));
         menuStart = new QMenu(menuBar);
         menuStart->setObjectName(QStringLiteral("menuStart"));
         menuHelp = new QMenu(menuBar);
@@ -117,6 +116,7 @@ public:
         actionAbout->setText(QApplication::translate("MainWindowClass", "About", 0));
         actionExit->setText(QApplication::translate("MainWindowClass", "Exit", 0));
         actionExit->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+W", 0));
+        pixmapLabel->setText(QString());
         menuStart->setTitle(QApplication::translate("MainWindowClass", "Start", 0));
         menuHelp->setTitle(QApplication::translate("MainWindowClass", "About", 0));
         checkBox->setText(QApplication::translate("MainWindowClass", "HBV", 0));

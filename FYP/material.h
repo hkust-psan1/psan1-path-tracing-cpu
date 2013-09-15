@@ -2,6 +2,7 @@
 #define _MATERIAL_H
 
 #include "vec3.h"
+#include <QPixmap>
 
 class Material {
 public:
@@ -12,8 +13,13 @@ public:
     Vec3 kd;  // diffuse
     Vec3 kr;  // reflective
     Vec3 kt;  // transmissive
+	Vec3 rate;
 	bool isTransmissive;
     std::string name;
+	float index;
+	float index_inverse;
+    
+    QPixmap* diffuseMap;
 };
 
 #endif
