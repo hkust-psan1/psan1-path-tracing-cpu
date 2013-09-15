@@ -6,8 +6,8 @@ void Face::addVertex(Vertex* v)
 	vertices.push_back(v);
 	if (vertices.size() == 3)
 	{
-		e1 = vertices[2]->getPos() - vertices[0]->getPos();
-		e2 = vertices[1]->getPos() - vertices[0]->getPos();
+		e1 = vertices[1]->getPos() - vertices[0]->getPos();
+		e2 = vertices[2]->getPos() - vertices[0]->getPos();
 		normal = cross(e1, e2);
 		normal.normalize();
 	}
