@@ -220,7 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
-    <ClInclude Include="Face.h" />
+    <ClInclude Include="face.h" />
     <ClInclude Include="intersection.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="material.h" />
