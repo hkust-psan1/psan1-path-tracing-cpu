@@ -4,7 +4,7 @@
 	#include <float.h>
 #endif
 
-Vec3 Scene::ambient = Vec3(0.1, 0.1, 0.1);
+Vec3 Scene::ambient = Vec3(0.2, 0.2, 0.2);
 
 Intersection* Scene::intersect(const Ray& r)
 {

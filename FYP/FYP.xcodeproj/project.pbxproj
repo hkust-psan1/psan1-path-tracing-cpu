@@ -11,8 +11,6 @@
 		19A7E9982609984E6CBA91E6 /* RayTracer.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = AAA4F5D3A1CAFE421FDFB3EE /* RayTracer.cpp */; settings = {ATTRIBUTES = (); }; };
 		26C2BED6C570C95F5243C556 /* moc_mainwindow.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 336D3C48DD3B44974395C633 /* moc_mainwindow.cpp */; settings = {ATTRIBUTES = (); }; };
 		2B093CA6F071B023A473CED0 /* main.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 118FCBAABA162BA17933C789 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
-		2ED2750217E35ABF00A2A50A /* light.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 2ED2750117E35ABF00A2A50A /* light.cpp */; };
-		2ED2750417E35AC700A2A50A /* subdivision_renderer.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 2ED2750317E35AC700A2A50A /* subdivision_renderer.cpp */; };
 		36A6543D28D2F52FDADA33FD /* face.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = BFA5F19190847AFB5923A7C5 /* face.cpp */; settings = {ATTRIBUTES = (); }; };
 		3BB3E46F7EC8C7405B55E0CE /* camera.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = 6238797CCAABFF441D08F08B /* camera.cpp */; settings = {ATTRIBUTES = (); }; };
 		462C0F34BBEF2375A9469BB5 /* mainwindow.cpp in Build Sources */ = {isa = PBXBuildFile; fileRef = EA177DE95BF7D3EF58EE43F7 /* mainwindow.cpp */; settings = {ATTRIBUTES = (); }; };
@@ -39,10 +37,7 @@
 		1C5F5DC7B5DF73E7FB17ABD6 /* parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = parser.cpp; sourceTree = SOURCE_ROOT; };
 		260A552577147FE52619F330 /* object.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = object.h; sourceTree = SOURCE_ROOT; };
 		2D16DEBF5F3ADD099CE5498D /* material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = material.cpp; sourceTree = SOURCE_ROOT; };
-		2ED274FF17E35AAC00A2A50A /* FYP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FYP.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2ED2750117E35ABF00A2A50A /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = SOURCE_ROOT; };
-		2ED2750317E35AC700A2A50A /* subdivision_renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = subdivision_renderer.cpp; sourceTree = SOURCE_ROOT; };
-		2ED2750517E35AD100A2A50A /* subdivision_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = subdivision_renderer.h; sourceTree = SOURCE_ROOT; };
+		2E9D608017E5EF7E00295193 /* FYP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FYP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		336D3C48DD3B44974395C633 /* moc_mainwindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = moc_mainwindow.cpp; sourceTree = SOURCE_ROOT; };
 		44EEF5AE3B9D972D96748C97 /* parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = SOURCE_ROOT; };
 		47178A3153CFE1F2CBB929E6 /* vec3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vec3.h; sourceTree = SOURCE_ROOT; };
@@ -52,7 +47,6 @@
 		6238797CCAABFF441D08F08B /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = SOURCE_ROOT; };
 		734B61BD91E1BA9A394F2A5B /* moc_RayTracer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = moc_RayTracer.cpp; sourceTree = SOURCE_ROOT; };
 		7BC2E65A5E699A5E5D834CA2 /* QtCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtCore.framework; path = /Library/Frameworks/QtCore.framework; sourceTree = "<absolute>"; };
-		7FDF4644DDFC4164EBC0BC18 /* Face.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Face.h; sourceTree = SOURCE_ROOT; };
 		8B61DAE806F4D21E2A84A4B1 /* includes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = includes.h; sourceTree = SOURCE_ROOT; };
 		8E6677469F20A03AC31C8FCD /* ray.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ray.cpp; sourceTree = SOURCE_ROOT; };
 		8E9B7D588EB97C7D65F22398 /* mainwindow.qrc */ = {isa = PBXFileReference; lastKnownFileType = text; path = mainwindow.qrc; sourceTree = SOURCE_ROOT; };
@@ -95,15 +89,15 @@
 				52C235EBF1C9B07808119459 /* Sources [RCC] */,
 				EEC299C65D5017EB9DD513B0 /* Sources [UIC] */,
 				ED1E82605DD74B483AF3C982 /* External Frameworks and Libraries */,
-				2ED2750017E35AAC00A2A50A /* Products */,
+				2E9D608117E5EF7E00295193 /* Products */,
 			);
 			name = FYP;
 			sourceTree = "<Group>";
 		};
-		2ED2750017E35AAC00A2A50A /* Products */ = {
+		2E9D608117E5EF7E00295193 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2ED274FF17E35AAC00A2A50A /* FYP.app */,
+				2E9D608017E5EF7E00295193 /* FYP.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,9 +132,7 @@
 		883D7615C4D2DE3FA1218F12 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				2ED2750517E35AD100A2A50A /* subdivision_renderer.h */,
 				1480081DD2F69DB3319FB793 /* camera.h */,
-				7FDF4644DDFC4164EBC0BC18 /* Face.h */,
 				8B61DAE806F4D21E2A84A4B1 /* includes.h */,
 				4DC74337421258439BE59A54 /* intersection.h */,
 				C63FA392C61F27B1B13369C1 /* mainwindow.h */,
@@ -176,8 +168,6 @@
 		FB61758D0F0FDA4BA867C3D5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				2ED2750317E35AC700A2A50A /* subdivision_renderer.cpp */,
-				2ED2750117E35ABF00A2A50A /* light.cpp */,
 				6238797CCAABFF441D08F08B /* camera.cpp */,
 				BFA5F19190847AFB5923A7C5 /* face.cpp */,
 				A6AB5E1000E89026A4E5E567 /* intersection.cpp */,
@@ -214,7 +204,7 @@
 			);
 			name = FYP;
 			productName = FYP;
-			productReference = 2ED274FF17E35AAC00A2A50A /* FYP.app */;
+			productReference = 2E9D608017E5EF7E00295193 /* FYP.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -230,7 +220,7 @@
 				en,
 			);
 			mainGroup = 05596AB53D8D521C69802C27 /* FYP */;
-			productRefGroup = 2ED2750017E35AAC00A2A50A /* Products */;
+			productRefGroup = 2E9D608117E5EF7E00295193 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -294,8 +284,6 @@
 				26C2BED6C570C95F5243C556 /* moc_mainwindow.cpp in Build Sources */,
 				EF1F51CD03EAB56C9A980482 /* moc_RayTracer.cpp in Build Sources */,
 				72344BD03138195266038504 /* qrc_mainwindow.cpp in Build Sources */,
-				2ED2750217E35ABF00A2A50A /* light.cpp in Build Sources */,
-				2ED2750417E35AC700A2A50A /* subdivision_renderer.cpp in Build Sources */,
 			);
 			name = "Build Sources";
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,7 +12,7 @@ public:
     inline const Vec3& getNormal() const { return normal; };
     inline const Vec3& getTexCoords() const { return texCoords; };
     
-    inline const Vec3& setTexCoords(const Vec3& t) { texCoords = t; hasTexture = true; };
+    inline const void setTexCoords(const Vec3& t) { texCoords = t; hasTexture = true; };
     
 	friend std::ostream& operator<<(std::ostream& os, const Vertex& v) {
 		os << "Vertex: " << std::endl << "Position: " << v.pos << std::endl
