@@ -89,10 +89,19 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 		float NL = dot(intc->normal, L);
 
 		//diffuse
-		Vec3 diffuse = (atten * mat->kd * NL);
-		diffuse.clamp();
-		I += diffuse;
-		
+		// Vec3 diffuse = (atten * mat->kd * NL);
+		// diffuse.clamp();
+		// I += diffuse;
+        
+        int x = mat->diffuseMap->width() * intc->texCoord.x;
+        int y = mat->diffuseMap->height() * intc->texCoord.y;
+        
+        QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
+        Vec3 diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+
+        
+        diffuse.clamp();
+        I += diffuse;
 		//specular
 		Vec3 R = intc->normal * (2 * NL) - L;
 		double RV = -dot(R, ray.dir);

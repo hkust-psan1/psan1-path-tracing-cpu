@@ -113,6 +113,30 @@ namespace Parser {
         
 		sceneObjects.push_back(currObj); // add the last object to the list
 		Scene* s = new Scene(sceneObjects);
+        
+        /* DO move this piece of code to other places!!! */
+        for (Object* obj : s->getObjects()) {
+            int maxX = FLT_MIN, maxY = FLT_MIN, maxZ = FLT_MIN;
+            int minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
+            
+            for (Face* f : obj->getFaces()) {
+                for (Vertex* v : f->getVertices()) {
+                    const Vec3& pos = v->getPos();
+                    maxX = pos.x > maxX ? pos.x : maxX;
+                    maxY = pos.y > maxY ? pos.y : maxY;
+                    maxZ = pos.z > maxZ ? pos.z : maxZ;
+                    
+                    minX = pos.x < minX ? pos.x : minX;
+                    minY = pos.y < minY ? pos.y : minY;
+                    minZ = pos.z < minZ ? pos.z : minZ;
+                }
+            }
+            
+            obj->boundingBoxMax = Vec3(maxX, maxY, maxZ);
+            obj->boundingBoxMin = Vec3(minX, minY, minZ);
+            
+            std::cout << obj->boundingBoxMin << std::endl << obj->boundingBoxMax << std::endl;
+        }
 		
 		return s;
 	}

@@ -19,9 +19,14 @@ public:
 
 	Material* mat;
     std::string materialName;
+    
+    Vec3 boundingBoxMax;
+    Vec3 boundingBoxMin;
 private:
     std::string name;
 	std::vector<Face*> faces;
+    
+
 };
 
 #endif
