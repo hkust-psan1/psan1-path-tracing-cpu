@@ -79,6 +79,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+/*
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {    
     if (lastPos == NULL) {
         lastPos = new QPoint(event->pos());
@@ -98,3 +99,4 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     lastX = event->x();
     lastY = event->y();
 }
+*/

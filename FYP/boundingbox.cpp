@@ -170,15 +170,28 @@ void BoundingBox::partition(std::vector<BoundingBox*> boxes)
 
 	if(lBox.size() == 0 || rBox.size() == 0)
 	{
-		std::cout << "something went wrong in bounding box partition. error 2 -> " << lBox.size() << " | "  <<  rBox.size() << std::endl;
+		/*std::cout << "something went wrong in bounding box partition. error 2 -> " << lBox.size() << " | "  <<  rBox.size() << std::endl;
 		std::cout << avgBox.boxMin[pivot] << "  " << midLine << "  " << avgBox.boxMax[pivot] << std::endl;
 		std::cout << avgBox.boxMin << std::endl;
 		std::cout << avgBox.boxMax << std::endl;
 		for(BoundingBox* b: boxes)
 		{
 			std::cout << b->boxMin[pivot] << "  " <<  b->boxMax[pivot] << std::endl;
+		}*/
+		// force partition
+		lBox = std::vector<BoundingBox*>();
+		rBox = std::vector<BoundingBox*>();
+		for (int i = 0; i < boxes.size(); i++)
+		{
+			if (i < boxes.size() / 2)
+			{
+				lBox.push_back(boxes[i]);
+			}
+			else
+			{
+				rBox.push_back(boxes[i]);
+			}
 		}
-		return;
 	}
 	
 	

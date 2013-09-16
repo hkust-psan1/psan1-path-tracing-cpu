@@ -41,7 +41,7 @@ signals:
 protected:
     void keyPressEvent(QKeyEvent* event);
     
-    void mouseMoveEvent(QMouseEvent* event);
+    // void mouseMoveEvent(QMouseEvent* event);
 
 private:
 	Ui::MainWindowClass ui;
