@@ -13,7 +13,7 @@ Intersection* Scene::intersect(const Ray& r)
 
 	for (Object* obj : objects)
 	{
-		Intersection* temp = obj->intersect(r, min);
+		Intersection* temp = obj->root->intersect(r, min);
 		if (temp != NULL)
 		{
 			if (intc != NULL) 

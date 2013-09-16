@@ -3,6 +3,8 @@
 
 #include "vec3.h"
 
+class Vec3;
+
 class Vertex {
 public:
 	Vertex(const Vec3& p, const Vec3& n);

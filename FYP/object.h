@@ -4,9 +4,11 @@
 #include "face.h"
 #include "intersection.h"
 #include "material.h"
+#include "boundingbox.h"
 
 class Face;
 class Intersection;
+class BoundingBox;
 
 class Object {
 public:
@@ -21,11 +23,9 @@ public:
 
 	Material* mat;
     std::string materialName;
+	BoundingBox* root;
+	void buildBox(Vec3 min, Vec3 max);
     
-    Vec3 boundingBoxMax;
-    Vec3 boundingBoxMin;
-	
-	Intersection* intersect(const Ray& r, float T_min);
 private:
     std::string name;
 	std::vector<Face*> faces;

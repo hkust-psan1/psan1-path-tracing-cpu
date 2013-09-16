@@ -116,7 +116,7 @@ namespace Parser {
         
         /* DO move this piece of code to other places!!! */
         for (Object* obj : s->getObjects()) {
-            float maxX = FLT_MIN, maxY = FLT_MIN, maxZ = FLT_MIN;
+            float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
             float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
             
             for (Face* f : obj->getFaces()) {
@@ -132,10 +132,9 @@ namespace Parser {
                 }
             }
             
-            obj->boundingBoxMax = Vec3(maxX, maxY, maxZ);
-            obj->boundingBoxMin = Vec3(minX, minY, minZ);
+            obj->buildBox(Vec3(minX, minY, minZ), Vec3(maxX, maxY, maxZ));
             
-            std::cout << obj->boundingBoxMin << std::endl << obj->boundingBoxMax << std::endl;
+            //std::cout << obj->boundingBoxMin << std::endl << obj->boundingBoxMax << std::endl;
         }
 		
 		return s;
