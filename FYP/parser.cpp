@@ -128,16 +128,12 @@ namespace Parser {
                     
                     minX = pos.x < minX ? pos.x : minX;
                     minY = pos.y < minY ? pos.y : minY;
-                    minZ = pos.z < minZ ? pos.z : minZ;
-                    
-                    std::cout << maxZ << std::endl;
+                    minZ = pos.z < minZ ? pos.z : minZ;                    
                 }
             }
             
             obj->boundingBoxMax = Vec3(maxX, maxY, maxZ);
             obj->boundingBoxMin = Vec3(minX, minY, minZ);
-            
-            std::cout << obj->boundingBoxMin << std::endl << obj->boundingBoxMax << std::endl;
         }
 		
 		return s;
