@@ -110,6 +110,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_RayTracer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="boundingbox.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="face.h">
       <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="boundingbox.h">
+      <Filter>Header Files\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -109,3 +109,29 @@ float& Vec3::operator[](int n)
 		return z;
 	}
 }
+
+float Vec3::get(int n) const
+{
+	switch(n)
+	{
+	default:
+		return x;
+	case 1:
+		return y;
+	case 2:
+		return z;
+	}
+}
+
+int Vec3::maxElement()
+{
+	if (x > y)
+	{
+		return x > z ? 0 : 2;
+	}
+	else
+	{
+		return y > z ? 1 : 2;
+	}
+}
+

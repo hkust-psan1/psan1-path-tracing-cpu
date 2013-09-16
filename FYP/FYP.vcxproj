@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="boundingbox.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="face.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_mainwindow.cpp">
@@ -219,6 +220,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="boundingbox.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="face.h" />
     <ClInclude Include="intersection.h" />

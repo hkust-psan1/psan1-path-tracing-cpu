@@ -13,5 +13,5 @@ Camera::Camera(const Vec3& e, const Vec3& c, const Vec3& u)
 
 Ray Camera::getCameraRay(int x, int y) const
 {
-    return Ray(eye, view + cameraLeft * ((float)x / width - 0.5) + cameraUp * ((float)y / height - 0.5));
+    return Ray(eye, view + cameraLeft * ((float)x / width - 0.5f) + cameraUp * ((float)y / height - 0.5f));
 }

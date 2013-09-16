@@ -21,7 +21,8 @@ HEADERS += camera.h \
            RayTracer.h \
            scene.h \
            vec3.h \
-           vertex.h
+           vertex.h \
+    light.h
 FORMS += mainwindow.ui
 SOURCES += camera.cpp \
            face.cpp \

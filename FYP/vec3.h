@@ -7,6 +7,7 @@ class Vec3 {
 public:
 	Vec3(){x = 0; y = 0; z = 0;};
 	Vec3(float x, float y, float z);
+	Vec3(float f) {x = f; y = f; z = f;}
 	Vec3(float c[3]);
 	Vec3(const Vec3& v);
 
@@ -20,6 +21,8 @@ public:
     
     Vec3& operator=(const Vec3& v);
     float& operator[](int n);
+	float get(int n) const;
+	int maxElement();
 
 	friend Vec3 operator+(const Vec3& v1, const Vec3& v2);
 	friend Vec3 operator-(const Vec3& v1, const Vec3& v2);
