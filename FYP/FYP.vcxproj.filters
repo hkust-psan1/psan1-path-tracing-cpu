@@ -113,6 +113,9 @@
     <ClCompile Include="boundingbox.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
+    <ClCompile Include="setting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -164,6 +167,12 @@
     </ClInclude>
     <ClInclude Include="boundingbox.h">
       <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="setting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

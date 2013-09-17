@@ -48,7 +48,7 @@ public:
 	
 	
     inline void stopRendering() { rendering = false; };
-    QImage image;
+
     QImage* frontBuffer;
     QImage* backBuffer;
 	
@@ -59,7 +59,7 @@ signals:
     void rowCompleted();
 
 private:
-	static const int maxDepth = 10;
+	static const int maxDepth = 0;
 	int width;
 	int height;
 
