@@ -52,7 +52,7 @@ Intersection* Face::intersect(const Ray& r, float t_min)
     Vec3 texCoord = vertices[1]->getTexCoords() * u + vertices[2]->getTexCoords() * v + vertices[0]->getTexCoords() * (1 - u - v);
 
     if(t > EPSILON && t < t_min) { //ray intersection
-		Intersection* i = new Intersection(obj, obj->mat, normal, texCoord, t);
+		Intersection* i = new Intersection(obj, obj->mat, N, texCoord, t);
         return i;
     }
     
