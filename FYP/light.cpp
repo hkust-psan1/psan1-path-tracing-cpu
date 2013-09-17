@@ -1,4 +1,5 @@
 #include "light.h"
+#include "setting.h"
 
 Scene* Light::scene = NULL;
 #define  ATTENU_CONSTANT 0.25
@@ -16,8 +17,8 @@ Vec3 DirectionalLight::shadowAttenuation(const Vec3& P ) const
 
 Vec3 PointLight::shadowAttenuation(const Vec3& P ) const
 {
-	Ray r = Ray(P, getDirection(P));
-	float t = (position - P).length();
+	Ray r = Ray(position, getDirection(P));
+	float t = (position - P).length() - Setting::EPSILON;
 	return scene->root->shadowAttenuation(r, t);
 }
 

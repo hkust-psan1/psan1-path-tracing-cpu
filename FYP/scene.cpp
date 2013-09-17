@@ -4,6 +4,8 @@
 	#include <float.h>
 #endif
 
+#include "setting.h"
+
 Vec3 Scene::ambient = Vec3(0.2, 0.2, 0.2);
 
 Scene::Scene(std::vector<Object*> obj): objects(obj)
@@ -27,5 +29,26 @@ void Scene::buildBox()
 
 Intersection* Scene::intersect(const Ray& r)
 {
-	return root->intersect(r, FLT_MAX);
+	if (Setting::HBV)
+		return root->intersect(r, FLT_MAX);	
+
+	float min = FLT_MAX;
+	Intersection* intc = NULL;
+
+	for (Object* obj : objects)
+	{
+		for (Face* f : obj->getFaces())
+		{
+			Intersection* temp = f->intersect(r, min);
+			if (temp != NULL)
+			{
+				if (intc != NULL) {
+					delete intc;
+				}
+				intc = temp;
+				min  = intc->t;
+			}
+		}
+	}
+	return intc;
 }

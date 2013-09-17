@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "setting.h"
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -21,8 +22,8 @@ void MainWindow::load_scene()
 	if (!filename.isNull()) 
 	{
 		tracer->setScene(Parser::parseScene(filename.toStdString().c_str()));
-		PointLight* l1 = new PointLight(Vec3(4, 1, 6), Vec3(1, 1, 1));
-		PointLight* l2 = new PointLight(Vec3(0, 10, 0), Vec3(1, 1, 1));
+		PointLight* l1 = new PointLight(Vec3(14, 9, 6), Vec3(1, 1, 1));
+		PointLight* l2 = new PointLight(Vec3(15, 15, 15), Vec3(1, 1, 1));
 		tracer->addLight(l1);
 		tracer->addLight(l2);
 	}
@@ -35,9 +36,11 @@ void MainWindow::about()
 
 void MainWindow::render()
 {
-	if (!tracer->sceneLoaded()) {
+	if (!tracer->sceneLoaded())
+	{
 		load_scene();
 	}
+	Setting::HBV = ui.HBVcheckBox->isChecked();
 
 	rendererThread = new QThread;
 
