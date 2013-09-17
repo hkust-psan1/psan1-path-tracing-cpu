@@ -19,6 +19,7 @@ public:
 	BoundingBox(Vec3 m, Vec3 M) : isLeaf(false), left(0), right(0), face(0), boxMin(m), boxMax(M) {}
 	BoundingBox(Face* f);
 	Intersection* intersect(const Ray& r, float T_min);
+	Vec3 shadowAttenuation(const Ray& r, float T_min);
 	void mergeBox(BoundingBox* b);
 	void mergePoint(Vec3 p);
 

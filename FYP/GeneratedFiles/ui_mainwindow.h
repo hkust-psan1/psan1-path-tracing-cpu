@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -42,6 +43,7 @@ public:
     QDockWidget *dockWidget;
     QWidget *dockWidgetContents;
     QPushButton *pushButton;
+    QCheckBox *HBVcheckBox;
 
     void setupUi(QMainWindow *MainWindowClass)
     {
@@ -59,7 +61,7 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pixmapLabel = new QLabel(centralWidget);
         pixmapLabel->setObjectName(QStringLiteral("pixmapLabel"));
-        pixmapLabel->setGeometry(QRect(10, 20, 500, 500));
+        pixmapLabel->setGeometry(QRect(90, 50, 500, 500));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -82,8 +84,12 @@ public:
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         pushButton = new QPushButton(dockWidgetContents);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(0, 270, 75, 23));
+        pushButton->setGeometry(QRect(10, 310, 61, 23));
         pushButton->setCursor(QCursor(Qt::PointingHandCursor));
+        HBVcheckBox = new QCheckBox(dockWidgetContents);
+        HBVcheckBox->setObjectName(QStringLiteral("HBVcheckBox"));
+        HBVcheckBox->setGeometry(QRect(20, 80, 51, 21));
+        HBVcheckBox->setChecked(true);
         dockWidget->setWidget(dockWidgetContents);
         MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
 
@@ -116,6 +122,7 @@ public:
         menuHelp->setTitle(QApplication::translate("MainWindowClass", "About", 0));
         pushButton->setText(QApplication::translate("MainWindowClass", "Render", 0));
         pushButton->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+R", 0));
+        HBVcheckBox->setText(QApplication::translate("MainWindowClass", "HBV", 0));
     } // retranslateUi
 
 };

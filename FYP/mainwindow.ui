@@ -20,8 +20,8 @@
    <widget class="QLabel" name="pixmapLabel">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
+      <x>90</x>
+      <y>50</y>
       <width>500</width>
       <height>500</height>
      </rect>
@@ -77,9 +77,9 @@
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>270</y>
-       <width>75</width>
+       <x>10</x>
+       <y>310</y>
+       <width>61</width>
        <height>23</height>
       </rect>
      </property>
@@ -91,6 +91,22 @@
      </property>
      <property name="shortcut">
       <string>Ctrl+R</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="HBVcheckBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HBV</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
