@@ -104,6 +104,8 @@ namespace Parser {
 
                     f->addVertex(v);
 				}
+
+                f->calculateFaceNormal();
                 currObj->addFace(f);
 			} else if (item == "usemtl") { // material
                 getline(ss, item, ' ');

@@ -4,13 +4,13 @@
 void Face::addVertex(Vertex* v)
 {
 	vertices.push_back(v);
-	if (vertices.size() == 3)
-	{
-		e1 = vertices[1]->getPos() - vertices[0]->getPos();
-		e2 = vertices[2]->getPos() - vertices[0]->getPos();
-		normal = cross(e2, e1);
-		normal.normalize();
-	}
+}
+
+void Face::calculateFaceNormal() {
+    e1 = vertices[1]->getPos() - vertices[0]->getPos();
+    e2 = vertices[2]->getPos() - vertices[0]->getPos();
+    normal = cross(e2, e1);
+    normal.normalize();
 }
 
 Intersection* Face::intersect(const Ray& r, float t_min)

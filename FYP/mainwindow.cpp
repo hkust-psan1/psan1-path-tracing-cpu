@@ -57,7 +57,7 @@ void MainWindow::threadTerminated() {
 }
 
 void MainWindow::updateScreen() {
-	pixmap = QPixmap::fromImage(tracer->image);
+	pixmap = QPixmap::fromImage(*tracer->frontBuffer);
 	ui.pixmapLabel->setPixmap(pixmap);
     
     frameReady = true;
@@ -79,7 +79,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-/*
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {    
     if (lastPos == NULL) {
         lastPos = new QPoint(event->pos());
@@ -91,7 +90,19 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     int yDiff = event->y() - lastPos->y();
     // std::cout << xDiff << '\t' << yDiff << std::endl;
     
-    cam->setEyePos(cam->getEyePos() - Vec3(0.1 * xDiff, 0.1 * yDiff, 0));
+    Vec3 eye = cam->getEyePos();
+    Vec3 ctr = cam->getCenterPos();
+    
+    float newX = (eye.x - ctr.x) * cos(xDiff / 30.0) - (eye.z - ctr.z) * sin(xDiff / 30.0);
+    float newY = (eye.z - ctr.z) * cos(xDiff / 30.0) + (eye.x - ctr.x) * sin(xDiff / 30.0);
+    
+    cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
+    cam->update();
+    
+    std::cout << cam->getEyePos() << std::endl;
+    std::cout << Vec3(newX, cam->getEyePos().y, newY) << std::endl;
+    
+    //cam->setEyePos(cam->getEyePos() - Vec3(0.1 * xDiff, 0.1 * yDiff, 0));
     tracer->stopRendering();
     render();
 
@@ -99,4 +110,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     lastX = event->x();
     lastY = event->y();
 }
-*/
+
+void MainWindow::wheelEvent(QWheelEvent *event) {
+    Camera* cam = tracer->getCamera();
+    Vec3 view = cam->getEyePos() - cam->getCenterPos();
+
+    cam->setEyePos(cam->getCenterPos() + view * (1 - event->delta() * 0.0003));
+    
+    tracer->stopRendering();
+    render();
+}
