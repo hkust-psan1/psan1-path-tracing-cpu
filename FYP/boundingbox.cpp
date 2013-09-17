@@ -129,12 +129,21 @@ void BoundingBox::mergePoint(Vec3 p)
 void BoundingBox::partition(std::vector<BoundingBox*> boxes)
 {
 	// less than 2 left
-	if(boxes.size() <= 1)
+	if(boxes.size() == 0)
 	{
 		std::cout << "something went wrong in bounding box partition. error 1" << std::endl;
 		return;
 	}
 	
+	if(boxes.size() == 1)
+	{
+		boxMax = boxes[0]->boxMax;
+		boxMin = boxes[0]->boxMin;
+		left = boxes[0]->left;
+		right = boxes[0]->right;
+		return;
+	}
+
 	Vec3 min = Vec3(FLT_MAX);
 	Vec3 max = Vec3(-FLT_MAX);
 
@@ -215,4 +224,28 @@ void BoundingBox::partition(std::vector<BoundingBox*> boxes)
 	{
 		right->partition(rBox);
 	}
+}
+
+Vec3 BoundingBox::shadowAttenuation(const Ray& r, float T_min)
+{
+	//return Vec3(1.0f);
+	Intersection* intc = intersect(r, T_min);
+
+	if (intc == NULL) return Vec3(1.0f);
+
+	//leaf
+	if (isLeaf) 
+	{
+		if(face->intersect(r, T_min))
+		{
+			if (intc->mat->isTransmissive)
+				return intc->mat->kt;
+			else
+				return Vec3(.0f);
+		}
+		else return Vec3(1.0f);
+	}
+		
+	return left->shadowAttenuation(r, T_min) * right->shadowAttenuation(r, T_min);
+
 }
