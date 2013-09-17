@@ -6,23 +6,26 @@
 
 Vec3 Scene::ambient = Vec3(0.2, 0.2, 0.2);
 
-Intersection* Scene::intersect(const Ray& r)
+Scene::Scene(std::vector<Object*> obj): objects(obj)
 {
-	float min = FLT_MAX;
-	Intersection* intc = NULL;
 
+}
+
+void Scene::buildBox()
+{
+	Vec3 min = Vec3(FLT_MAX);
+	Vec3 max = Vec3(-FLT_MAX);
+	root = new BoundingBox(min, max);
+	std::vector<BoundingBox*> boxes;
 	for (Object* obj : objects)
 	{
-		Intersection* temp = obj->root->intersect(r, min);
-		if (temp != NULL)
-		{
-			if (intc != NULL) 
-			{
-				delete intc;
-			}
-			intc = temp;
-			min  = intc->t;
-		}
+		root->mergeBox(obj->root);
+		boxes.push_back(obj->root);
 	}
-	return intc;
+	root->partition(boxes);
+}
+
+Intersection* Scene::intersect(const Ray& r)
+{
+	return root->intersect(r, FLT_MAX);
 }

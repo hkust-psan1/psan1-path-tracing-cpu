@@ -16,7 +16,9 @@ Vec3 DirectionalLight::shadowAttenuation(const Vec3& P ) const
 
 Vec3 PointLight::shadowAttenuation(const Vec3& P ) const
 {
-	return Vec3(1, 1, 1);
+	Ray r = Ray(P, getDirection(P));
+	float t = (position - P).length();
+	return scene->root->shadowAttenuation(r, t);
 }
 
 double PointLight::distanceAttenuation(const Vec3& P ) const

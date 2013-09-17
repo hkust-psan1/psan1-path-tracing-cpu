@@ -216,3 +216,24 @@ void BoundingBox::partition(std::vector<BoundingBox*> boxes)
 		right->partition(rBox);
 	}
 }
+
+Vec3 BoundingBox::shadowAttenuation(const Ray& r, float T_min)
+{
+	float min1;
+	float max1;
+	float min2;
+	float max2;
+	Intersection* intc = intersect(r, T_min);
+
+	if (intc == NULL) return Vec3(1, 1, 1);
+
+	//leaf
+	if (isLeaf) 
+	{
+		if(face->intersect(r, T_min)) return intc->mat->kt;
+		else return Vec3(1, 1, 1);
+	}
+		
+	return left->shadowAttenuation(r, T_min) * right->shadowAttenuation(r, T_min);
+
+}

@@ -136,7 +136,7 @@ namespace Parser {
             
             //std::cout << obj->boundingBoxMin << std::endl << obj->boundingBoxMax << std::endl;
         }
-		
+		s->buildBox();
 		return s;
 	}
 
