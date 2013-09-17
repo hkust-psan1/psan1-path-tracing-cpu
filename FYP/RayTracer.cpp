@@ -9,10 +9,13 @@ RayTracer::RayTracer(int width, int height)
 {
 	this->height = height;
 	this->width = width;
-	this->camera = new Camera(Vec3(6, 0, 0), Vec3(0, 0, 0), Vec3(0, 1, 0));
+	this->camera = new Camera(Vec3(15, 10, 15), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setSize(width, height);
 	scene = NULL;
 	image = QImage(width, height, QImage::Format_RGB32);
+    
+    frontBuffer = new QImage(width, height, QImage::Format_RGB32);
+    backBuffer = new QImage(width, height, QImage::Format_RGB32);
     
     rendering = false;
 }
@@ -34,11 +37,15 @@ void RayTracer::renderWithGridSize(int gridSize) {
             
             for (int k = 0; k < gridSize && i + k < height; k++) {
                 for (int l = 0; l < gridSize && j + l < width; l++) {
-                    image.setPixel(j + l, i + k, qRgb(color.x * 255, color.y * 255, color.z * 255));
+                    backBuffer->setPixel(j + l, i + k, qRgb(color.x * 255, color.y * 255, color.z * 255));
                 }
             }
         }
     }
+    
+    QImage* tmp = backBuffer;
+    backBuffer = frontBuffer;
+    frontBuffer = tmp;
     
     emit rowCompleted();
 }
@@ -57,7 +64,7 @@ void RayTracer::render()
     
     const clock_t begin_time = clock();
 	
-    for (int gridSize = 64; gridSize != 0; gridSize /= 2) {
+    for (int gridSize = 32; gridSize != 0; gridSize /= 2) {
         renderWithGridSize(gridSize);
     }
     
@@ -80,11 +87,13 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	Vec3 I = Vec3(mat->ke);
 
 	//ambient
-	if (mat->isTransmissive) I += scene->ambient * mat->ka * mat->rate;
-	else I += scene->ambient * mat->ka;
+	if (mat->isTransmissive) {
+        I += scene->ambient * mat->ka * mat->rate;
+    } else {
+        I += scene->ambient * mat->ka;
+    }
 	
-	for (Light* l : lights)
-	{
+	for (Light* l : lights) {
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
 		float NL = dot(intc->normal, L);
@@ -94,15 +103,15 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 		diffuse.clamp();
 		I += diffuse;
         
-//        int x = mat->diffuseMap->width() * intc->texCoord.x;
-//      int y = mat->diffuseMap->height() * intc->texCoord.y;
+        // int x = mat->diffuseMap->width() * intc->texCoord.x;
+        // int y = mat->diffuseMap->height() * intc->texCoord.y;
         
-       // QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
-        //Vec3 diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
-
+        // QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
+        // Vec3 diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
         
         diffuse.clamp();
         I += diffuse;
+        
 		//specular
 		Vec3 R = intc->normal * (2 * NL) - L;
 		double RV = -dot(R, ray.dir);
@@ -111,8 +120,7 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	}
 
 	// max depth
-	if (depth <= 0)
-	{
+	if (depth <= 0) {
 		I.clamp();
 		return I;
 	}

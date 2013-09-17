@@ -2,7 +2,11 @@
 
 Camera::Camera(const Vec3& e, const Vec3& c, const Vec3& u)
 : eye(e), ctr(c), up(u) {
-    view = c - e;
+    update();
+}
+
+void Camera::update() {
+    view = ctr - eye;
     cameraLeft = cross(up, view);
     cameraUp = cross(view, cameraLeft);
     

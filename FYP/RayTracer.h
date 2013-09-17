@@ -49,11 +49,12 @@ public:
 	
     inline void stopRendering() { rendering = false; };
     QImage image;
+    QImage* frontBuffer;
+    QImage* backBuffer;
 	
 public slots:
 	void render();
     
-	
 signals:
     void rowCompleted();
 
