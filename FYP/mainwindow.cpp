@@ -115,7 +115,7 @@ void MainWindow::wheelEvent(QWheelEvent *event) {
     Camera* cam = tracer->getCamera();
     Vec3 view = cam->getEyePos() - cam->getCenterPos();
 
-    cam->setEyePos(cam->getCenterPos() + view * (1 - event->delta() * 0.0003));
+    cam->setEyePos(cam->getCenterPos() + view * (1 - event->delta() * 0.001));
     
     tracer->stopRendering();
     render();
