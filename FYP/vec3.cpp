@@ -29,10 +29,6 @@ Vec3& Vec3::operator=(const Vec3& v) {
     return *this;
 }
 
-inline float Vec3::length() const {
-	return sqrt(x * x + y * y + z * z);
-}
-
 void Vec3::normalize() {
 	float l = length();
 	x /= l;
