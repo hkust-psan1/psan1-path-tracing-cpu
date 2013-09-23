@@ -102,7 +102,9 @@ namespace Parser {
                         v = result->second; // get vertex from map
                     }
 
-                    f->addVertex(v);
+                    // f->addVertex(v);
+                    // std::cout << i << std::endl;
+                    f->vertices[i] = v;
 				}
 
                 f->calculateFaceNormal();
@@ -122,7 +124,7 @@ namespace Parser {
             float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
             
             for (Face* f : obj->getFaces()) {
-                for (Vertex* v : f->getVertices()) {
+                for (Vertex* v : f->vertices) {
                     const Vec3& pos = v->getPos();
                     maxX = pos.x > maxX ? pos.x : maxX;
                     maxY = pos.y > maxY ? pos.y : maxY;
