@@ -12,7 +12,7 @@ class Face {
 public:
 	// Face();
 	void addVertex(Vertex* v);
-	inline std::vector<Vertex*> getVertices() const { return vertices; };
+	// inline std::vector<Vertex*> getVertices() const { return vertices; };
 	inline void setObject(Object* o) { obj = o; };
 	inline Object* getObject() const { return obj; };
 	Intersection* intersect(const Ray& r, float T_min);
@@ -25,8 +25,11 @@ public:
 		}
         return os;
     };
+        
+    Vertex* vertices[3];
+
 private:
-    std::vector<Vertex*> vertices;
+    // std::vector<Vertex*> vertices;
     Vec3 e1;
     Vec3 e2;
     Vec3 normal;

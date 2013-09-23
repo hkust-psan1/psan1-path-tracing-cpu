@@ -9,7 +9,7 @@ BoundingBox::BoundingBox(Face* f) : isLeaf(true), left(0), right(0), face(f)
 	
 	for (int i = 0; i < 3; i++)
 	{
-		Vec3 p = f->getVertices()[i]->getPos();
+		Vec3 p = f->vertices[i]->getPos();
 		for (int j = 0; j < 3; j++)
 		{
 			boxMax[j] = boxMax[j] < p[j] ? p[j] : boxMax[j];

@@ -11,7 +11,7 @@ public:
 	Vec3(float c[3]);
 	Vec3(const Vec3& v);
 
-	inline float length() const;
+	inline float length() const { return sqrt(x * x + y * y + z * z); };
 	void normalize();
 	void clamp();
 

@@ -3,7 +3,7 @@
 
 void Face::addVertex(Vertex* v)
 {
-	vertices.push_back(v);
+	// vertices.push_back(v);
 }
 
 void Face::calculateFaceNormal() {
