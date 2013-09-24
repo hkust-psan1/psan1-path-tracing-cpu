@@ -24,6 +24,7 @@ public:
 	void mergePoint(Vec3 p);
 
 private:
+	bool intersectBox(const Ray& r, float T_min);
 	Vec3 boxMin;
 	Vec3 boxMax;
 	int pivot;
