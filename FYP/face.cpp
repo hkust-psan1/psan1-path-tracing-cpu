@@ -1,11 +1,6 @@
 #include "face.h"
 #define EPSILON 0.00001 
 
-void Face::addVertex(Vertex* v)
-{
-	// vertices.push_back(v);
-}
-
 void Face::calculateFaceNormal() {
     e1 = vertices[1]->getPos() - vertices[0]->getPos();
     e2 = vertices[2]->getPos() - vertices[0]->getPos();

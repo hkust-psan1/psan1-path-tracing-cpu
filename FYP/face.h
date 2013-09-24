@@ -11,7 +11,6 @@ class Object;
 class Face {
 public:
 	// Face();
-	void addVertex(Vertex* v);
 	// inline std::vector<Vertex*> getVertices() const { return vertices; };
 	inline void setObject(Object* o) { obj = o; };
 	inline Object* getObject() const { return obj; };

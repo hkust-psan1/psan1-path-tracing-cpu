@@ -48,12 +48,16 @@ int min_of(const float* d)
 
 bool BoundingBox::intersectBox(const Ray& r, float T_min)
 {
-		Vec3 d = Vec3(r.dir);
+	Vec3 d = Vec3(r.dir);
 	Vec3 p = r.pos;
 
 	for (int i = 0; i < 3; i++)
+	{
 		if (d[i] == .0f)
+		{
 			d[i] = FLT_MIN; 
+		}
+	}
 
 	float min[3] = {};
 	float max[3] = {};
@@ -90,15 +94,14 @@ Intersection* BoundingBox::intersect(const Ray& r, float T_min)
 		return NULL;
 
 	//is leaf
-	float min_t = FLT_MAX;
 	if (isLeaf)
-		return face->intersect(r, min_t);
+		return face->intersect(r, T_min);
 	
 
-	Intersection* lIntc = left->intersect(r, min_t);
+	Intersection* lIntc = left->intersect(r, T_min);
 	// no intersection from left
 	if (lIntc == NULL)
-		return right->intersect(r, min_t);
+		return right->intersect(r, T_min);
 
 	Intersection* rIntc = right->intersect(r, lIntc->t);
 	if (rIntc == NULL)

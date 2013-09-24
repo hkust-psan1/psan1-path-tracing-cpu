@@ -61,7 +61,7 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pixmapLabel = new QLabel(centralWidget);
         pixmapLabel->setObjectName(QStringLiteral("pixmapLabel"));
-        pixmapLabel->setGeometry(QRect(90, 50, 500, 500));
+        pixmapLabel->setGeometry(QRect(0, 0, 500, 500));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));

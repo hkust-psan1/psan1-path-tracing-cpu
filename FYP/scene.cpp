@@ -42,7 +42,8 @@ Intersection* Scene::intersect(const Ray& r)
 			Intersection* temp = f->intersect(r, min);
 			if (temp != NULL)
 			{
-				if (intc != NULL) {
+				if (intc != NULL) 
+				{
 					delete intc;
 				}
 				intc = temp;

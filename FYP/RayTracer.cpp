@@ -168,3 +168,8 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
 	I.clamp();
 	return I;
 }
+
+Vec3 RayTracer::traceRay(int x, int y) 
+{
+	return traceRay(camera->getCameraRay(x, y), maxDepth);
+}

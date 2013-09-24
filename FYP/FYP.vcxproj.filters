@@ -147,9 +147,6 @@
     <ClInclude Include="material.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
-    <ClInclude Include="vec3.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
@@ -170,6 +167,9 @@
     </ClInclude>
     <ClInclude Include="setting.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vec3.h">
+      <Filter>Header Files\parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

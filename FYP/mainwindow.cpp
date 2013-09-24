@@ -114,6 +114,15 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     lastY = event->y();
 }
 
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{    
+	if (event->button() != Qt::RightButton)
+		return;
+
+	tracer->traceRay(event->x() - 85, event->y() - 35);
+}
+
+
 void MainWindow::wheelEvent(QWheelEvent *event) {
     Camera* cam = tracer->getCamera();
     Vec3 view = cam->getEyePos() - cam->getCenterPos();
