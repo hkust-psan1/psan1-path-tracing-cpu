@@ -12,6 +12,7 @@ RayTracer::RayTracer(int width, int height)
 	this->camera = new Camera(Vec3(15, 10, 15), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setSize(width, height);
 	scene = NULL;
+	colorBuffer = NULL;
     
     frontBuffer = new QImage(width, height, QImage::Format_RGB32);
     backBuffer = new QImage(width, height, QImage::Format_RGB32);
@@ -23,7 +24,42 @@ RayTracer::~RayTracer() {
 
 }
 
-void RayTracer::renderWithGridSize(int gridSize) {
+void RayTracer::renderWithGridSize(int gridSize) 
+{
+	
+	if (gridSize == 1)
+	{
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				Ray* r = &(camera->getCameraRay(i, j));
+				node n = {r, j, i, 0, Vec3(1)};
+				queue.push(n);
+			}
+		}
+	}
+	else
+	{
+		return;
+	}
+
+	while(!queue.empty())
+	{
+		node n = queue.front();
+		traceRay(n);
+		queue.pop();
+	}
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			backBuffer->setPixel(j, i, qRgb(colorBuffer[j][i].x * 255, colorBuffer[j][i].y * 255, colorBuffer[j][i].z * 255));
+		}
+	}
+
+	/*
     int offset = gridSize / 2;
     
     for (int i = 0; i < height && rendering; i += gridSize) {
@@ -40,7 +76,7 @@ void RayTracer::renderWithGridSize(int gridSize) {
                 }
             }
         }
-    }
+    }*/
     
     QImage* tmp = backBuffer;
     backBuffer = frontBuffer;
@@ -52,7 +88,28 @@ void RayTracer::renderWithGridSize(int gridSize) {
 void RayTracer::render()
 {
 	Light::setScene(scene);
-    
+
+	if (colorBuffer != NULL)
+	{
+		for (int i = 0; i < height; i++)
+		{
+			if(colorBuffer[i] != NULL)
+				delete[] colorBuffer[i];
+		}
+		delete[] colorBuffer;
+	}
+
+	colorBuffer = new Vec3*[height];
+	for (int i = 0; i < height; i++)
+	{
+		colorBuffer[i] = new Vec3[width];
+		for (int j = 0; j < width; j++)
+		{
+			colorBuffer[i][j] = Vec3(.0f);
+		}
+	}
+
+	queue = std::queue<node>();
     rendering = true;
 	
     /* initialize the 2d array */
@@ -72,15 +129,16 @@ void RayTracer::render()
     rendering = false;
 }
 
-Vec3 RayTracer::traceRay(const Ray& ray, int depth) 
+void RayTracer::traceRay(node n) 
 {
-	Intersection* intc = scene->intersect(ray);
+	//TODO::pointer
+	Intersection* intc = scene->intersect(*n.ray);
 	// no hit
 	if (intc == NULL) {
-		return Vec3();
+		return;
     }   
 	
-	Vec3 point = ray.at(intc->t);
+	Vec3 point = n.ray->at(intc->t);
 	
 	Material* mat = intc->mat;
 	Vec3 I = Vec3(mat->ke);
@@ -113,63 +171,62 @@ Vec3 RayTracer::traceRay(const Ray& ray, int depth)
         
 		//specular
 		Vec3 R = intc->normal * (2 * NL) - L;
-		double RV = -dot(R, ray.dir);
+		double RV = -dot(R, n.ray->dir);
 
 		I += (atten * pow(RV, SPECULAR_N)) * mat->ks;
 	}
 
+	I.clamp();
+	colorBuffer[n.x][n.y] += I * n.p;
 	// max depth
-	if (depth <= 0) {
-		I.clamp();
-		return I;
+	if (n.depth >= maxDepth) {
+		return;
 	}
 	
 	//reflection
-	const float NL = -dot(intc->normal, ray.dir);
-	Vec3 ref = intc->normal * (2 * NL) + ray.dir;
-	Ray R = Ray(point, ref);
-	Vec3 reflection = mat->kr * (traceRay(R, depth - 1));
+	const float NL = -dot(intc->normal, n.ray->dir);
+	Vec3 ref = intc->normal * (2 * NL) + n.ray->dir;
+	Ray* R = new Ray(point, ref);
+	node r = {R, n.x, n.y, n.depth + 1, mat->kr * n.p};
+	queue.push(r);
 	
-	I += reflection;
 
 	//refraction		
 	if (!mat->isTransmissive)
 	{
-		I.clamp();
-		return I;
+		return;
 	}
 	
 	Vec3 refraction;
-	float n;
+	float pn;
 	
 	if (NL > 0)
 	{
-		n = mat->index_inverse;
-		float LONG_TERM = n * NL - sqrt(1 - n * n * (1 - NL * NL));
-		Ray T = Ray(point, (intc->normal * LONG_TERM + ray.dir * n));
-		refraction = mat->kt * (traceRay(T, depth - 1));
-		I += refraction;
+		pn = mat->index_inverse;
+		float LONG_TERM = pn * NL - sqrt(1 - pn * pn * (1 - NL * NL));
+		Ray* T = new Ray(point, (intc->normal * LONG_TERM + n.ray->dir * pn));
+		node t = {T, n.x, n.y, n.depth + 1, mat->kt * n.p};
+		queue.push(t);
 	}
 	else
 	{
-		n = mat->index;
-		if (1 - n * n * (1 - NL * NL) < EPSILON)
+		pn = mat->index;
+		if (1 - pn * pn * (1 - NL * NL) < EPSILON)
 		{
-			I.clamp();
-			return I;
+			return;
 		}			
 		
-		float LONG_TERM = -(n * (-NL) - sqrt(1 - n * n * (1 - NL * NL)));
-		Ray T = Ray(point, (intc->normal * LONG_TERM + ray.dir * n));
-		refraction = mat->kt * (traceRay(T, depth - 1));
-		I += refraction;
+		float LONG_TERM = -(pn * (-NL) - sqrt(1 - pn * pn * (1 - NL * NL)));
+		Ray* T = new Ray(point, (intc->normal * LONG_TERM + n.ray->dir * pn));
+		node t = {T, n.x, n.y, n.depth + 1, mat->kt * n.p};
+		queue.push(t);
 	} 
 	
-	I.clamp();
-	return I;
+	return;
 }
 
 Vec3 RayTracer::traceRay(int x, int y) 
 {
-	return traceRay(camera->getCameraRay(x, y), maxDepth);
+	//return traceRay(camera->getCameraRay(x, y), maxDepth);
+	return Vec3(1);
 }

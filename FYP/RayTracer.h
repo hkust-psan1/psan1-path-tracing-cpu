@@ -11,8 +11,18 @@
 #include "scene.h"
 #include "light.h"
 #include "qobject.h"
+#include <queue>
 
 class MainWindow;
+
+struct node
+{
+	Ray* ray;
+	int x;
+	int y;
+	int depth;
+	Vec3 p;
+};
 
 class RayTracer : public QObject {
     Q_OBJECT
@@ -22,7 +32,7 @@ public:
 	~RayTracer();
 
     // Vec3 trace(double x, double y );
-	Vec3 traceRay(const Ray& ray, int depth = 0);
+	void traceRay(node n);
 	Vec3 traceRay(int x, int y);
 	inline void setScene(Scene* scene) { this->scene = scene; };
 	inline bool sceneLoaded() { return scene != NULL; };
@@ -60,7 +70,7 @@ signals:
     void rowCompleted();
 
 private:
-	static const int maxDepth = 0;
+	static const int maxDepth = 10;
 	int width;
 	int height;
 
@@ -70,6 +80,8 @@ private:
 	MainWindow* window;
 	
     bool** pixelRendered;
+	Vec3** colorBuffer;
+	std::queue<node> queue;
     
     bool rendering;
 };
