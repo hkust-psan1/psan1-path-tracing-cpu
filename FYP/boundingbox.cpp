@@ -46,14 +46,18 @@ int min_of(const float* d)
 	}
 }
 
-Intersection* BoundingBox::intersect(const Ray& r, float T_min)
+bool BoundingBox::intersectBox(const Ray& r, float T_min)
 {
 	Vec3 d = Vec3(r.dir);
 	Vec3 p = r.pos;
 
 	for (int i = 0; i < 3; i++)
+	{
 		if (d[i] == .0f)
+		{
 			d[i] = FLT_MIN; 
+		}
+	}
 
 	float min[3] = {};
 	float max[3] = {};
@@ -78,23 +82,26 @@ Intersection* BoundingBox::intersect(const Ray& r, float T_min)
 	float t2 = max[min_of_max];
 
 	//no intersection point
-	if (t2 < t1) return NULL;
+	if (t2 < t1) return false;
 
 	//t < 0
-	if (t2 < EPSILON) return NULL;
-	
-	//is leaf
-	float min_t = FLT_MAX;
-	if (isLeaf)
-		return face->intersect(r, min_t);
-	
-	int a1 = r.pos.get(pivot)+ t1 * r.dir.get(pivot) > midLine ? 1 : -1;
-	int a2 = r.pos.get(pivot)+ t2 * r.dir.get(pivot) > midLine ? 1 : -1;
+	return  t2 > EPSILON;
+}
 
-	Intersection* lIntc = left->intersect(r, min_t);
+Intersection* BoundingBox::intersect(const Ray& r, float T_min)
+{
+	if (!intersectBox(r, T_min))
+		return NULL;
+
+	//is leaf
+	if (isLeaf)
+		return face->intersect(r, T_min);
+	
+
+	Intersection* lIntc = left->intersect(r, T_min);
 	// no intersection from left
 	if (lIntc == NULL)
-		return right->intersect(r, min_t);
+		return right->intersect(r, T_min);
 
 	Intersection* rIntc = right->intersect(r, lIntc->t);
 	if (rIntc == NULL)
@@ -228,15 +235,15 @@ void BoundingBox::partition(std::vector<BoundingBox*> boxes)
 
 Vec3 BoundingBox::shadowAttenuation(const Ray& r, float T_min)
 {
-	//return Vec3(1.0f);
-	Intersection* intc = intersect(r, T_min);
-
-	if (intc == NULL) return Vec3(1.0f);
+	// no intersection
+	if (!intersectBox(r, T_min))
+		return Vec3(1.0f);
 
 	//leaf
 	if (isLeaf) 
 	{
-		if(face->intersect(r, T_min))
+		Intersection* intc = face->intersect(r, T_min);
+		if(intc != NULL)
 		{
 			if (intc->mat->isTransmissive)
 				return intc->mat->kt;
