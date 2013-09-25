@@ -33,8 +33,8 @@ void RayTracer::renderWithGridSize(int gridSize)
 		{
 			for (int j = 0; j < width; j++)
 			{
-				Ray* r = &(camera->getCameraRay(i, j));
-				node n = {r, j, i, 0, Vec3(1)};
+				Ray r = camera->getCameraRay(i, j);
+				node n = {&r, j, i, 0, Vec3(1)};
 				queue.push(n);
 			}
 		}
