@@ -9,7 +9,7 @@ class Scene
 {
 public:
 	Scene(std::vector<Object*> obj);
-	Intersection* intersect(const Ray& r);
+	Intersection* intersect(const Ray* r);
 	inline std::vector<Object*> getObjects() const { return objects; };
 	
 	static Vec3 ambient;

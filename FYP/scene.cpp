@@ -27,7 +27,7 @@ void Scene::buildBox()
 	root->partition(boxes);
 }
 
-Intersection* Scene::intersect(const Ray& r)
+Intersection* Scene::intersect(const Ray* r)
 {
 	if (Setting::HBV)
 		return root->intersect(r, FLT_MAX);	

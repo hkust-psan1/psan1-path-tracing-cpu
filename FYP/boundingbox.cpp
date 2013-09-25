@@ -46,10 +46,10 @@ int min_of(const float* d)
 	}
 }
 
-bool BoundingBox::intersectBox(const Ray& r, float T_min)
+bool BoundingBox::intersectBox(const Ray* r, float T_min)
 {
-	Vec3 d = Vec3(r.dir);
-	Vec3 p = r.pos;
+	Vec3 d = Vec3(r->dir);
+	Vec3 p = r->pos;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -88,7 +88,7 @@ bool BoundingBox::intersectBox(const Ray& r, float T_min)
 	return  t2 > EPSILON;
 }
 
-Intersection* BoundingBox::intersect(const Ray& r, float T_min)
+Intersection* BoundingBox::intersect(const Ray* r, float T_min)
 {
 	if (!intersectBox(r, T_min))
 		return NULL;
@@ -233,7 +233,7 @@ void BoundingBox::partition(std::vector<BoundingBox*> boxes)
 	}
 }
 
-Vec3 BoundingBox::shadowAttenuation(const Ray& r, float T_min)
+Vec3 BoundingBox::shadowAttenuation(const Ray* r, float T_min)
 {
 	// no intersection
 	if (!intersectBox(r, T_min))

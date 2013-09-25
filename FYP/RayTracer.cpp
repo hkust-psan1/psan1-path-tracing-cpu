@@ -5,6 +5,8 @@
 #define EPSILON 0.00001 
 #define SPECULAR_N 64
 
+const Vec3 RayTracer::threshold = Vec3(0.01f);
+
 RayTracer::RayTracer(int width, int height)
 {
 	this->height = height;
@@ -33,8 +35,8 @@ void RayTracer::renderWithGridSize(int gridSize)
 		{
 			for (int j = 0; j < width; j++)
 			{
-				Ray* r = &(camera->getCameraRay(i, j));
-				node n = {r, j, i, 0, Vec3(1)};
+				Ray* r = camera->getCameraRay(i, j);
+				node n = {r, i, j, 0, Vec3(1)};
 				queue.push(n);
 			}
 		}
@@ -48,6 +50,8 @@ void RayTracer::renderWithGridSize(int gridSize)
 	{
 		node n = queue.front();
 		traceRay(n);
+		//std::cout << queue.size() << std::endl;
+		delete n.ray;
 		queue.pop();
 	}
 
@@ -131,8 +135,7 @@ void RayTracer::render()
 
 void RayTracer::traceRay(node n) 
 {
-	//TODO::pointer
-	Intersection* intc = scene->intersect(*n.ray);
+	Intersection* intc = scene->intersect(n.ray);
 	// no hit
 	if (intc == NULL) {
 		return;
@@ -179,7 +182,8 @@ void RayTracer::traceRay(node n)
 	I.clamp();
 	colorBuffer[n.x][n.y] += I * n.p;
 	// max depth
-	if (n.depth >= maxDepth) {
+	if (n.depth >= maxDepth || n.p < threshold) 
+	{
 		return;
 	}
 	
@@ -221,8 +225,7 @@ void RayTracer::traceRay(node n)
 		node t = {T, n.x, n.y, n.depth + 1, mat->kt * n.p};
 		queue.push(t);
 	} 
-	
-	return;
+
 }
 
 Vec3 RayTracer::traceRay(int x, int y) 

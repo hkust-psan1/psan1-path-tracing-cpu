@@ -14,7 +14,7 @@ public:
 	// inline std::vector<Vertex*> getVertices() const { return vertices; };
 	inline void setObject(Object* o) { obj = o; };
 	inline Object* getObject() const { return obj; };
-	Intersection* intersect(const Ray& r, float T_min);
+	Intersection* intersect(const Ray* r, float T_min);
     void calculateFaceNormal();
 
 	friend std::ostream& operator<<(std::ostream& os, const Face& f) {
