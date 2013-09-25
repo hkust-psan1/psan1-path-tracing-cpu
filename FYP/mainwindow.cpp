@@ -36,9 +36,8 @@ void MainWindow::about()
 
 void MainWindow::render()
 {
-	if (!tracer->sceneLoaded())
-	{
-		load_scene();
+	if (!tracer->sceneLoaded()) {
+        return;
 	}
 	Setting::HBV = ui.HBVcheckBox->isChecked();
 
@@ -91,7 +90,6 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
         
     int xDiff = event->x() - lastPos->x();
     int yDiff = event->y() - lastPos->y();
-    // std::cout << xDiff << '\t' << yDiff << std::endl;
     
     Vec3 eye = cam->getEyePos();
     Vec3 ctr = cam->getCenterPos();
@@ -101,11 +99,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     
     cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
     cam->update();
-    
-    std::cout << cam->getEyePos() << std::endl;
-    std::cout << Vec3(newX, cam->getEyePos().y, newY) << std::endl;
-    
-    //cam->setEyePos(cam->getEyePos() - Vec3(0.1 * xDiff, 0.1 * yDiff, 0));
+      
     tracer->stopRendering();
     render();
 

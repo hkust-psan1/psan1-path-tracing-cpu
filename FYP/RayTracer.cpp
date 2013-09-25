@@ -9,7 +9,7 @@ RayTracer::RayTracer(int width, int height)
 {
 	this->height = height;
 	this->width = width;
-	this->camera = new Camera(Vec3(15, 10, 15), Vec3(0, 0, 0), Vec3(0, 1, 0));
+	this->camera = new Camera(Vec3(15, 10, 16), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setSize(width, height);
 	scene = NULL;
     
@@ -31,12 +31,18 @@ void RayTracer::renderWithGridSize(int gridSize) {
             int x = j + offset;
             int y = i + offset;
             
-            Vec3 color = traceRay(camera->getCameraRay(x, y), maxDepth);
+            QRgb color;
+            // if (!pixelRendered[i][j]) {
+                Vec3 colorVec = traceRay(camera->getCameraRay(x, y), maxDepth);
+                color = qRgb(colorVec.x * 255, colorVec.y * 255, colorVec.z * 255);
+            // } else {
+                // color = backBuffer->pixel(j, i);
+            // }
             pixelRendered[i][j] = true; // mark as rendered
             
             for (int k = 0; k < gridSize && i + k < height; k++) {
                 for (int l = 0; l < gridSize && j + l < width; l++) {
-                    backBuffer->setPixel(j + l, i + k, qRgb(color.x * 255, color.y * 255, color.z * 255));
+                    backBuffer->setPixel(j + l, i + k, color);
                 }
             }
         }
@@ -59,6 +65,9 @@ void RayTracer::render()
     pixelRendered = new bool*[height];
     for (int i = 0; i < height; i++) {
         pixelRendered[i] = new bool[width];
+        for (int j = 0; j < width; j++) {
+            pixelRendered[i][j] = false;
+        }
     }
     
     const clock_t begin_time = clock();
