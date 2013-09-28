@@ -5,7 +5,7 @@
 #define EPSILON 0.00001 
 #define SPECULAR_N 64
 
-const Vec3 RayTracer::threshold = Vec3(0.01f);
+const Vec3 RayTracer::threshold = Vec3(3.0f);
 
 RayTracer::RayTracer(int width, int height)
 {
