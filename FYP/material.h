@@ -11,12 +11,13 @@ public:
     Vec3 ka;  // ambient
     Vec3 ks;  // specular
     Vec3 kd;  // diffuse
+	bool isTransmissive;
+
     std::string name;
-	float index;
-	float index_inverse;
     
     float alpha;
     float ior;
+	float ior_inverse;
     float reflectFactor;
     float reflectGloss;
     

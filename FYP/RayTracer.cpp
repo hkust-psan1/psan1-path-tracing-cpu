@@ -5,7 +5,7 @@
 #define EPSILON 0.00001 
 #define SPECULAR_N 64
 
-const Vec3 RayTracer::threshold = Vec3(1.f);
+const Vec3 RayTracer::threshold = Vec3(.1f);
 
 RayTracer::RayTracer(int width, int height)
 {
@@ -156,30 +156,33 @@ void RayTracer::traceRay(node n)
 	Vec3 I = Vec3(mat->ke);
 
 	//ambient
-    /*
-    Gengge: what does this do?
-    Ans: 
-	if (mat->isTransmissive) {
-        I += scene->ambient * mat->ka * mat->rate;
-    } else {
+	if (mat->isTransmissive) 
+	{
+        I += scene->ambient * mat->ka * (1.0f - mat->ior);
+    } 
+	else 
+	{
         I += scene->ambient * mat->ka;
     }
-    */
-    I += scene->ambient * mat->ka;
 	
-	for (Light* l : lights) {
+	for (Light* l : lights) 
+	{
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
 		float NL = dot(intc->normal, L);
                 
         Vec3 diffuse;
-        if (mat->diffuseMap != NULL) { // has diffuse map
+        if (mat->diffuseMap != NULL)
+		{
+			// has diffuse map
             int x = mat->diffuseMap->width() * intc->texCoord.x;
             int y = mat->diffuseMap->height() * intc->texCoord.y;
 
             QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
             diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
-        } else {
+        }
+		else
+		{
             diffuse = (atten * mat->kd * NL);
         }
         
@@ -220,7 +223,7 @@ void RayTracer::traceRay(node n)
 	
 	if (NL > 0)
 	{
-		pn = mat->index_inverse;
+		pn = mat->ior_inverse;
 		float LONG_TERM = pn * NL - sqrt(1 - pn * pn * (1 - NL * NL));
 		Ray* T = new Ray(point, (intc->normal * LONG_TERM + n.ray->dir * pn));
 		node t = {T, n.x, n.y, n.depth + 1, mat->alpha * n.p};
@@ -228,7 +231,7 @@ void RayTracer::traceRay(node n)
 	}
 	else
 	{
-		pn = mat->index;
+		pn = mat->ior;
 		if (1 - pn * pn * (1 - NL * NL) < EPSILON)
 		{
 			return;
@@ -244,6 +247,6 @@ void RayTracer::traceRay(node n)
 
 Vec3 RayTracer::traceRay(int x, int y) 
 {
-	//return traceRay(camera->getCameraRay(x, y), maxDepth);
+//	return traceRay(camera->getCameraRay(x, y), maxDepth);
 	return Vec3(1);
 }
