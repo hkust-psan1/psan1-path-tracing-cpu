@@ -71,6 +71,7 @@ signals:
 
 private:
 	static const int maxDepth = 10;
+	static const Vec3 threshold;
 	int width;
 	int height;
 

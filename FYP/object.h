@@ -21,6 +21,7 @@ public:
     inline void setMaterial(Material* mtl) { mat = mtl; };
     */
 
+    bool smoothShading;
 	Material* mat;
     std::string materialName;
 	BoundingBox* root;

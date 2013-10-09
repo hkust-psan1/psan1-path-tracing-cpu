@@ -8,12 +8,12 @@ void Face::calculateFaceNormal() {
     normal.normalize();
 }
 
-Intersection* Face::intersect(const Ray& r, float t_min)
+Intersection* Face::intersect(const Ray* r, float t_min)
 {
     float det, inv_det, u, v;
     float t;
     
-    Vec3 P = cross(r.dir, e2);
+    Vec3 P = cross(r->dir, e2);
     det = dot(e1, P);
 
 	//no intersection with the plane
@@ -24,7 +24,7 @@ Intersection* Face::intersect(const Ray& r, float t_min)
     
     inv_det = 1.f / det;
     
-    Vec3 T = r.pos - vertices[0]->getPos();
+    Vec3 T = r->pos - vertices[0]->getPos();
     
     u = dot(T, P) * inv_det;
     if (u < 0.f || u > 1.f) {
@@ -34,7 +34,7 @@ Intersection* Face::intersect(const Ray& r, float t_min)
     Vec3 Q = cross(T, e1);
     
     //Calculate V parameter and test bound
-    v = dot(r.dir, Q) * inv_det;
+    v = dot(r->dir, Q) * inv_det;
     
     //The intersection lies outside of the triangle
     if (v < 0.f || u + v  > 1.f) {

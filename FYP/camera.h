@@ -6,7 +6,7 @@
 class Camera {
 public:
     Camera(const Vec3& e, const Vec3& c, const Vec3& u);
-	Ray getCameraRay(int x, int y) const;
+	Ray* getCameraRay(int x, int y) const;
     
     void update();
 	
