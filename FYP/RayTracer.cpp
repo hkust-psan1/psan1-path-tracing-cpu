@@ -5,13 +5,13 @@
 #define EPSILON 0.00001 
 #define SPECULAR_N 64
 
-const Vec3 RayTracer::threshold = Vec3(3.0f);
+const Vec3 RayTracer::threshold = Vec3(1.f);
 
 RayTracer::RayTracer(int width, int height)
 {
 	this->height = height;
 	this->width = width;
-	this->camera = new Camera(Vec3(15, 10, 15), Vec3(0, 0, 0), Vec3(0, 1, 0));
+	this->camera = new Camera(Vec3(15, 10, 16), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setSize(width, height);
 	scene = NULL;
 	colorBuffer = NULL;
@@ -71,12 +71,18 @@ void RayTracer::renderWithGridSize(int gridSize)
             int x = j + offset;
             int y = i + offset;
             
-            Vec3 color = traceRay(camera->getCameraRay(x, y), maxDepth);
+            QRgb color;
+            // if (!pixelRendered[i][j]) {
+                Vec3 colorVec = traceRay(camera->getCameraRay(x, y), maxDepth);
+                color = qRgb(colorVec.x * 255, colorVec.y * 255, colorVec.z * 255);
+            // } else {
+                // color = backBuffer->pixel(j, i);
+            // }
             pixelRendered[i][j] = true; // mark as rendered
             
             for (int k = 0; k < gridSize && i + k < height; k++) {
                 for (int l = 0; l < gridSize && j + l < width; l++) {
-                    backBuffer->setPixel(j + l, i + k, qRgb(color.x * 255, color.y * 255, color.z * 255));
+                    backBuffer->setPixel(j + l, i + k, color);
                 }
             }
         }
@@ -120,6 +126,9 @@ void RayTracer::render()
     pixelRendered = new bool*[height];
     for (int i = 0; i < height; i++) {
         pixelRendered[i] = new bool[width];
+        for (int j = 0; j < width; j++) {
+            pixelRendered[i][j] = false;
+        }
     }
     
     const clock_t begin_time = clock();
@@ -147,27 +156,32 @@ void RayTracer::traceRay(node n)
 	Vec3 I = Vec3(mat->ke);
 
 	//ambient
+    /*
+    Gengge: what does this do?
+    Ans: 
 	if (mat->isTransmissive) {
         I += scene->ambient * mat->ka * mat->rate;
     } else {
         I += scene->ambient * mat->ka;
     }
+    */
+    I += scene->ambient * mat->ka;
 	
 	for (Light* l : lights) {
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
 		float NL = dot(intc->normal, L);
+                
+        Vec3 diffuse;
+        if (mat->diffuseMap != NULL) { // has diffuse map
+            int x = mat->diffuseMap->width() * intc->texCoord.x;
+            int y = mat->diffuseMap->height() * intc->texCoord.y;
 
-		//diffuse
-		Vec3 diffuse = (atten * mat->kd * NL);
-		diffuse.clamp();
-		I += diffuse;
-        
-        // int x = mat->diffuseMap->width() * intc->texCoord.x;
-        // int y = mat->diffuseMap->height() * intc->texCoord.y;
-        
-        // QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
-        // Vec3 diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+            QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
+            diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+        } else {
+            diffuse = (atten * mat->kd * NL);
+        }
         
         diffuse.clamp();
         I += diffuse;
@@ -191,12 +205,12 @@ void RayTracer::traceRay(node n)
 	const float NL = -dot(intc->normal, n.ray->dir);
 	Vec3 ref = intc->normal * (2 * NL) + n.ray->dir;
 	Ray* R = new Ray(point, ref);
-	node r = {R, n.x, n.y, n.depth + 1, mat->kr * n.p};
+	node r = {R, n.x, n.y, n.depth + 1, mat->reflectFactor * n.p};
 	queue.push(r);
 	
 
 	//refraction		
-	if (!mat->isTransmissive)
+	if (abs(mat->alpha - 1) < EPSILON) // alpha is 1
 	{
 		return;
 	}
@@ -209,7 +223,7 @@ void RayTracer::traceRay(node n)
 		pn = mat->index_inverse;
 		float LONG_TERM = pn * NL - sqrt(1 - pn * pn * (1 - NL * NL));
 		Ray* T = new Ray(point, (intc->normal * LONG_TERM + n.ray->dir * pn));
-		node t = {T, n.x, n.y, n.depth + 1, mat->kt * n.p};
+		node t = {T, n.x, n.y, n.depth + 1, mat->alpha * n.p};
 		queue.push(t);
 	}
 	else
@@ -222,7 +236,7 @@ void RayTracer::traceRay(node n)
 		
 		float LONG_TERM = -(pn * (-NL) - sqrt(1 - pn * pn * (1 - NL * NL)));
 		Ray* T = new Ray(point, (intc->normal * LONG_TERM + n.ray->dir * pn));
-		node t = {T, n.x, n.y, n.depth + 1, mat->kt * n.p};
+		node t = {T, n.x, n.y, n.depth + 1, mat->alpha * n.p};
 		queue.push(t);
 	} 
 

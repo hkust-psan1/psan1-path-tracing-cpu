@@ -17,6 +17,7 @@ namespace Parser {
 
 		std::vector<Object*> sceneObjects;
 		Object* currObj = NULL;
+        // Light* currLight = NULL;
 		// std::vector<Vertex*> vertices;
         
         std::vector<Vec3> vertexCoords;
@@ -112,6 +113,9 @@ namespace Parser {
 			} else if (item == "usemtl") { // material
                 getline(ss, item, ' ');
                 currObj->materialName = item;
+            } else if (item == "@smooth") { // smooth shading on or off
+                getline(ss, item, ' ');
+                currObj->smoothShading = (item == "on");
             }
 		}
         
@@ -188,10 +192,27 @@ namespace Parser {
                 }
                 
                 currMat->ks = Vec3(rgb);
-				currMat->kr = Vec3(rgb);
             } else if (item == "map_Kd") {
                 getline(ss, item, ' ');
                 currMat->diffuseMap = new QPixmap(item.c_str());
+            } else if (item == "map_Disp") {
+                getline(ss, item, ' ');
+                currMat->displacementMap = new QPixmap(item.c_str());
+            } else if (item == "map_Ks") {
+                getline(ss, item, ' ');
+                currMat->specularMap = new QPixmap(item.c_str());
+            } else if (item == "Alpha") {
+                getline(ss, item, ' ');
+                currMat->alpha = atof(item.c_str());
+            } else if (item == "IOR") {
+                getline(ss, item, ' ');
+                currMat->ior = atof(item.c_str());
+            } else if (item == "ReflectFactor") {
+                getline(ss, item, ' ');
+                currMat->reflectFactor = atof(item.c_str());
+            } else if (item == "ReflectGloss") {
+                getline(ss, item, ' ');
+                currMat->reflectGloss = atof(item.c_str());
             }
 		}
 		materials.push_back(currMat);
