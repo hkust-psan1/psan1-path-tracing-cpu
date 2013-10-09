@@ -44,6 +44,7 @@ public:
     QWidget *dockWidgetContents;
     QPushButton *pushButton;
     QCheckBox *HBVcheckBox;
+    QCheckBox *AAcheckBox;
 
     void setupUi(QMainWindow *MainWindowClass)
     {
@@ -90,6 +91,10 @@ public:
         HBVcheckBox->setObjectName(QStringLiteral("HBVcheckBox"));
         HBVcheckBox->setGeometry(QRect(20, 80, 51, 21));
         HBVcheckBox->setChecked(true);
+        AAcheckBox = new QCheckBox(dockWidgetContents);
+        AAcheckBox->setObjectName(QStringLiteral("AAcheckBox"));
+        AAcheckBox->setGeometry(QRect(20, 100, 51, 21));
+        AAcheckBox->setChecked(true);
         dockWidget->setWidget(dockWidgetContents);
         MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
 
@@ -123,6 +128,7 @@ public:
         pushButton->setText(QApplication::translate("MainWindowClass", "Render", 0));
         pushButton->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+R", 0));
         HBVcheckBox->setText(QApplication::translate("MainWindowClass", "HBV", 0));
+        AAcheckBox->setText(QApplication::translate("MainWindowClass", "AA", 0));
     } // retranslateUi
 
 };

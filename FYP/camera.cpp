@@ -15,6 +15,6 @@ void Camera::update() {
     cameraUp.normalize();
 }
 
-Ray* Camera::getCameraRay(int x, int y) const {
-    return (new Ray(eye, view + cameraLeft * ((float)x / width - 0.5f) - cameraUp * ((float)y / height - 0.5f)));
+Ray* Camera::getCameraRay(float x, float y) const {
+    return (new Ray(eye, view + cameraLeft * (x / width - 0.5f) - cameraUp * (y / height - 0.5f)));
 }

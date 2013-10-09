@@ -4,6 +4,7 @@
 #include <ctime>
 #define EPSILON 0.00001 
 #define SPECULAR_N 64
+#define A_THRESHOLD 0.7
 
 const Vec3 RayTracer::threshold = Vec3(.1f);
 
@@ -54,7 +55,7 @@ void RayTracer::renderWithGridSize(int gridSize)
 		delete n.ray;
 		queue.pop();
 	}
-
+	
 	for (int i = 0; i < height; i++)
 	{
 		for (int j = 0; j < width; j++)
@@ -87,6 +88,9 @@ void RayTracer::renderWithGridSize(int gridSize)
             }
         }
     }*/
+	
+	AA();
+    std::cout << "Anti-Aliasing" << std::endl;
     
     QImage* tmp = backBuffer;
     backBuffer = frontBuffer;
@@ -138,8 +142,65 @@ void RayTracer::render()
     }
     
     std::cout << "time elapsed: " << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
+
     
     rendering = false;
+}
+
+bool RayTracer::isAliasing(int i, int j)
+{
+	if (i > 0 && (colorBuffer[i - 1][j] - colorBuffer[i][j]).length() > A_THRESHOLD)
+		return true;
+	if (j > 0 && (colorBuffer[i][j - i] - colorBuffer[i][j]).length() > A_THRESHOLD)
+		return true;
+	if (i < width - 1 && (colorBuffer[i + 1][j] - colorBuffer[i][j]).length() > A_THRESHOLD)
+		return true;
+	if (j < height - 1 && (colorBuffer[i][j + 1] - colorBuffer[i][j]).length() > A_THRESHOLD)
+		return true;
+	return false;
+}
+
+void RayTracer::AA()
+{
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			if (isAliasing(j, i))
+			{
+				colorBuffer[i][j] = Vec3(0.0);
+				Ray* r1 = camera->getCameraRay(i + 0.5, j);
+				node n1 = {r1, i, j, 0, Vec3(0.25f)};
+				queue.push(n1);				
+				Ray* r2 = camera->getCameraRay(i - 0.5, j);
+				node n2 = {r2, i, j, 0, Vec3(0.25f)};
+				queue.push(n2);
+				Ray* r3 = camera->getCameraRay(i, j + 0.5);
+				node n3 = {r3, i, j, 0, Vec3(0.25f)};
+				queue.push(n3);				
+				Ray* r4 = camera->getCameraRay(i, j - 0.5);
+				node n4 = {r4, i, j, 0, Vec3(0.25f)};
+				queue.push(n4);
+			}
+		}
+	}
+	
+	while(!queue.empty())
+	{
+		node n = queue.front();
+		traceRay(n);
+		//std::cout << queue.size() << std::endl;
+		delete n.ray;
+		queue.pop();
+	}
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			backBuffer->setPixel(j, i, qRgb(colorBuffer[j][i].x * 255, colorBuffer[j][i].y * 255, colorBuffer[j][i].z * 255));
+		}
+	}
 }
 
 void RayTracer::traceRay(node n) 

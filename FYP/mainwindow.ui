@@ -109,6 +109,22 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QCheckBox" name="AAcheckBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>AA</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
   </widget>
   <action name="actionLoad_Scene">
