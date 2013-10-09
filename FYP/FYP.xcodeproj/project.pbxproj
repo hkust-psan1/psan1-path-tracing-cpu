@@ -321,7 +321,7 @@
 					/Library/Frameworks,
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/QtCore.framework/Versions/4/Headers,
 					/usr/include/QtCore,
@@ -370,7 +370,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				PRODUCT_NAME = FYP;
 			};
 			name = Release;
@@ -380,7 +380,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				PRODUCT_NAME = FYP;
 			};
 			name = Debug;
@@ -395,7 +395,7 @@
 					/Library/Frameworks,
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/QtCore.framework/Versions/4/Headers,
 					/usr/include/QtCore,
