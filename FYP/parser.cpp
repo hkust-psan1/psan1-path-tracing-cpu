@@ -206,7 +206,9 @@ namespace Parser {
                 currMat->alpha = atof(item.c_str());
             } else if (item == "IOR") {
                 getline(ss, item, ' ');
-                currMat->ior = atof(item.c_str());
+                currMat->ior = atof(item.c_str());		
+				currMat->ior_inverse = 1.0f / currMat->ior;
+				currMat->isTransmissive = currMat->ior == 1.0f;
             } else if (item == "ReflectFactor") {
                 getline(ss, item, ' ');
                 currMat->reflectFactor = atof(item.c_str());
