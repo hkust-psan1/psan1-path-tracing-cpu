@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "object.h"
+#include "light.h"
 #include "scene.h"
 using namespace std;
 
