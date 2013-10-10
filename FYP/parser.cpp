@@ -16,8 +16,9 @@ namespace Parser {
 		}
 
 		std::vector<Object*> sceneObjects;
+        std::vector<Light*> sceneLights;
 		Object* currObj = NULL;
-        // Light* currLight = NULL;
+        PointLight* currLight = NULL;
 		// std::vector<Vertex*> vertices;
         
         std::vector<Vec3> vertexCoords;
@@ -116,11 +117,47 @@ namespace Parser {
             } else if (item == "@smooth") { // smooth shading on or off
                 getline(ss, item, ' ');
                 currObj->smoothShading = (item == "on");
+            } else if (item == "l") {
+                if (currLight) {
+                    sceneLights.push_back(currLight);
+                }
+                
+                getline(ss, item, ' ');
+                string name = item;
+                getline(ss, item, ' ');
+                string lightType = item;
+                
+                if (lightType == "POINT") {
+                    currLight = new PointLight;
+                }
+                
+            } else if (item == "pos") {
+                float pos[3];
+                
+				for (int i = 0; getline(ss, item, ' '); i++) {
+					pos[i] = atof(item.c_str());
+				}
+                
+                currLight->position = Vec3(pos[0], pos[2], pos[1]);
+            } else if (item == "color") {
+                float c[3];
+                
+				for (int i = 0; getline(ss, item, ' '); i++) {
+					c[i] = atof(item.c_str());
+				}
+                
+                currLight->color = Vec3(c);
+            } else if (item == "energy") {
+                getline(ss, item, ' ');
+                currLight->energy = atof(item.c_str());
             }
 		}
         
 		sceneObjects.push_back(currObj); // add the last object to the list
 		Scene* s = new Scene(sceneObjects);
+        
+        sceneLights.push_back(currLight);
+        s->lights = sceneLights;
         
         /* DO move this piece of code to other places!!! */
         for (Object* obj : s->getObjects()) {
@@ -150,6 +187,17 @@ namespace Parser {
 
 	void parseMtlFile(std::string filename, Scene* scene) {
 		std::ifstream input(filename.c_str());
+        
+        string directory;
+        int tmp, pos = 0;
+        int lastIndex;
+
+        while ((tmp = filename.find('/', pos)) != string::npos) {
+            pos = tmp + 1;
+            lastIndex = tmp;
+        }
+        
+        directory = filename.substr(0, lastIndex);        
 
 		if (!input) { // file does not exist
 			throw "file does not exist";
@@ -194,13 +242,16 @@ namespace Parser {
                 currMat->ks = Vec3(rgb);
             } else if (item == "map_Kd") {
                 getline(ss, item, ' ');
-                currMat->diffuseMap = new QPixmap(item.c_str());
+                QPixmap map((directory + "/" + item).c_str());
+                currMat->diffuseMap = new QImage(map.toImage());
             } else if (item == "map_Disp") {
                 getline(ss, item, ' ');
-                currMat->displacementMap = new QPixmap(item.c_str());
+                QPixmap map((directory + "/" + item).c_str());
+                currMat->displacementMap = new QImage(map.toImage());
             } else if (item == "map_Ks") {
                 getline(ss, item, ' ');
-                currMat->specularMap = new QPixmap(item.c_str());
+                QPixmap map((directory + "/" + item).c_str());
+                currMat->specularMap = new QImage(map.toImage());
             } else if (item == "Alpha") {
                 getline(ss, item, ' ');
                 currMat->alpha = atof(item.c_str());

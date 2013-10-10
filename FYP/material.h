@@ -21,9 +21,9 @@ public:
     float reflectFactor;
     float reflectGloss;
     
-    QPixmap* diffuseMap;
-    QPixmap* specularMap;
-    QPixmap* displacementMap;
+    QImage* diffuseMap;
+    QImage* specularMap;
+    QImage* displacementMap;
 };
 
 #endif
