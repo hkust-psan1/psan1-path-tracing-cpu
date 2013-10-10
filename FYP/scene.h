@@ -5,6 +5,8 @@
 #include "intersection.h"
 #include "ray.h"
 
+class Light;
+
 class Scene 
 {
 public:
@@ -16,8 +18,9 @@ public:
 	static void setAmbient(Vec3 a) { ambient = a; }
 	void buildBox();
 	BoundingBox* root;
-private:
+
 	std::vector<Object*> objects;
+    std::vector<Light*> lights;
 };
 
 #endif

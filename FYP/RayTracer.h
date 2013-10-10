@@ -36,8 +36,6 @@ public:
 	Vec3 traceRay(int x, int y);
 	inline void setScene(Scene* scene) { this->scene = scene; };
 	inline bool sceneLoaded() { return scene != NULL; };
-
-	inline void addLight(Light* l) { lights.push_back(l); };
 	
     inline Camera* getCamera() const { return camera; };
 	
@@ -77,7 +75,6 @@ private:
 
 	Camera* camera;
 	Scene* scene;
-	std::vector<Light*> lights;
 	MainWindow* window;
 	
     bool** pixelRendered;

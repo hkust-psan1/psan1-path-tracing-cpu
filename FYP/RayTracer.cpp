@@ -165,21 +165,37 @@ void RayTracer::traceRay(node n)
         I += scene->ambient * mat->ka;
     }
 	
-	for (Light* l : lights) 
+	for (Light* l : scene->lights)
 	{
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
-		float NL = dot(intc->normal, L);
+		
+        Vec3 normal;
+        
+        if (mat->displacementMap) {
+            /*
+            int x = mat->displacementMap->width() * intc->texCoord.x;
+            int y = mat->displacementMap->height() * intc->texCoord.y;
+            
+            QColor normalColor = mat->displacementMap->pixel(x, y);
+            normal = Vec3(normalColor.red() / 255.0, normalColor.green() / 255.0,
+                normalColor.blue() / 255.0);
+            */
+            normal = intc->normal;
+        } else {
+            normal = intc->normal;
+        }
+        
+        float NL = dot(normal, L);
                 
         Vec3 diffuse;
-        if (mat->diffuseMap != NULL)
+        if (mat->diffuseMap != NULL) // has diffuse map
 		{
-			// has diffuse map
             int x = mat->diffuseMap->width() * intc->texCoord.x;
             int y = mat->diffuseMap->height() * intc->texCoord.y;
-
-            QColor diffuseColor = mat->diffuseMap->toImage().pixel(x, y);
-            diffuse = atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+            
+            QColor diffuseColor = mat->diffuseMap->pixel(x, y);
+            diffuse = l->energy * atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
         }
 		else
 		{
@@ -192,8 +208,20 @@ void RayTracer::traceRay(node n)
 		//specular
 		Vec3 R = intc->normal * (2 * NL) - L;
 		double RV = -dot(R, n.ray->dir);
-
-		I += (atten * pow(RV, SPECULAR_N)) * mat->ks;
+        
+        Vec3 ks;
+        
+        if (mat->specularMap != NULL) { // has specular map
+            int x = mat->specularMap->width() * intc->texCoord.x;
+            int y = mat->specularMap->height() * intc->texCoord.y;
+            
+            QColor specularity = mat->specularMap->pixel(x, y);
+            ks = Vec3(specularity.red() / 255.0);
+        } else {
+            ks = mat->ks;
+        }
+        
+        I += (atten * pow(RV, SPECULAR_N)) * ks;
 	}
 
 	I.clamp();
