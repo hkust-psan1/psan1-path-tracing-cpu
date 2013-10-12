@@ -192,7 +192,7 @@ namespace Parser {
         int tmp, pos = 0;
         int lastIndex;
 
-        while ((tmp = filename.find('/', pos)) != string::npos) {
+        while ((tmp = filename.find(SLASH, pos)) != string::npos) {
             pos = tmp + 1;
             lastIndex = tmp;
         }
@@ -259,7 +259,13 @@ namespace Parser {
                 getline(ss, item, ' ');
                 currMat->ior = atof(item.c_str());		
 				currMat->ior_inverse = 1.0f / currMat->ior;
-				currMat->isTransmissive = currMat->ior == 1.0f;
+                
+                if (abs(currMat->ior - 1.0f) < 0.0001f) {
+                    currMat->isTransmissive = false;
+                } else {
+                    currMat->isTransmissive = true;
+                }
+                
             } else if (item == "ReflectFactor") {
                 getline(ss, item, ' ');
                 currMat->reflectFactor = atof(item.c_str());

@@ -35,7 +35,7 @@ public:
 	void traceRay(node n);
 	void AA();
 	bool isAliasing(int i, int j);
-	Vec3 traceRay(int x, int y);
+	void traceRay(int x, int y);
 	inline void setScene(Scene* scene) { this->scene = scene; };
 	inline bool sceneLoaded() { return scene != NULL; };
 	
