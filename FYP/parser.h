@@ -7,6 +7,12 @@
 #include "scene.h"
 using namespace std;
 
+#ifdef _WIN32 || _WIN64
+    #define SLASH '\\'
+#else
+    #define SLASH '/'
+#endif
+
 namespace Parser {
     Scene* parseScene(std::string filename);
     

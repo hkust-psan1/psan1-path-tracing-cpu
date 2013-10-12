@@ -12,7 +12,7 @@ Intersection* Face::intersect(const Ray* r, float t_min)
 {
     float det, inv_det, u, v;
     float t;
-    
+
     Vec3 P = cross(r->dir, e2);
     det = dot(e1, P);
 
@@ -43,11 +43,20 @@ Intersection* Face::intersect(const Ray* r, float t_min)
     
     t = dot(e2, Q) * inv_det;
     
-	Vec3 N = vertices[1]->getNormal() * u + vertices[2]->getNormal() * v + vertices[0]->getNormal() * (1 - u - v);
+    Vec3 N;
+    if (obj->smoothShading) {
+        N = vertices[1]->getNormal() * u + vertices[2]->getNormal() * v + vertices[0]->getNormal() * (1 - u - v);
+    } else {
+        N = normal;
+    }
+    N.normalize();
+    // cout << N.length() << endl;
+    // cout << u << '\t' << v << endl;
+
     Vec3 texCoord = vertices[1]->getTexCoords() * u + vertices[2]->getTexCoords() * v + vertices[0]->getTexCoords() * (1 - u - v);
 
-    if(t > EPSILON && t < t_min) { //ray intersection
-		Intersection* i = new Intersection(obj, obj->mat, normal, texCoord, t);
+    if(t > EPSILON && t < t_min) { // ray intersection
+		Intersection* i = new Intersection(obj, obj->mat, N, texCoord, t);
         return i;
     }
     
