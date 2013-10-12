@@ -1,8 +1,6 @@
 #ifndef __RAYTRACER_H__
 #define __RAYTRACER_H__
 
-// The main ray tracer.
-
 #include "ray.h"
 #include "vec3.h"
 #include "camera.h"
