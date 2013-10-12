@@ -303,9 +303,13 @@ void RayTracer::traceRay(node n)
 	// reflection
 	const float NL = -dot(intc->normal, n.ray->dir);
 	Vec3 ref = intc->normal * (2 * NL) + n.ray->dir;
-	Ray* R = new Ray(point, ref);
-	node r = {R, n.x, n.y, n.depth + 1, mat->reflectFactor * n.p};
-	queue.push(r);
+	// Ray* R = new Ray(point, ref);
+    
+    for (int i = 0; i < 5; i++) {
+        Ray* R = new Ray(point, ref.randomize(0.1f));
+        node r = {R, n.x, n.y, n.depth + 1, mat->reflectFactor * n.p * 0.2f};
+        queue.push(r);
+    }
 
 	//refraction		
 	if (abs(mat->alpha - 1) < EPSILON) // alpha is 1

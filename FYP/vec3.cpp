@@ -97,6 +97,30 @@ Vec3 cross(const Vec3& v1, const Vec3& v2) {
 		v1.x * v2.y - v1.y * v2.x);
 }
 
+std::ostream& operator<<(std::ostream& os, const Vec3& v) {
+    os << v.x << '\t' << v.y << '\t' << v.z << std::endl;
+    return os;
+};
+
+Vec3 Vec3::randomize(float r) {
+    Vec3 u = *this;
+    u.x += 1; // create a vector not parallel to v
+    
+    Vec3 e1 = cross(u, *this);
+    Vec3 e2 = cross(*this, e1);
+    
+    e1.normalize();
+    e2.normalize();
+    
+    float rand1 = (float)rand() / (float)RAND_MAX * r;
+    float rand2 = (float)rand() / (float)RAND_MAX * r;
+    
+    Vec3 randVec = *this + e1 * rand1 + e2 * rand2;
+    randVec.normalize();
+    
+    return randVec;
+}
+
 float& Vec3::operator[](int n)
 {
 	switch(n)

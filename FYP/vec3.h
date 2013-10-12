@@ -33,10 +33,9 @@ public:
 	friend float dot(const Vec3& v1, const Vec3& v2);
 	friend Vec3 cross(const Vec3& v1, const Vec3& v2);
 
-	friend std::ostream& operator<<(std::ostream& os, const Vec3& v) {
-		os << v.x << '\t' << v.y << '\t' << v.z << std::endl;
-		return os;
-	}
+	friend std::ostream& operator<<(std::ostream& os, const Vec3& v);
+        
+    Vec3 randomize(float r);
 
 	float x;
 	float y;
