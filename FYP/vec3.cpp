@@ -71,6 +71,10 @@ bool operator<(const Vec3& v1, const Vec3& v2) {
 	return v1.x < v2.x && v1.y < v2.y && v1.z < v2.z;
 }
 
+bool operator>(const Vec3& v1, const Vec3& v2) {
+    return v1.x > v2.x && v1.y > v2.y && v1.z > v2.z;
+}
+
 Vec3 operator+(const Vec3& v1, const Vec3& v2) {
 	return Vec3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
@@ -112,8 +116,8 @@ Vec3 Vec3::randomize(float r) {
     e1.normalize();
     e2.normalize();
     
-    float rand1 = (float)rand() / (float)RAND_MAX * r;
-    float rand2 = (float)rand() / (float)RAND_MAX * r;
+    float rand1 = (float)rand() / (float)RAND_MAX * r - (r / 2);
+    float rand2 = (float)rand() / (float)RAND_MAX * r - (r / 2);
     
     Vec3 randVec = *this + e1 * rand1 + e2 * rand2;
     randVec.normalize();

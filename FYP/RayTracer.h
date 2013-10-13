@@ -8,80 +8,29 @@
 #include "parser.h"
 #include "scene.h"
 #include "light.h"
-#include "qobject.h"
-#include <queue>
 
-class MainWindow;
-
-struct node
-{
-	Ray* ray;
-	int x;
-	int y;
-	int depth;
-	Vec3 p;
-};
+class RenderNode;
+class RenderManager;
 
 class RayTracer : public QObject {
     Q_OBJECT
 public:
     RayTracer(QObject* parent = 0) : QObject(parent) { };
-	RayTracer(int width, int height);
-	~RayTracer();
+    RayTracer(RenderManager* m, int tid);
 
-    // Vec3 trace(double x, double y );
-	void traceRay(node n);
-	void AA();
-	bool isAliasing(int i, int j);
-	void traceRay(int x, int y);
-	inline void setScene(Scene* scene) { this->scene = scene; };
-	inline bool sceneLoaded() { return scene != NULL; };
-	
-    inline Camera* getCamera() const { return camera; };
-	
-    void renderWithGridSize(int gridSize);
-
-    /*
-	inline void setMaxDepth(int m) { maxDepth = m; }
-	void getBuffer( unsigned char *&buf, int &w, int &h );
-	double aspectRatio();
-	void traceSetup( int w, int h );
-	void traceLines( int start = 0, int stop = 10000000 );
-	void tracePixel( int i, int j );
-	void antiAliasing(int part);
-	*/
-
-	// bool loadScene( char* fn );
-	
-    inline void setMainWindow(MainWindow* w) { window = w; };
-	
-	
-    inline void stopRendering() { rendering = false; };
-
-    QImage* frontBuffer;
-    QImage* backBuffer;
-	
+	Vec3 traceRay(RenderNode* n);
+    inline void setTask(RenderNode* t) { task = t; };
 public slots:
-	void render();
+	void run();
     
 signals:
-    void rowCompleted();
-
-private:
-	static const int maxDepth = 10;
-	static const Vec3 threshold;
-	int width;
-	int height;
-
-	Camera* camera;
-	Scene* scene;
-	MainWindow* window;
-	
-    bool** pixelRendered;
-	Vec3** colorBuffer;
-	std::queue<node> queue;
+    void rayTraced(int x, int y, Vec3 color);
+    void completed();
     
-    bool rendering;
+private:
+    RenderManager* manager;
+    RenderNode* task;
+    int tracerId; // to identify the tracer
 };
 
 #endif // __RAYTRACER_H__

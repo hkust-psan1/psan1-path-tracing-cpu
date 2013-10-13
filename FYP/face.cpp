@@ -50,8 +50,6 @@ Intersection* Face::intersect(const Ray* r, float t_min)
         N = normal;
     }
     N.normalize();
-    // cout << N.length() << endl;
-    // cout << u << '\t' << v << endl;
 
     Vec3 texCoord = vertices[1]->getTexCoords() * u + vertices[2]->getTexCoords() * v + vertices[0]->getTexCoords() * (1 - u - v);
 

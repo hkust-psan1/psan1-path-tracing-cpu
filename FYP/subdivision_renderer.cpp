@@ -15,7 +15,7 @@ void SubdivisionRenderer::render() {
 }
 
 void SubdivisionRenderer::renderAtCurrDepth() {
-    int gridSize = 64 / pow(2, currDepth);
+    int gridSize = 64 / pow(2, float(currDepth));
     int offset = gridSize / 2;
     
     for (int i = 0; i < height; i += gridSize) {
