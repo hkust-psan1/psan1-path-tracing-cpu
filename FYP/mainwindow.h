@@ -10,13 +10,12 @@
 #endif
 
 #include <QMessageBox>
-#include <QThread>
 #include <QKeyEvent>
 #include "ui_mainwindow.h"
 #include "qfiledialog.h"
 #include "QGraphicsScene.h"
 #include "parser.h"
-#include "RayTracer.h"
+#include "rendering_thread_manager.h"
 
 class MainWindow : public QMainWindow
 {
@@ -39,7 +38,6 @@ signals:
     void pressed();
 	
 protected:
-    void keyPressEvent(QKeyEvent* event);    
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void wheelEvent(QWheelEvent* event);
@@ -48,8 +46,7 @@ private:
 	Ui::MainWindowClass ui;
 	QPixmap pixmap;
 	
-	RayTracer* tracer;
-	
+	RenderManager* renderManager;
     QThread* rendererThread;
     
     bool frameReady;

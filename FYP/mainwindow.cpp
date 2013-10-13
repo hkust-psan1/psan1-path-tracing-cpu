@@ -4,10 +4,11 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
+    qRegisterMetaType<Vec3>("Vec3");
 	ui.setupUi(this);
 	QSize size = ui.pixmapLabel->size();
-	tracer = new RayTracer(size.width() - 2, size.height() - 2);
-	tracer->setMainWindow(this);
+    renderManager = new RenderManager(size.width() - 2, size.height() - 2, 4);
+
     lastPos = NULL;
 }
 
@@ -21,13 +22,7 @@ void MainWindow::load_scene()
 	QString filename = QFileDialog::getOpenFileName(this, "Load Scene",  QDir::currentPath(), "Wavefront Object File(*.obj);;All files(*.*)");
 	if (!filename.isNull()) 
 	{
-		tracer->setScene(Parser::parseScene(filename.toStdString().c_str()));
-        /*
-		PointLight* l1 = new PointLight(Vec3(14, 9, 6), Vec3(1, 1, 1));
-		PointLight* l2 = new PointLight(Vec3(15, 15, 15), Vec3(1, 1, 1));
-		tracer->addLight(l1);
-		tracer->addLight(l2);
-        */
+		renderManager->setScene(Parser::parseScene(filename.toStdString().c_str()));
 	}
 }
 
@@ -38,17 +33,18 @@ void MainWindow::about()
 
 void MainWindow::render()
 {
-	if (!tracer->sceneLoaded()) {
+	if (!renderManager->sceneLoaded()) {
         return;
 	}
+    
 	Setting::HBV = ui.HBVcheckBox->isChecked();
 
 	rendererThread = new QThread;
 
-	tracer->moveToThread(rendererThread);
-	connect(rendererThread, SIGNAL(started()), tracer, SLOT(render()));
-	connect(tracer, SIGNAL(rowCompleted()), this, SLOT(updateScreen()));
-	// connect(rendererThread, SIGNAL(finished()), this, SLOT(threadTerminated()));
+	renderManager->moveToThread(rendererThread);
+	connect(rendererThread, SIGNAL(started()), renderManager, SLOT(render()));
+	connect(renderManager, SIGNAL(updateScreen()), this, SLOT(updateScreen()));
+	// connect(rendererThread, SIGNAL(terminate()), this, SLOT(threadTerminated()));
 	
     frameReady = false;
     
@@ -61,53 +57,39 @@ void MainWindow::threadTerminated() {
 }
 
 void MainWindow::updateScreen() {
-	pixmap = QPixmap::fromImage(*tracer->frontBuffer);
+	pixmap = QPixmap::fromImage(*renderManager->getFrontBuffer());
 	ui.pixmapLabel->setPixmap(pixmap);
     
     frameReady = true;
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event) {
+void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     if (frameReady) {
-        Camera* cam = tracer->getCamera();
-        
-        if (event->key() == Qt::Key_Left) {
-            cam->setEyePos(cam->getEyePos() - Vec3(0.3, 0, 0));
-            tracer->stopRendering();
-            render();
-        } else if (event->key() == Qt::Key_Right) {
-            cam->setEyePos(cam->getEyePos() + Vec3(0.3, 0, 0));
-            tracer->stopRendering();
-            render();
+        if (lastPos == NULL) {
+            lastPos = new QPoint(event->pos());
         }
-    }
-}
-
-void MainWindow::mouseMoveEvent(QMouseEvent *event) {    
-    if (lastPos == NULL) {
-        lastPos = new QPoint(event->pos());
-    }
-    
-    Camera* cam = tracer->getCamera();
         
-    int xDiff = event->x() - lastPos->x();
-    int yDiff = event->y() - lastPos->y();
-    
-    Vec3 eye = cam->getEyePos();
-    Vec3 ctr = cam->getCenterPos();
-    
-    float newX = (eye.x - ctr.x) * cos(xDiff / 30.0) - (eye.z - ctr.z) * sin(xDiff / 30.0);
-    float newY = (eye.z - ctr.z) * cos(xDiff / 30.0) + (eye.x - ctr.x) * sin(xDiff / 30.0);
-    
-    cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
-    cam->update();
-      
-    tracer->stopRendering();
-    render();
-
-    lastPos = new QPoint(event->pos());
-    lastX = event->x();
-    lastY = event->y();
+        Camera* cam = renderManager->getCamera();
+        
+        int xDiff = event->x() - lastPos->x();
+        int yDiff = event->y() - lastPos->y();
+        
+        Vec3 eye = cam->getEyePos();
+        Vec3 ctr = cam->getCenterPos();
+        
+        float newX = (eye.x - ctr.x) * cos(xDiff / 30.0) - (eye.z - ctr.z) * sin(xDiff / 30.0);
+        float newY = (eye.z - ctr.z) * cos(xDiff / 30.0) + (eye.x - ctr.x) * sin(xDiff / 30.0);
+        
+        cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
+        cam->update();
+        
+        renderManager->stopRendering();
+        render();
+        
+        lastPos = new QPoint(event->pos());
+        lastX = event->x();
+        lastY = event->y();
+    }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -115,16 +97,18 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 	if (event->button() != Qt::RightButton)
 		return;
 
-	tracer->traceRay(event->x() - 85, event->y() - 35);
+	// tracer->traceRay(event->x() - 85, event->y() - 35);
 }
 
 
 void MainWindow::wheelEvent(QWheelEvent *event) {
-    Camera* cam = tracer->getCamera();
-    Vec3 view = cam->getEyePos() - cam->getCenterPos();
-
-    cam->setEyePos(cam->getCenterPos() + view * (1 - event->delta() * 0.001));
-    
-    tracer->stopRendering();
-    render();
+    if (frameReady) {
+        Camera* cam = renderManager->getCamera();
+        Vec3 view = cam->getEyePos() - cam->getCenterPos();
+        
+        cam->setEyePos(cam->getCenterPos() + view * (1 - event->delta() * 0.001));
+        
+        renderManager->stopRendering();
+        render();
+    }
 }
