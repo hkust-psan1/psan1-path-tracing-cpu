@@ -3,7 +3,7 @@
 
 RenderManager::RenderManager(int w, int h, int n)
 : width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(n) {
-    camera = new Camera(Vec3(15, 10, 16), Vec3(0, 0, 0), Vec3(0, 1, 0));
+    camera = new Camera(Vec3(15, 10, 20), Vec3(0, 0, 0), Vec3(0, 1, 0));
     camera->setSize(w, h);
     
     frontBuffer = new QImage(w, h, QImage::Format_RGB32);
@@ -20,17 +20,19 @@ RenderManager::~RenderManager() {
 
 void RenderManager::addTask(RenderNode *n) {
     taskQueueMutex.lock();
-    if (n == NULL) {
-        printf("fuck\n");
-    }
     tasks.push(n);
     taskQueueMutex.unlock();
 }
 
 RenderNode* RenderManager::getTask() {
     taskQueueMutex.lock();
-    RenderNode* task = tasks.front();
-    tasks.pop();
+    RenderNode* task;
+    if (tasks.size() > 0) {
+         task = tasks.front();
+        tasks.pop();
+    } else {
+        task = NULL;
+    }
     taskQueueMutex.unlock();
     return task;
 }
@@ -47,7 +49,7 @@ void RenderManager::render() {
     
     rendering = true;
     
-    printf("%d\n", tasks.size());
+    // printf("%d\n", tasks.size());
     while (!tasks.empty()) {
         tasks.pop();
     }

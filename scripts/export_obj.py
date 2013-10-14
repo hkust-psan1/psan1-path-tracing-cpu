@@ -62,17 +62,24 @@ def write_mtl(scene, filepath, path_mode, copy_set, mtl_dict):
     fw('# Material Count: %i\n' % len(mtl_dict))
 
     ################### cracking #######################
+    """
     fw('\n\n')
     for i in dir(scene.objects):
         # fw('%s: %s' % (str(i), str(getattr(scene.objects, str(i)))))
         fw(str(i))
         fw('\n')
     fw('\n\n')
+    """
 
+    """
     for o in scene.objects:
+        fw(o.type)
+        fw('\n')
+
         for i in dir(o):
             fw(str(i))
             fw('\n')
+            """
     fw('\n\n')
     ################### end of cracking #######################
 
@@ -283,7 +290,6 @@ def write_nurb(fw, ob, ob_mat):
 
     return tot_verts
 
-
 def write_file(filepath, objects, scene,
                EXPORT_TRI=False,
                EXPORT_EDGES=False,
@@ -372,6 +378,29 @@ def write_file(filepath, objects, scene,
 
     # Get all meshes
     for ob_main in objects:
+
+        if ob_main.type == 'LAMP':
+            lamp_pos = ob_main.matrix_world.to_translation()
+
+            lamp_data = ob_main.data
+            lamp_type = lamp_data.type
+            lamp_energy = lamp_data.energy
+            lamp_color = lamp_data.color
+
+            fw('\nl %s %s\n' % (ob_main.name, lamp_type))
+            fw('pos %.6f %.6f %.6f\n' % (lamp_pos[0], lamp_pos[1], lamp_pos[2]))
+            # fw('type %s\n' % lamp_type)
+            fw('energy %.6f\n' % lamp_energy)
+            fw('color %.6f %.6f %.6f\n' % (lamp_color[0], lamp_color[1], lamp_color[2]))
+
+            """
+            fw(str(lamp_data.energy))
+            fw('\n')
+            fw('\n\n')
+            for i in dir(ob_main.data):
+                fw(str(i))
+                fw('\n')
+                """
 
         # ignore dupli children
         if ob_main.parent and ob_main.parent.dupli_type in {'VERTS', 'FACES'}:

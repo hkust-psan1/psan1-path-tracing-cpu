@@ -50,6 +50,7 @@ public:
     int maxDepth;
     Vec3 threshold;
     Vec3** colorBuffer;
+    QMutex taskQueueMutex;
 public slots:
     /* triggered by the mainwindow */
     void render();
@@ -65,7 +66,6 @@ signals:
 private:
     void refreshColorBuffer();
     
-    QMutex taskQueueMutex;
     QThread** renderingThreads;
     RayTracer** tracers;
     queue<RenderNode*> tasks;
