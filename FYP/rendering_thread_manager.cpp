@@ -1,7 +1,7 @@
 #include "rendering_thread_manager.h"
 
 RenderManager::RenderManager(int w, int h, int n)
-: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfRenderedNodes(0), numOfThreads(n) {
+: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(n) {
     camera = new Camera(Vec3(15, 10, 20), Vec3(0, 0, 0), Vec3(0, 1, 0));
     camera->setSize(w, h);
     
@@ -43,6 +43,28 @@ bool RenderManager::noTask() {
     return empty;
 }
 
+void RenderManager::setPixelData(int x, int y, const Vec3& color) {
+    PixelData& data = colorBuffer[x][y];
+    if (data.rendered) {
+        data.color += color;
+    } else {
+        data.color = color;
+        data.rendered = true;
+    }
+    data.color.clamp();
+    
+    if (numOfRenderedNodes++ % 50000 == 0) {
+        draw();
+    }
+}
+
+void RenderManager::stopRendering() {
+    rendering = false;
+    for (int i = 0; i < numOfThreads; i++) {
+        renderingThreads[i]->terminate();
+    }
+}
+
 void RenderManager::clearTasks() {
     taskQueueMutex.lock();
     while (tasks.size() > 0) {
@@ -55,14 +77,14 @@ void RenderManager::render() {
     current_utc_time(&start);
     
     rendering = true;
+    numOfRenderedNodes = 0;
+    completedTracerCount = 0;
     
     while (!tasks.empty()) {
         tasks.pop();
     }
     
     refreshColorBuffer();
-    
-    completedTracerCount = 0;
     
     /* initialize render nodes for the primary rays from the camera */
     /*
@@ -95,7 +117,6 @@ void RenderManager::render() {
                 }
             }
         }
-        // cout << distance << endl;
         
         if (!nodeAdded) {
             break;
@@ -103,7 +124,6 @@ void RenderManager::render() {
         
         distance++;
     }
-    // cout << tasks.size() << endl;
     
     /* initialize all the tracers and threads */
     tracers = new RayTracer*[numOfThreads];
@@ -131,42 +151,49 @@ void RenderManager::tracerRayCompleted(int x, int y, Vec3 c) {
 }
 
 void RenderManager::tracerCompleted() {
-    // if (++completedTracerCount == numOfThreads) {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                backBuffer->setPixel(j, i, qRgb(colorBuffer[j][i].x * 255,
-                    colorBuffer[j][i].y * 255, colorBuffer[j][i].z * 255));
-            }
-        }
+    if (++completedTracerCount == numOfThreads) {
+        // rendering = false;
+        draw();
+    }
         
-        QImage* tmp = backBuffer;
-        backBuffer = frontBuffer;
-        frontBuffer = tmp;
-        rendering = false;
-        emit updateScreen();
-        // current_utc_time(&end);
-        /*
-        printf("s:  %lu\n", end.tv_sec - start.tv_sec);
-        printf("ns: %lu\n", end.tv_sec - start.tv_nsec);
-        */
-        // cout << "time elapsed: " << float(clock() - startTime) / CLOCKS_PER_SEC << endl;
-    // }
+    // current_utc_time(&end);
+    /*
+     printf("s:  %lu\n", end.tv_sec - start.tv_sec);
+     printf("ns: %lu\n", end.tv_sec - start.tv_nsec);
+     */
+    // cout << "time elapsed: " << float(clock() - startTime) / CLOCKS_PER_SEC << endl;
+}
+
+void RenderManager::draw() {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            backBuffer->setPixel(j, i, qRgb(colorBuffer[j][i].color.x * 255,
+                colorBuffer[j][i].color.y * 255, colorBuffer[j][i].color.z * 255));
+        }
+    }
+    
+    QImage* tmp = backBuffer;
+    backBuffer = frontBuffer;
+    frontBuffer = tmp;
+    
+    emit updateScreen();
 }
 
 void RenderManager::refreshColorBuffer() {
     if (colorBuffer == NULL) {
-        colorBuffer = new Vec3*[height];
+        colorBuffer = new PixelData*[height];
         for (int i = 0; i < height; i++) {
-            colorBuffer[i] = new Vec3[width];
+            colorBuffer[i] = new PixelData[width];
             for (int j = 0; j < width; j++) {
-                colorBuffer[i][j] = Vec3(0.f);
+                colorBuffer[i][j] = PixelData(Vec3(0.f));
             }
         }
     }
     
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            colorBuffer[i][j] = Vec3(0.f);
+            // colorBuffer[i][j].color(Vec3(0.f));
+            colorBuffer[i][j].rendered = false;
         }
     }
 }

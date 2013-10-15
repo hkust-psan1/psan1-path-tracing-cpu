@@ -15,14 +15,20 @@
 
 class MainWindow;
 
-class RenderNode {
-public:
+struct RenderNode {
     RenderNode(Ray* r, int x, int y, int d, Vec3 p) : ray(r), x(x), y(y), depth(d), p(p) {};
 	Ray* ray;
 	int x;
 	int y;
 	int depth;
 	Vec3 p;
+};
+
+struct PixelData {
+    PixelData(): color(Vec3(0.f)), rendered(false) {};
+    PixelData(const Vec3& c): color(c), rendered(false) {};
+    Vec3 color;
+    bool rendered;
 };
 
 class RenderManager : public QObject {
@@ -36,8 +42,10 @@ public:
     void addTask(RenderNode* n);
     bool noTask();
     void clearTasks();
+    void setPixelData(int x, int y, const Vec3& color);
+    void stopRendering();
     
-    inline void stopRendering() { rendering = false; };
+    inline bool isRendering() const { return rendering; };
     inline void setScene(Scene* s) { scene = s; };
 	inline bool sceneLoaded() const { return scene != NULL; };
     inline void setMainWindow(MainWindow* w) { window = w; };
@@ -50,7 +58,7 @@ public:
     int width, height;
     int maxDepth;
     Vec3 threshold;
-    Vec3** colorBuffer;
+    PixelData** colorBuffer;
     QMutex taskQueueMutex;
     
     /* number of nodes already rendered, used to update screen gradually */
@@ -68,6 +76,7 @@ signals:
     void updateScreen();
     
 private:
+    void draw();
     void refreshColorBuffer();
     
     QThread** renderingThreads;
