@@ -18,6 +18,7 @@ public:
     float alpha;
     float ior;
 	float ior_inverse;
+    float refractGloss;
     float reflectFactor;
     float reflectGloss;
     

@@ -265,7 +265,9 @@ namespace Parser {
                 } else {
                     currMat->isTransmissive = true;
                 }
-                
+            } else if (item == "RefractGloss") {
+                getline(ss, item, ' ');
+                currMat->refractGloss = atof(item.c_str());
             } else if (item == "ReflectFactor") {
                 getline(ss, item, ' ');
                 currMat->reflectFactor = atof(item.c_str());
