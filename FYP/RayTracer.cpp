@@ -9,14 +9,9 @@ RayTracer::RayTracer(RenderManager* m, int tid) : manager(m), tracerId(tid) {
 }
 
 void RayTracer::run() {
-    while ((task = manager->getTask()) != NULL) {
+    while (manager->isRendering() && (task = manager->getTask()) != NULL) {
         Vec3 color = traceRay(task);
-        // manager->setBufferPixel(task->x, task->y, color * task->p);
-        manager->colorBuffer[task->x][task->y] += color * task->p;
-        (manager->colorBuffer[task->x][task->y]).clamp();
-        if (manager->numOfRenderedNodes++ % 100000 == 0) {
-            emit completed();
-        }
+        manager->setPixelData(task->x, task->y, color * task->p);
     }
     emit completed();
 }

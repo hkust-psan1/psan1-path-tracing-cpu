@@ -84,7 +84,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
         cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
         cam->update();
         
-        // renderManager->stopRendering();
+    renderManager->stopRendering();
         // render();
     renderManager->render();
         
