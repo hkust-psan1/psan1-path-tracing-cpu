@@ -64,7 +64,8 @@ void MainWindow::updateScreen() {
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
-    if (frameReady) {
+    // if (frameReady) {
+    renderManager->clearTasks();
         if (lastPos == NULL) {
             lastPos = new QPoint(event->pos());
         }
@@ -83,13 +84,14 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
         cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
         cam->update();
         
-        renderManager->stopRendering();
-        render();
+        // renderManager->stopRendering();
+        // render();
+    renderManager->render();
         
         lastPos = new QPoint(event->pos());
         lastX = event->x();
         lastY = event->y();
-    }
+    // }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

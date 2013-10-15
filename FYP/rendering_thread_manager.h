@@ -35,6 +35,8 @@ public:
     RenderNode* getTask();
     void addTask(RenderNode* n);
     bool noTask();
+    void clearTasks();
+    void setBufferPixel(int x, int y, const Vec3& color);
     
     inline void stopRendering() { rendering = false; };
     inline void setScene(Scene* s) { scene = s; };
@@ -50,6 +52,11 @@ public:
     int maxDepth;
     Vec3 threshold;
     Vec3** colorBuffer;
+    QMutex taskQueueMutex;
+    // QMutex imageBufferMutex;
+    
+    /* number of nodes already rendered, used to update screen gradually */
+    int numOfRenderedNodes;
 public slots:
     /* triggered by the mainwindow */
     void render();
@@ -65,12 +72,11 @@ signals:
 private:
     void refreshColorBuffer();
     
-    QMutex taskQueueMutex;
     QThread** renderingThreads;
     RayTracer** tracers;
     queue<RenderNode*> tasks;
     int numOfThreads;
-    
+        
     Camera* camera;
     Scene* scene;
     MainWindow* window;
