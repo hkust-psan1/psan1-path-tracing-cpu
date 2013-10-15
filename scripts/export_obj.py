@@ -129,6 +129,7 @@ def write_mtl(scene, filepath, path_mode, copy_set, mtl_dict):
             ### cracking
             fw('Alpha %.6f\n' % mat.alpha)
             fw('IOR %.6f\n' % mat.raytrace_transparency.ior)
+            fw('RefractGloss %.6f\n' % mat.raytrace_transparency.gloss_factor)
             fw('ReflectFactor %.6f\n' % mat.raytrace_mirror.reflect_factor)
             fw('ReflectGloss %.6f\n' % mat.raytrace_mirror.gloss_factor)
             ### end

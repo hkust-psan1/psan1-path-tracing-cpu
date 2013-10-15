@@ -11,8 +11,12 @@ RayTracer::RayTracer(RenderManager* m, int tid) : manager(m), tracerId(tid) {
 void RayTracer::run() {
     while ((task = manager->getTask()) != NULL) {
         Vec3 color = traceRay(task);
+        // manager->setBufferPixel(task->x, task->y, color * task->p);
         manager->colorBuffer[task->x][task->y] += color * task->p;
         (manager->colorBuffer[task->x][task->y]).clamp();
+        if (manager->numOfRenderedNodes++ % 100000 == 0) {
+            emit completed();
+        }
     }
     emit completed();
 }
@@ -260,8 +264,8 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         I += (atten * pow(RV, SPECULAR_N)) * ks;
 	}
 
-    I *= (1 - mat->reflectFactor * n->p);
-	I.clamp();
+    I *= 1 - mat->reflectFactor * n->p;
+	// I.clamp();
     
     /*
 	colorBuffer[n.x][n.y] += I * n.p;
@@ -280,9 +284,9 @@ Vec3 RayTracer::traceRay(RenderNode* n)
             RenderNode* r = new RenderNode(R, n->x, n->y, n->depth + 1, mat->reflectFactor * n->p);
             manager->addTask(r);
         } else { // glossy
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 10; i++) {
                 Ray* R = new Ray(point, ref.randomize(glossFactor));
-                RenderNode* r = new RenderNode(R, n->x, n->y, n->depth + 1, mat->reflectFactor * n->p * 0.2f);
+                RenderNode* r = new RenderNode(R, n->x, n->y, n->depth + 1, mat->reflectFactor * n->p * 0.1f);
                 manager->addTask(r);
             }
         }
@@ -291,7 +295,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
 	//refraction
 	if (abs(mat->alpha - 1) > EPSILON) // alpha is not 1, refractive
 	{
-        Vec3 refraction;
+        // Vec3 refraction;
         float pn;
         
         if (NL > 0)

@@ -2,7 +2,7 @@
 
 
 RenderManager::RenderManager(int w, int h, int n)
-: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(n) {
+: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(n), numOfRenderedNodes(0) {
     camera = new Camera(Vec3(15, 10, 20), Vec3(0, 0, 0), Vec3(0, 1, 0));
     camera->setSize(w, h);
     
@@ -42,6 +42,27 @@ bool RenderManager::noTask() {
     bool empty = tasks.empty();
     taskQueueMutex.unlock();
     return empty;
+}
+
+void RenderManager::clearTasks() {
+    taskQueueMutex.lock();
+    while (tasks.size() > 0) {
+        tasks.pop();
+    }
+    taskQueueMutex.unlock();
+}
+
+void RenderManager::setBufferPixel(int x, int y, const Vec3& color) {
+    QColor origColor = backBuffer->pixel(x, y);
+    int R = origColor.red() + color.x * 255;
+    int G = origColor.green() + color.y * 255;
+    int B = origColor.blue() + color.z * 255;
+    if (R > 255) R = 255;
+    if (G > 255) G = 255;
+    if (B > 255) B = 255;
+    // newColor.clamp();
+    // printf("%.3f\t%.3f\t%.3f\n", newColor.x, newColor.y, newColor.z);
+    backBuffer->setPixel(x, y, qRgb(R, G, B));
 }
 
 void RenderManager::render() {
@@ -93,10 +114,11 @@ void RenderManager::tracerRayCompleted(int x, int y, Vec3 c) {
 }
 
 void RenderManager::tracerCompleted() {
-    if (++completedTracerCount == numOfThreads) {
+    // if (++completedTracerCount == numOfThreads) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                backBuffer->setPixel(j, i, qRgb(colorBuffer[j][i].x * 255, colorBuffer[j][i].y * 255, colorBuffer[j][i].z * 255));
+                backBuffer->setPixel(j, i, qRgb(colorBuffer[j][i].x * 255,
+                    colorBuffer[j][i].y * 255, colorBuffer[j][i].z * 255));
             }
         }
         
@@ -106,23 +128,35 @@ void RenderManager::tracerCompleted() {
         rendering = false;
         emit updateScreen();
         current_utc_time(&end);
+        /*
         printf("s:  %lu\n", end.tv_sec - start.tv_sec);
         printf("ns: %lu\n", end.tv_sec - start.tv_nsec);
+        */
         // cout << "time elapsed: " << float(clock() - startTime) / CLOCKS_PER_SEC << endl;
-    }
+    // }
 }
 
 void RenderManager::refreshColorBuffer() {
+    /*
     if (colorBuffer) {
         for (int i = 0; i < height; i++) {
             delete [] colorBuffer[i];
         }
         delete [] colorBuffer;
     }
+    */
     
+    if (colorBuffer == NULL) {
     colorBuffer = new Vec3*[height];
     for (int i = 0; i < height; i++) {
         colorBuffer[i] = new Vec3[width];
+        for (int j = 0; j < width; j++) {
+            colorBuffer[i][j] = Vec3(0.f);
+        }
+    }
+    }
+    
+    for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             colorBuffer[i][j] = Vec3(0.f);
         }
