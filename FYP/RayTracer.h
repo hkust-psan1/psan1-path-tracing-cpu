@@ -9,7 +9,8 @@
 #include "scene.h"
 #include "light.h"
 
-class RenderNode;
+struct RenderNode;
+struct PixelData;
 class RenderManager;
 
 class RayTracer : public QObject {
