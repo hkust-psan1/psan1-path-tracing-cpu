@@ -259,7 +259,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         I += (atten * pow(RV, SPECULAR_N)) * ks;
 	}
 
-    I *= 1 - mat->reflectFactor * n->p;
+    I *= 1 - (mat->reflectFactor + (1 - mat->alpha)) * n->p;
 	// I.clamp();
     
     /*
@@ -269,25 +269,26 @@ Vec3 RayTracer::traceRay(RenderNode* n)
      
     // reflection
     const float NL = -dot(intc->normal, n->ray->dir);
-    float glossFactor = 1 - mat->reflectGloss;
+    float reflGloss = 1 - mat->reflectGloss;
 	
     if (abs(mat->reflectFactor > EPSILON)) { // reflective
-        Vec3 ref = intc->normal * (2 * NL) + n->ray->dir;
+        Vec3 refl = intc->normal * (2 * NL) + n->ray->dir;
         
-        if (abs(glossFactor) < EPSILON) { // no glossy reflection
-            Ray* R = new Ray(point, ref);
+        if (abs(reflGloss) < EPSILON) { // no glossy reflection
+            Ray* R = new Ray(point, refl);
             RenderNode* r = new RenderNode(R, n->x, n->y, n->depth + 1, mat->reflectFactor * n->p);
             manager->addTask(r);
         } else { // glossy
             for (int i = 0; i < 10; i++) {
-                Ray* R = new Ray(point, ref.randomize(glossFactor));
+                Ray* R = new Ray(point, refl.randomize(reflGloss));
                 RenderNode* r = new RenderNode(R, n->x, n->y, n->depth + 1, mat->reflectFactor * n->p * 0.1f);
                 manager->addTask(r);
             }
         }
     }
 
-	//refraction
+    //refraction
+    float refrGloss = 1 - mat->refractGloss;
 	if (abs(mat->alpha - 1) > EPSILON) // alpha is not 1, refractive
 	{
         // Vec3 refraction;
@@ -297,9 +298,18 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         {
             pn = mat->ior_inverse;
             float LONG_TERM = pn * NL - sqrt(1 - pn * pn * (1 - NL * NL));
-            Ray* T = new Ray(point, (intc->normal * LONG_TERM + n->ray->dir * pn));
-            RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->alpha * n->p);
-            manager->addTask(t);
+            Vec3 refr = intc->normal * LONG_TERM + n->ray->dir * pn;
+            if (abs(refrGloss) < EPSILON) { // no glossy refraction
+                Ray* T = new Ray(point, refr);
+                RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p);
+                manager->addTask(t);
+            } else { // glossy
+                for (int i = 0; i < 10; i++) {
+                    Ray* T = new Ray(point, refr.randomize(refrGloss));
+                    RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p * 0.1f);
+                    manager->addTask(t);
+                }
+            }
         }
         else
         {
@@ -310,9 +320,18 @@ Vec3 RayTracer::traceRay(RenderNode* n)
             }
             
             float LONG_TERM = -(pn * (-NL) - sqrt(1 - pn * pn * (1 - NL * NL)));
-            Ray* T = new Ray(point, (intc->normal * LONG_TERM + n->ray->dir * pn));
-            RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->alpha * n->p);
-            manager->addTask(t);
+            Vec3 refr = intc->normal * LONG_TERM + n->ray->dir * pn;
+            if (abs(refrGloss) < EPSILON) { // no glossy refraction
+                Ray* T = new Ray(point, refr);
+                RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p);
+                manager->addTask(t);
+            } else { // glossy
+                for (int i = 0; i < 10; i++) {
+                    Ray* T = new Ray(point, refr.randomize(refrGloss));
+                    RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p * 0.1f);
+                    manager->addTask(t);
+                }
+            }
         }
     }
 
