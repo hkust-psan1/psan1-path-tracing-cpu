@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     renderManager = new RenderManager(size.width() - 2, size.height() - 2, 4);
 
     lastPos = NULL;
+    imageRendered = false;
 }
 
 MainWindow::~MainWindow()
@@ -47,6 +48,7 @@ void MainWindow::render()
 	// connect(rendererThread, SIGNAL(terminate()), this, SLOT(threadTerminated()));
 	
     frameReady = false;
+    imageRendered = true;
     
 	rendererThread->start();
 }
@@ -64,52 +66,60 @@ void MainWindow::updateScreen() {
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
-    // if (frameReady) {
-    renderManager->clearTasks();
-    if (lastPos == NULL) {
+    if (imageRendered) {
+        renderManager->clearTasks();
+        if (lastPos == NULL) {
+            lastPos = new QPoint(event->pos());
+        }
+        
+        Camera* cam = renderManager->getCamera();
+        
+        int xDiff = event->x() - lastPos->x();
+        int yDiff = event->y() - lastPos->y();
+        
+        Vec3 eye = cam->getEyePos();
+        Vec3 ctr = cam->getCenterPos();
+        
+        float newX = (eye.x - ctr.x) * cos(xDiff / 30.0) - (eye.z - ctr.z) * sin(xDiff / 30.0);
+        float newY = (eye.z - ctr.z) * cos(xDiff / 30.0) + (eye.x - ctr.x) * sin(xDiff / 30.0);
+        
+        cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
+        cam->update();
+        
+        renderManager->stopRendering();
+        renderManager->render();
+        
         lastPos = new QPoint(event->pos());
+        lastX = event->x();
+        lastY = event->y();
     }
-    
-    Camera* cam = renderManager->getCamera();
-    
-    int xDiff = event->x() - lastPos->x();
-    int yDiff = event->y() - lastPos->y();
-    
-    Vec3 eye = cam->getEyePos();
-    Vec3 ctr = cam->getCenterPos();
-    
-    float newX = (eye.x - ctr.x) * cos(xDiff / 30.0) - (eye.z - ctr.z) * sin(xDiff / 30.0);
-    float newY = (eye.z - ctr.z) * cos(xDiff / 30.0) + (eye.x - ctr.x) * sin(xDiff / 30.0);
-    
-    cam->setEyePos(Vec3(newX, cam->getEyePos().y, newY) + cam->getCenterPos());
-    cam->update();
-    
-    renderManager->stopRendering();
-    renderManager->render();
-    
-    lastPos = new QPoint(event->pos());
-    lastX = event->x();
-    lastY = event->y();
-    // }
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event)
-{
-	if (event->button() != Qt::RightButton)
-		return;
-
-	// tracer->traceRay(event->x() - 85, event->y() - 35);
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+    if (imageRendered) {
+        if (event->button() != Qt::RightButton)
+            return;
+        // tracer->traceRay(event->x() - 85, event->y() - 35);
+    }
 }
 
+void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
+    if (imageRendered) {
+        lastPos = NULL;
+    }
+}
 
 void MainWindow::wheelEvent(QWheelEvent *event) {
-    // if (frameReady) {
-    Camera* cam = renderManager->getCamera();
-    Vec3 view = cam->getEyePos() - cam->getCenterPos();
-    
-    cam->setEyePos(cam->getCenterPos() + view * (1 - event->delta() * 0.001));
-    
-    renderManager->stopRendering();
-    render();
-    // }
+    if (frameReady) {
+        renderManager->clearTasks();
+        
+        Camera* cam = renderManager->getCamera();
+        Vec3 view = cam->getEyePos() - cam->getCenterPos();
+        
+        cam->setEyePos(cam->getCenterPos() + view * (1 - event->delta() * 0.001));
+        cam->update();
+        
+        renderManager->stopRendering();
+        renderManager->render();
+    }
 }

@@ -39,6 +39,7 @@ signals:
 	
 protected:
     void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void wheelEvent(QWheelEvent* event);
 
@@ -49,6 +50,7 @@ private:
 	RenderManager* renderManager;
     QThread* rendererThread;
     
+    bool imageRendered;
     bool frameReady;
     
     int lastX, lastY;
