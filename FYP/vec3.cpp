@@ -107,6 +107,13 @@ std::ostream& operator<<(std::ostream& os, const Vec3& v) {
 };
 
 Vec3 Vec3::randomize(float r) {
+    float rand1 = (float)rand() / (float)RAND_MAX;
+    float rand2 = (float)rand() / (float)RAND_MAX;
+    
+    float X = sqrt(- 2 * log(rand1)) * cos(2 * M_PI * rand2) * r / 5;
+    float Y = sqrt(- 2 * log(rand1)) * sin(2 * M_PI * rand2) * r / 5;
+    // printf("%.3f\t%.3f\n", X, Y);
+    
     Vec3 u = *this;
     u.x += 1; // create a vector not parallel to v
     
@@ -115,11 +122,8 @@ Vec3 Vec3::randomize(float r) {
     
     e1.normalize();
     e2.normalize();
-    
-    float rand1 = (float)rand() / (float)RAND_MAX * r - (r / 2);
-    float rand2 = (float)rand() / (float)RAND_MAX * r - (r / 2);
-    
-    Vec3 randVec = *this + e1 * rand1 + e2 * rand2;
+
+    Vec3 randVec = *this + e1 * X + e2 * Y;
     randVec.normalize();
     
     return randVec;

@@ -74,7 +74,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
         
         Camera* cam = renderManager->getCamera();
         
-        int xDiff = event->x() - lastPos->x();
+        int xDiff = lastPos->x() - event->x();
         int yDiff = event->y() - lastPos->y();
         
         Vec3 eye = cam->getEyePos();
@@ -100,6 +100,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
         if (event->button() != Qt::RightButton)
             return;
         // tracer->traceRay(event->x() - 85, event->y() - 35);
+
     }
 }
 

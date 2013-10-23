@@ -182,7 +182,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
 	Intersection* intc = scene->intersect(n->ray);
 	// no hit
 	if (intc == NULL) {
-		return Vec3(0.f);
+		return Vec3(0.25f);
     }
 
 	Vec3 point = n->ray->at(intc->t);
@@ -260,12 +260,6 @@ Vec3 RayTracer::traceRay(RenderNode* n)
 	}
 
     I *= 1 - (mat->reflectFactor + (1 - mat->alpha)) * n->p;
-	// I.clamp();
-    
-    /*
-	colorBuffer[n.x][n.y] += I * n.p;
-    colorBuffer[n.x][n.y].clamp();
-    */
      
     // reflection
     const float NL = -dot(intc->normal, n->ray->dir);

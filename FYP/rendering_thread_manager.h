@@ -83,7 +83,7 @@ private:
     RayTracer** tracers;
     queue<RenderNode*> tasks;
     int numOfThreads;
-        
+    
     Camera* camera;
     Scene* scene;
     MainWindow* window;

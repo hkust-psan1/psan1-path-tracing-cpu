@@ -89,7 +89,12 @@ namespace Parser {
                     getline(_ss, index, '/');
                     int normalIndex = atof(index.c_str()) - 1;
 
+                    Vertex* v = new Vertex(vertexCoords[vertexIndex], vertexNormals[normalIndex]);
+                    if (texIndex != -1) {
+                        v->setTexCoords(vertexTexCoords[texIndex]);
+                    }
                     /* find vertex already created or create new vertex */
+                    /*
                     Vertex* v;
                     auto result = vertices.find(vertexIndex); // the pair found
                     
@@ -103,9 +108,8 @@ namespace Parser {
                     } else { // found vertex with index
                         v = result->second; // get vertex from map
                     }
+                    */
 
-                    // f->addVertex(v);
-                    // std::cout << i << std::endl;
                     f->vertices[i] = v;
 				}
 
