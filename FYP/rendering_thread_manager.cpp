@@ -2,7 +2,7 @@
 
 RenderManager::RenderManager(int w, int h, int n)
 : width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(n) {
-    camera = new Camera(Vec3(15, 10, 20), Vec3(0, 0, 0), Vec3(0, 1, 0));
+    camera = new Camera(Vec3(8, 5, 8), Vec3(0, 0, 0), Vec3(0, 1, 0));
     camera->setSize(w, h);
     
     frontBuffer = new QImage(w, h, QImage::Format_RGB32);
@@ -53,7 +53,7 @@ void RenderManager::setPixelData(int x, int y, const Vec3& color) {
     }
     data.color.clamp();
     
-    if (numOfRenderedNodes++ % 50000 == 0) {
+    if (numOfRenderedNodes++ % 100000 == 0) {
         draw();
     }
 }
@@ -110,7 +110,7 @@ void RenderManager::render() {
                     || j == centerY - distance || j == centerY + distance) {
                     if (i >= 0 && i < width && j >= 0 && j < height) {
                         Ray* cameraRay = camera->getCameraRay(i, j);
-                        RenderNode* node = new RenderNode(cameraRay, i, j, 0, Vec3(1.f));
+                        RenderNode* node = new RenderNode(cameraRay, i, j, 0, Vec3(1));
                         addTask(node);
                         nodeAdded = true;
                     }

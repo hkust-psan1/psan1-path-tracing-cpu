@@ -162,6 +162,9 @@ namespace Parser {
         
         sceneLights.push_back(currLight);
         s->lights = sceneLights;
+        for (Light* l : s->lights) {
+            l->setScene(s);
+        }
         
         // calculate tangent space for each vertex
         for (Object* obj : s->getObjects()) {
