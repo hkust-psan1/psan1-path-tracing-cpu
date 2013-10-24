@@ -103,8 +103,8 @@ def write_mtl(scene, filepath, path_mode, copy_set, mtl_dict):
             fw('Ns %.6f\n' % tspec)
             del tspec
 
-            """
             ################### cracking #######################
+            """
             fw('\n\n')
             for i in dir(mat):
                 fw(str(i))
@@ -393,11 +393,9 @@ def write_file(filepath, objects, scene,
             # fw('type %s\n' % lamp_type)
             fw('energy %.6f\n' % lamp_energy)
             fw('color %.6f %.6f %.6f\n' % (lamp_color[0], lamp_color[1], lamp_color[2]))
-
+            fw('size %.6f' % ob_main.data.size)
+            
             """
-            fw(str(lamp_data.energy))
-            fw('\n')
-            fw('\n\n')
             for i in dir(ob_main.data):
                 fw(str(i))
                 fw('\n')

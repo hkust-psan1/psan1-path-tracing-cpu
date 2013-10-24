@@ -1,6 +1,7 @@
 #include <cmath>
 #include "vec3.h"
 
+#define PI 3.1415926536f
 #define min(a, b) (a < b ? a : b)
 #define max(a, b) (a > b ? a : b)
 

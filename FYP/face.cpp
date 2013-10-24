@@ -79,7 +79,7 @@ Intersection* Face::intersect(const Ray* r, float t_min)
     
     Vec3 N;
     if (obj->smoothShading) {
-        N = vertices[1]->normal * u + vertices[2]->normal * v + vertices[0]->normal * (1 - u - v);
+        N = vertices[1]->normal * (-u) + vertices[2]->normal * (-v) + vertices[0]->normal * (u+v-1);
     } else {
         N = normal;
     }

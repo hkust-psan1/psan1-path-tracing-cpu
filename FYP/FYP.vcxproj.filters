@@ -116,6 +116,18 @@
     <ClCompile Include="setting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_rendering_thread_manager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_rendering_thread_manager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering_thread_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="subdivision_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -128,6 +140,9 @@
       <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="RayTracer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="rendering_thread_manager.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -170,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="vec3.h">
       <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="subdivision_renderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

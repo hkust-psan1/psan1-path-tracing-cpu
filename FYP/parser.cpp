@@ -205,7 +205,7 @@ namespace Parser {
         string directory;
         int tmp, pos = 0;
         int lastIndex;
-
+		cout << filename << endl;
         while ((tmp = filename.find(SLASH, pos)) != string::npos) {
             pos = tmp + 1;
             lastIndex = tmp;

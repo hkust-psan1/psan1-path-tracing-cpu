@@ -74,7 +74,7 @@ void RenderManager::clearTasks() {
 }
 
 void RenderManager::render() {
-    current_utc_time(&start);
+    //current_utc_time(&start);
     
     rendering = true;
     numOfRenderedNodes = 0;
@@ -109,9 +109,11 @@ void RenderManager::render() {
                 if (i == centerX - distance || i == centerX + distance
                     || j == centerY - distance || j == centerY + distance) {
                     if (i >= 0 && i < width && j >= 0 && j < height) {
-                        Ray* cameraRay = camera->getCameraRay(i, j);
-                        RenderNode* node = new RenderNode(cameraRay, i, j, 0, Vec3(1));
-                        addTask(node);
+                        vector<Ray*> cameraRays = camera->getCameraRays(i, j);
+                        for (Ray* r : cameraRays) {
+                            RenderNode* node = new RenderNode(r, i, j, 0, Vec3(1.f / cameraRays.size()));
+                            addTask(node);
+                        }
                         nodeAdded = true;
                     }
                 }
@@ -199,11 +201,11 @@ void RenderManager::refreshColorBuffer() {
 }
 
 void RenderManager::current_utc_time(struct timespec *ts) {
-    clock_serv_t cclock;
+    /*clock_serv_t cclock;
     mach_timespec_t mts;
     host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
     clock_get_time(cclock, &mts);
     mach_port_deallocate(mach_task_self(), cclock);
     ts->tv_sec = mts.tv_sec;
-    ts->tv_nsec = mts.tv_nsec;
+    ts->tv_nsec = mts.tv_nsec;*/
 }

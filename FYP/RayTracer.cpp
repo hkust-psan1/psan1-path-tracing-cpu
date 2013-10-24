@@ -188,17 +188,20 @@ Vec3 RayTracer::traceRay(RenderNode* n)
 	Vec3 point = n->ray->at(intc->t);
 	
 	Material* mat = intc->mat;
-	Vec3 I = Vec3(mat->ke);
+	Vec3 I = Vec3(0.f);
+	Vec3 AE = Vec3(mat->ke);
 
 	//ambient
 	if (mat->isTransmissive)
 	{
-        I += scene->ambient * mat->ka * (1.0f - mat->ior);
+        AE += scene->ambient * mat->ka * (1.0f - mat->ior);
     } 
 	else 
 	{
-        I += scene->ambient * mat->ka;
+        AE += scene->ambient * mat->ka;
     }
+
+	I += AE;
     
 	for (Light* l : scene->lights)
 	{
@@ -208,8 +211,8 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 normal;
         
         if (mat->displacementMap) {
-            if (intc->texCoord.x > 1 || intc->texCoord.x < 0
-                || intc->texCoord.y > 1 || intc->texCoord.y < 0) {
+            if (intc->texCoord.x >= 1 || intc->texCoord.x <= 0
+                || intc->texCoord.y >= 1 || intc->texCoord.y <= 0) {
                 normal = intc->normal;
             } else {
             int x = mat->displacementMap->width() * intc->texCoord.x;
@@ -234,15 +237,16 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 diffuse;
         if (mat->diffuseMap != NULL) // has diffuse map
 		{
-            if (intc->texCoord.x > 1 || intc->texCoord.x < 0
-                || intc->texCoord.y > 1 || intc->texCoord.y < 0) {
-                diffuse = (atten * mat->kd * NL);
+			Vec3 at = atten + AE * Vec3(1 / scene->lights.size());
+            if (intc->texCoord.x >= 1 || intc->texCoord.x <= 0
+                || intc->texCoord.y >= 1 || intc->texCoord.y <= 0) {
+                diffuse = (at * mat->kd * NL);
             } else {
                 int x = mat->diffuseMap->width() * intc->texCoord.x;
                 int y = mat->diffuseMap->height() * intc->texCoord.y;
                 
                 QColor diffuseColor = mat->diffuseMap->pixel(x, y);
-                diffuse = l->energy * atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+                diffuse = l->energy * at * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
             }
         }
 		else
@@ -260,8 +264,8 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 ks;
         
         if (mat->specularMap != NULL) { // has specular map
-            if (intc->texCoord.x > 1 || intc->texCoord.x < 0
-                || intc->texCoord.y > 1 || intc->texCoord.y < 0) {
+            if (intc->texCoord.x >= 1 || intc->texCoord.x <= 0
+                || intc->texCoord.y >= 1 || intc->texCoord.y <= 0) {
                 ks = mat->ks;
             } else {
             int x = mat->specularMap->width() * intc->texCoord.x;

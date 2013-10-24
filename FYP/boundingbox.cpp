@@ -245,7 +245,7 @@ Vec3 BoundingBox::shadowAttenuation(const Ray* r, float T_min)
 		Intersection* intc = face->intersect(r, T_min);
 		if(intc != NULL)
 		{
-            return Vec3(1 - intc->mat->alpha);
+            return Vec3(1.0f - intc->mat->alpha);
             /*
 			if (intc->mat->isTransmissive)
 				return intc->mat->kt;

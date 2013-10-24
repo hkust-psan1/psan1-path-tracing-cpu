@@ -9,9 +9,14 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <sys/time.h>
-#include <mach/clock.h>
-#include <mach/mach.h>
+
+#ifdef __APPLE__
+	#include <sys/time.h>
+	#include <mach/clock.h>
+	#include <mach/mach.h>
+#else
+	#include <WinSock2.h>
+#endif
 
 class MainWindow;
 
@@ -98,7 +103,7 @@ private:
     /* used for testing speed */
     // clock_t startTime;
     void current_utc_time(struct timespec *ts);
-    struct timespec start, end;
+    //struct timespec start, end;
 };
 
 #endif

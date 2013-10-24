@@ -6,7 +6,7 @@
 class Camera {
 public:
     Camera(const Vec3& e, const Vec3& c, const Vec3& u);
-	Ray* getCameraRay(float x, float y) const;
+	vector<Ray*> getCameraRays(float x, float y) const;
     
     void update();
 	
@@ -21,6 +21,8 @@ private:
 	Vec3 eye, ctr, up;
     Vec3 view, cameraUp, cameraLeft;
 	int width, height;
+    bool useDof; // depth of field on or off
+    float focalLength;
 };
 
 #endif
