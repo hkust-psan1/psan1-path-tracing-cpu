@@ -208,6 +208,10 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 normal;
         
         if (mat->displacementMap) {
+            if (intc->texCoord.x > 1 || intc->texCoord.x < 0
+                || intc->texCoord.y > 1 || intc->texCoord.y < 0) {
+                normal = intc->normal;
+            } else {
             int x = mat->displacementMap->width() * intc->texCoord.x;
             int y = mat->displacementMap->height() * intc->texCoord.y;
             
@@ -220,6 +224,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
             
             normal = intc->normal * perturb.z + intc->tangent * perturb.x + intc->tangent * perturb.y;
             normal.normalize();
+            }
         } else {
             normal = intc->normal;
         }
@@ -229,11 +234,16 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 diffuse;
         if (mat->diffuseMap != NULL) // has diffuse map
 		{
-            int x = mat->diffuseMap->width() * intc->texCoord.x;
-            int y = mat->diffuseMap->height() * intc->texCoord.y;
-
-            QColor diffuseColor = mat->diffuseMap->pixel(x, y);
-            diffuse = l->energy * atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+            if (intc->texCoord.x > 1 || intc->texCoord.x < 0
+                || intc->texCoord.y > 1 || intc->texCoord.y < 0) {
+                diffuse = (atten * mat->kd * NL);
+            } else {
+                int x = mat->diffuseMap->width() * intc->texCoord.x;
+                int y = mat->diffuseMap->height() * intc->texCoord.y;
+                
+                QColor diffuseColor = mat->diffuseMap->pixel(x, y);
+                diffuse = l->energy * atten * Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0) * NL;
+            }
         }
 		else
 		{
@@ -250,11 +260,16 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 ks;
         
         if (mat->specularMap != NULL) { // has specular map
+            if (intc->texCoord.x > 1 || intc->texCoord.x < 0
+                || intc->texCoord.y > 1 || intc->texCoord.y < 0) {
+                ks = mat->ks;
+            } else {
             int x = mat->specularMap->width() * intc->texCoord.x;
             int y = mat->specularMap->height() * intc->texCoord.y;
             
             QColor specularity = mat->specularMap->pixel(x, y);
             ks = Vec3(specularity.red() / 255.0);
+            }
         } else {
             ks = mat->ks;
         }
