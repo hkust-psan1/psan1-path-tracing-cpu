@@ -274,7 +274,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
             ks = mat->ks;
         }
         
-        // I += (atten * pow(RV, SPECULAR_N)) * ks;
+        I += (atten * pow(RV, SPECULAR_N)) * ks;
 	}
 
     I *= 1 - (mat->reflectFactor + (1 - mat->alpha)) * n->p;
