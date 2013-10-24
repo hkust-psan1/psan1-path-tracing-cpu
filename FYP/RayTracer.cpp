@@ -208,15 +208,18 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 normal;
         
         if (mat->displacementMap) {
-            /*
             int x = mat->displacementMap->width() * intc->texCoord.x;
             int y = mat->displacementMap->height() * intc->texCoord.y;
             
             QColor normalColor = mat->displacementMap->pixel(x, y);
-            normal = Vec3(normalColor.red() / 255.0, normalColor.green() / 255.0,
-                normalColor.blue() / 255.0);
-            */
-            normal = intc->normal;
+            Vec3 perturb = Vec3(normalColor.red() / 255.0 - 0.5, normalColor.green() / 255.0 - 0.5,
+                normalColor.blue() / 255.0 - 0.5);
+
+            // printf("%.3f\t\t%.3f\t\t%.3f\n%.3f\t\t%.3f\t\t%.3f\n%.3f\t\t%.3f\t\t%.3f\t\t\n\n", intc->normal.x, intc->normal.y, intc->normal.z, intc->tangent.x, intc->tangent.y, intc->tangent.z, intc->bitangent.x, intc->bitangent.y, intc->bitangent.z);
+            // printf("%.3f\t\t%.3f\t\t%.3f\n", perturb.x, perturb.y, perturb.z);
+            
+            normal = intc->normal * perturb.z + intc->tangent * perturb.x + intc->tangent * perturb.y;
+            normal.normalize();
         } else {
             normal = intc->normal;
         }
@@ -256,7 +259,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
             ks = mat->ks;
         }
         
-        I += (atten * pow(RV, SPECULAR_N)) * ks;
+        // I += (atten * pow(RV, SPECULAR_N)) * ks;
 	}
 
     I *= 1 - (mat->reflectFactor + (1 - mat->alpha)) * n->p;

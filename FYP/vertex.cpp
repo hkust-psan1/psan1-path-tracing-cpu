@@ -11,3 +11,7 @@ Vertex::Vertex(const Vec3& p, const Vec3& n, const Vec3& t)
     
 }
 */
+
+void Vertex::printData() {
+    
+}
