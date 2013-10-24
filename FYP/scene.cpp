@@ -6,7 +6,7 @@
 
 #include "setting.h"
 
-Vec3 Scene::ambient = Vec3(0.2, 0.2, 0.2);
+Vec3 Scene::ambient = Vec3(.4f);
 
 Scene::Scene(std::vector<Object*> obj): objects(obj)
 {
