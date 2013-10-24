@@ -1,6 +1,7 @@
 #include <cmath>
 #include "vec3.h"
 
+#define PIE 3.1415926535897932384626433832795028841971693993751
 #define min(a, b) (a < b ? a : b)
 #define max(a, b) (a > b ? a : b)
 
@@ -110,8 +111,8 @@ Vec3 Vec3::randomize(float r) {
     float rand1 = (float)rand() / (float)RAND_MAX;
     float rand2 = (float)rand() / (float)RAND_MAX;
     
-    float X = sqrt(- 2 * log(rand1)) * cos(2 * M_PI * rand2) * r / 5;
-    float Y = sqrt(- 2 * log(rand1)) * sin(2 * M_PI * rand2) * r / 5;
+    float X = sqrt(- 2 * log(rand1)) * cos(2 * PIE * rand2) * r / 5;
+    float Y = sqrt(- 2 * log(rand1)) * sin(2 * PIE * rand2) * r / 5;
     // printf("%.3f\t%.3f\n", X, Y);
     
     Vec3 u = *this;
