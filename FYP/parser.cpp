@@ -163,6 +163,13 @@ namespace Parser {
         sceneLights.push_back(currLight);
         s->lights = sceneLights;
         
+        // calculate tangent space for each vertex
+        for (Object* obj : s->getObjects()) {
+            for (Face* f : obj->getFaces()) {
+                f->calculateTangentSpace();
+            }
+        }
+        
         /* DO move this piece of code to other places!!! */
         for (Object* obj : s->getObjects()) {
             float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
@@ -170,7 +177,7 @@ namespace Parser {
             
             for (Face* f : obj->getFaces()) {
                 for (Vertex* v : f->vertices) {
-                    const Vec3& pos = v->getPos();
+                    const Vec3& pos = v->pos;
                     maxX = pos.x > maxX ? pos.x : maxX;
                     maxY = pos.y > maxY ? pos.y : maxY;
                     maxZ = pos.z > maxZ ? pos.z : maxZ;

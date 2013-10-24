@@ -16,6 +16,7 @@ public:
 	inline Object* getObject() const { return obj; };
 	Intersection* intersect(const Ray* r, float T_min);
     void calculateFaceNormal();
+    void calculateTangentSpace();
 
 	friend std::ostream& operator<<(std::ostream& os, const Face& f) {
 		os << "Face: " << std::endl;
