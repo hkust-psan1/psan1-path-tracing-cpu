@@ -203,7 +203,8 @@ Vec3 RayTracer::traceRay(RenderNode* n)
 
 	I += AE;
     
-	for (Light* l : scene->lights)
+    /*
+	for (Light* l : scene->getLights())
 	{
 		Vec3 atten = l->getColor(point) * l->shadowAttenuation(point) * l->distanceAttenuation(point);
 		Vec3 L = l->getDirection(point);
@@ -237,7 +238,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         Vec3 diffuse;
         if (mat->diffuseMap != NULL) // has diffuse map
 		{
-			Vec3 at = atten + AE * Vec3(1 / scene->lights.size());
+			Vec3 at = atten + AE * Vec3(1 / scene->getLights().size());
             if (intc->texCoord.x >= 1 || intc->texCoord.x <= 0
                 || intc->texCoord.y >= 1 || intc->texCoord.y <= 0) {
                 diffuse = (at * mat->kd * NL);
@@ -251,6 +252,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         }
 		else
 		{
+            // printf("%.3f\t\t%.3f\t\t%.3f\n", atten.x, atten.y, atten.z);
             diffuse = (atten * mat->kd * NL);
         }
         
@@ -280,6 +282,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
         
         I += (atten * pow(RV, SPECULAR_N)) * ks;
 	}
+    */
 
     I *= 1 - (mat->reflectFactor + (1 - mat->alpha)) * n->p;
      

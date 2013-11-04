@@ -14,8 +14,11 @@
 #include "ui_mainwindow.h"
 #include "qfiledialog.h"
 #include "QGraphicsScene.h"
-#include "parser.h"
 #include "rendering_thread_manager.h"
+
+class ObjKVPair;
+class ObjFileNode;
+class Parser;
 
 class MainWindow : public QMainWindow
 {
@@ -55,6 +58,8 @@ private:
     
     int lastX, lastY;
     QPoint* lastPos;
+    
+    Parser* parser;
 };
 
 #endif // MAINWINDOW_H

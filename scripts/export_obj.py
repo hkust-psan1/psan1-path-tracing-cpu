@@ -116,12 +116,11 @@ def write_mtl(scene, filepath, path_mode, copy_set, mtl_dict):
                 fw('\n')
             fw('\n\n')
 
-            json.
-
             fw('\n\n')
             ################### end of cracking #######################
             """
 
+            fw('Ke %.6f\n' % mat.emit)
             fw('Ka %.6f %.6f %.6f\n' % (mat.ambient * world_amb)[:])  # Ambient, uses mirror color,
             fw('Kd %.6f %.6f %.6f\n' % (mat.diffuse_intensity * mat.diffuse_color)[:])  # Diffuse
             fw('Ks %.6f %.6f %.6f\n' % (mat.specular_intensity * mat.specular_color)[:])  # Specular
@@ -382,24 +381,27 @@ def write_file(filepath, objects, scene,
 
         if ob_main.type == 'LAMP':
             lamp_pos = ob_main.matrix_world.to_translation()
+            lamp_quaternion = ob_main.matrix_world.to_quaternion();
 
             lamp_data = ob_main.data
             lamp_type = lamp_data.type
             lamp_energy = lamp_data.energy
             lamp_color = lamp_data.color
 
-            fw('\nl %s %s\n' % (ob_main.name, lamp_type))
+            fw('\nl %s\n' % ob_main.name)
+            fw('lighttype %s\n' % lamp_type)
             fw('pos %.6f %.6f %.6f\n' % (lamp_pos[0], lamp_pos[1], lamp_pos[2]))
+            # fw('rotate %.6f %.6f %.6f\n' % (lamp_rotate[0], lamp_rotate[1], lamp_rotate[2]))
             # fw('type %s\n' % lamp_type)
             fw('energy %.6f\n' % lamp_energy)
             fw('color %.6f %.6f %.6f\n' % (lamp_color[0], lamp_color[1], lamp_color[2]))
-            fw('size %.6f' % ob_main.data.size)
+            # fw('size %.6f' % ob_main.data.size)
             
             """
-            for i in dir(ob_main.data):
+            for i in dir(ob_main.matrix_world):
                 fw(str(i))
                 fw('\n')
-                """
+            """
 
         # ignore dupli children
         if ob_main.parent and ob_main.parent.dupli_type in {'VERTS', 'FACES'}:

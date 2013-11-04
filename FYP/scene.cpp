@@ -8,9 +8,8 @@
 
 Vec3 Scene::ambient = Vec3(.4f);
 
-Scene::Scene(std::vector<Object*> obj): objects(obj)
-{
-
+Scene::Scene() {
+    
 }
 
 void Scene::buildBox()
@@ -19,6 +18,7 @@ void Scene::buildBox()
 	Vec3 max = Vec3(-FLT_MAX);
 	root = new BoundingBox(min, max);
 	std::vector<BoundingBox*> boxes;
+    
 	for (Object* obj : objects)
 	{
 		root->mergeBox(obj->root);

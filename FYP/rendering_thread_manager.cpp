@@ -1,7 +1,7 @@
 #include "rendering_thread_manager.h"
 
 RenderManager::RenderManager(int w, int h, int n)
-: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(n) {
+: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(1) {
     camera = new Camera(Vec3(8, 5, 8), Vec3(0, 0, 0), Vec3(0, 1, 0));
     camera->setSize(w, h);
     
@@ -27,7 +27,7 @@ RenderNode* RenderManager::getTask() {
     taskQueueMutex.lock();
     RenderNode* task;
     if (tasks.size() > 0) {
-         task = tasks.front();
+        task = tasks.front();
         tasks.pop();
     } else {
         task = NULL;
@@ -126,7 +126,7 @@ void RenderManager::render() {
         
         distance++;
     }
-    
+        
     /* initialize all the tracers and threads */
     tracers = new RayTracer*[numOfThreads];
     renderingThreads = new QThread*[numOfThreads];

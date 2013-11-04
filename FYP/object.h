@@ -14,8 +14,11 @@ class Object {
 public:
 	Object();
 	void addFace(Face* f);
-    inline std::string getName() const { return name; };
-	inline std::vector<Face*> getFaces() const { return faces; };
+    inline string getName() const { return name; };
+	inline vector<Face*> getFaces() const { return faces; };
+    
+    // check if object is light by its emmisive coefficient
+    inline bool isLight() const { return mat->ke > 0.000001; };
 	/*
     inline Material* getMaterial() const { return mat; };
     inline void setMaterial(Material* mtl) { mat = mtl; };
@@ -30,8 +33,13 @@ public:
 private:
     std::string name;
 	std::vector<Face*> faces;
-    
+};
 
+class _Light : public Object {
+public:
+    _Light();
+    inline const Vec3& getColor() const { return mat->kd; };
+private:
 };
 
 #endif

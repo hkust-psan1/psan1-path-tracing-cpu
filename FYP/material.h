@@ -6,8 +6,8 @@
 
 class Material {
 public:
-	Material(std::string n);
-    Vec3 ke;  // emissive
+	Material(const std::string& n);
+    float ke;  // emissive
     Vec3 ka;  // ambient
     Vec3 ks;  // specular
     Vec3 kd;  // diffuse

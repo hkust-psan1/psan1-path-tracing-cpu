@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     lastPos = NULL;
     imageRendered = false;
+    
+    parser = new Parser;
 }
 
 MainWindow::~MainWindow()
@@ -23,7 +25,8 @@ void MainWindow::load_scene()
 	QString filename = QFileDialog::getOpenFileName(this, "Load Scene",  QDir::currentPath(), "Wavefront Object File(*.obj);;All files(*.*)");
 	if (!filename.isNull()) 
 	{
-		renderManager->setScene(Parser::parseScene(filename.toStdString().c_str()));
+        renderManager->setScene(parser->parseFile(filename.toStdString()));
+		// renderManager->setScene(parser->parseScene(filename.toStdString().c_str()));
 	}
 }
 

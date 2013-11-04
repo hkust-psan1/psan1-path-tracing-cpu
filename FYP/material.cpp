@@ -1,7 +1,7 @@
 #include "material.h"
 
-Material::Material(std::string n) : name(n) {
-	ke = Vec3(0, 0, 0);
+Material::Material(const std::string& n) : name(n) {
+	ke = 0.f;
     ka = Vec3(0, 0, 0);
 	kd = Vec3(0, 0, 0);
     ks = Vec3(0, 0, 0);

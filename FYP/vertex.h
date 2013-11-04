@@ -7,8 +7,9 @@ class Vec3;
 
 class Vertex {
 public:
-	Vertex(const Vec3& p, const Vec3& n);
+	Vertex(const Vec3& p);
     
+    inline void setNormal(const Vec3& n) { normal = n; };
     inline void setTexCoords(const Vec3& t) { texCoords = t; hasTexture = true; };
     
 	friend std::ostream& operator<<(std::ostream& os, const Vertex& v) {
