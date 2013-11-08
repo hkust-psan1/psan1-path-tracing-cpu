@@ -10,7 +10,8 @@ RayTracer::RayTracer(RenderManager* m, int tid) : manager(m), tracerId(tid) {
 
 void RayTracer::run() {
     while (manager->isRendering() && (task = manager->getTask()) != NULL) {
-        Vec3 color = traceRay(task);
+        // Vec3 color = traceRay(task);
+        Vec3 color = tracePath(task);
         manager->setPixelData(task->x, task->y, color * task->p);
     }
     emit completed();
@@ -170,6 +171,49 @@ void RayTracer::AA()
 }
 */
 
+Vec3 RayTracer::tracePath(RenderNode* n) {
+    if (n->depth >= manager->maxDepth || n->p < manager->threshold)
+	{
+		return Vec3(0.f);
+	}
+    
+    Vec3 color(0.f);
+    
+    Scene* scene = manager->getScene();
+    Intersection* intc = scene->intersect(n->ray);
+    
+    if (intc == NULL) {
+        return Vec3(0.25f);
+    }
+    
+    if (intc->obj->isLight()) { // intersect with light, return light color
+        return intc->mat->kd * intc->mat->ke;
+    }
+    
+    Vec3 point = n->ray->at(intc->t); // intersection point
+    
+    int numLights = scene->getLights().size();
+    for (_Light* light : scene->getLights()) {
+        Ray* lightRay = new Ray(point, light->getRandomPos() - point); // ray from intc to light source
+        
+    }
+    
+    const float NL = -dot(intc->normal, n->ray->dir);
+    
+    /*
+    Vec3 nextRayDir = intc->normal.randomize(0.1);
+    Ray* ray = new Ray(point, nextRayDir);
+    manager->addTask(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->reflectFactor * n->p));
+    return Vec3(0.f);
+    */
+    
+    Vec3 refl = intc->normal * (2 * NL) + n->ray->dir;
+    Ray* ray = new Ray(point, refl.randomize(5));
+    manager->addTask(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->reflectFactor * n->p));
+    return Vec3(0.f);
+    // return tracePath(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->reflectFactor * n->p));
+}
+
 Vec3 RayTracer::traceRay(RenderNode* n)
 {
 	// max depth
@@ -285,7 +329,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
     */
 
     I *= 1 - (mat->reflectFactor + (1 - mat->alpha)) * n->p;
-     
+    
     // reflection
     const float NL = -dot(intc->normal, n->ray->dir);
     float reflGloss = 1 - mat->reflectGloss;

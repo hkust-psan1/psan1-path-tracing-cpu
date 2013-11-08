@@ -30,15 +30,18 @@ public:
 	BoundingBox* root;
 	void buildBox(Vec3 min, Vec3 max);
     
-private:
-    std::string name;
-	std::vector<Face*> faces;
+protected:
+    string name;
+	vector<Face*> faces;
 };
 
 class _Light : public Object {
 public:
     _Light();
     inline const Vec3& getColor() const { return mat->kd; };
+    
+    /* get a random position in the emissive object */
+    Vec3 getRandomPos();
 private:
 };
 

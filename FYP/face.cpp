@@ -98,3 +98,10 @@ Intersection* Face::intersect(const Ray* r, float t_min)
     // No hit, no win
     return NULL;
 }
+
+Vec3 Face::getRandomPos() {
+    float r1 = (float)rand() / (float)RAND_MAX;
+    float r2 = (float)rand() / (float)RAND_MAX;
+    
+    return e1 * r1 + r2 * r2;
+}

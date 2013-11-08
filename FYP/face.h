@@ -17,6 +17,8 @@ public:
 	Intersection* intersect(const Ray* r, float T_min);
     void calculateFaceNormal();
     void calculateTangentSpace();
+    /* get a random position in the face */
+    Vec3 getRandomPos();
 
 	friend std::ostream& operator<<(std::ostream& os, const Face& f) {
 		os << "Face: " << std::endl;

@@ -20,3 +20,8 @@ void Object::buildBox(Vec3 min, Vec3 max)
 	}
 	root->partition(boxes);
 }
+
+Vec3 _Light::getRandomPos() {
+    Face* face = faces[rand() % faces.size()];
+    return face->getRandomPos();
+}
