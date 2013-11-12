@@ -23,11 +23,14 @@ public:
     float& operator[](int n);
 	float get(int n) const;
 	int maxElement();
+    
+    void print() const;
 
 	friend Vec3 operator+(const Vec3& v1, const Vec3& v2);
 	friend Vec3 operator-(const Vec3& v1, const Vec3& v2);
 	friend Vec3 operator*(const Vec3& v1, const Vec3& v2);
 	friend Vec3 operator*(const Vec3& v1, float n);
+    friend Vec3 operator/(const Vec3& v1, float n);
 	friend bool operator<(const Vec3& v1, const Vec3& v2);
     friend bool operator>(const Vec3& v1, const Vec3& v2);
 

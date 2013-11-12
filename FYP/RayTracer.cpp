@@ -185,33 +185,52 @@ Vec3 RayTracer::tracePath(RenderNode* n) {
     if (intc == NULL) {
         return Vec3(0.25f);
     }
-    
+
     if (intc->obj->isLight()) { // intersect with light, return light color
         return intc->mat->kd * intc->mat->ke;
     }
+
     
     Vec3 point = n->ray->at(intc->t); // intersection point
     
     int numLights = scene->getLights().size();
-    for (_Light* light : scene->getLights()) {
-        Ray* lightRay = new Ray(point, light->getRandomPos() - point); // ray from intc to light source
-        
+    
+    int numLightRays = 10;
+    for (int i = 0; i < numLightRays; i++) {
+        for (_Light* light : scene->getLights()) {
+            Ray* lightRay = new Ray(point, light->getRandomPos() - point); // ray from intc to light source
+            Intersection* lightRayIntc = scene->intersect(lightRay);
+            
+            if (lightRayIntc && lightRayIntc->obj == light) { // nearest intersection is light
+                color += intc->mat->kd * light->mat->kd * light->mat->ke / numLightRays;
+                
+                // TODO: add distance attenuation
+                color.clamp();
+            }
+        }
     }
+
+    float rand1 = (float)rand() / (float)RAND_MAX;
+    float rand2 = (float)rand() / (float)RAND_MAX * 2 - 1;
+    float rand3 = (float)rand() / (float)RAND_MAX * 2 - 1;
+
+    float tanx = intc->normal.x - 1;
+    float tany = intc->normal.y - 1;
+    float tanz = - (intc->normal.x * tanx + intc->normal.y * tany) / intc->normal.z;
     
-    const float NL = -dot(intc->normal, n->ray->dir);
+    Vec3 tangent(tanx, tany, tanz);
+    tangent.normalize();
     
-    /*
-    Vec3 nextRayDir = intc->normal.randomize(0.1);
-    Ray* ray = new Ray(point, nextRayDir);
-    manager->addTask(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->reflectFactor * n->p));
-    return Vec3(0.f);
-    */
+    Vec3 bitangent = cross(tangent, intc->normal);
+    bitangent.normalize();
     
-    Vec3 refl = intc->normal * (2 * NL) + n->ray->dir;
-    Ray* ray = new Ray(point, refl.randomize(5));
-    manager->addTask(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->reflectFactor * n->p));
-    return Vec3(0.f);
-    // return tracePath(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->reflectFactor * n->p));
+    Vec3 refl = intc->normal * rand1 + tangent * rand2 + bitangent * rand3;
+    refl.normalize();
+    
+    Ray* ray = new Ray(point, refl);
+    
+    manager->addTask(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->kd * n->p));
+    return color;
 }
 
 Vec3 RayTracer::traceRay(RenderNode* n)

@@ -19,5 +19,93 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rendering_thread_manager.cpp"
+            timestampString = "405935750.695266"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4"
+            endingLineNumber = "4"
+            landmarkName = "RenderManager::RenderManager(int w, int h, int n)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderManager::RenderManager(int, int, int)"
+                  moduleName = "FYP"
+                  urlString = "file:///Users/guanlunzhao/Workspace/FYP/FYP/rendering_thread_manager.cpp"
+                  timestampString = "405936078.950311"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderManager::RenderManager(int, int, int)"
+                  moduleName = "FYP"
+                  urlString = "file:///Users/guanlunzhao/Workspace/FYP/FYP/rendering_thread_manager.cpp"
+                  timestampString = "405936078.950818"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4"
+                  endingLineNumber = "4"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderManager::RenderManager(int, int, int)"
+                  moduleName = "FYP"
+                  urlString = "file:///Users/guanlunzhao/Workspace/FYP/FYP/rendering_thread_manager.cpp"
+                  timestampString = "405936078.951153"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4"
+                  endingLineNumber = "4"
+                  offsetFromSymbolStart = "71">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderManager::RenderManager(int, int, int)"
+                  moduleName = "FYP"
+                  urlString = "file:///Users/guanlunzhao/Workspace/FYP/FYP/rendering_thread_manager.cpp"
+                  timestampString = "405936078.951581"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4"
+                  endingLineNumber = "4"
+                  offsetFromSymbolStart = "95">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "RenderManager::RenderManager(int, int, int)"
+                  moduleName = "FYP"
+                  urlString = "file:///Users/guanlunzhao/Workspace/FYP/FYP/rendering_thread_manager.cpp"
+                  timestampString = "405936078.951909"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4"
+                  endingLineNumber = "4"
+                  offsetFromSymbolStart = "150">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

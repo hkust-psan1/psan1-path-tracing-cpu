@@ -4,7 +4,7 @@
 void Face::calculateFaceNormal() {
     e1 = vertices[1]->pos - vertices[0]->pos;
     e2 = vertices[2]->pos - vertices[0]->pos;
-    normal = cross(e2, e1);
+    normal = cross(e1, e2); // temporary
     normal.normalize();
 }
 
@@ -102,6 +102,7 @@ Intersection* Face::intersect(const Ray* r, float t_min)
 Vec3 Face::getRandomPos() {
     float r1 = (float)rand() / (float)RAND_MAX;
     float r2 = (float)rand() / (float)RAND_MAX;
+
     
-    return e1 * r1 + r2 * r2;
+    return vertices[0]->pos + e1 * r1 + e2 * r2;
 }

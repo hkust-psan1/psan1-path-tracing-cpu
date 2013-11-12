@@ -238,12 +238,6 @@ void Parser::scenePostProcess(Scene *scene) {
         }
     }
     
-    /*
-    for (Light* l : scene->getLights()) {
-        l->setScene(scene);
-    }
-    */
-    
     for (Object* obj : scene->getObjects()) {
         float maxX = -FLT_MAX, maxY = -FLT_MAX, maxZ = -FLT_MAX;
         float minX = FLT_MAX, minY = FLT_MAX, minZ = FLT_MAX;
@@ -266,4 +260,3 @@ void Parser::scenePostProcess(Scene *scene) {
     
     scene->buildBox();
 }
-

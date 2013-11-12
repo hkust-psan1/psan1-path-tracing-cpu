@@ -1,8 +1,8 @@
 #include "rendering_thread_manager.h"
 
 RenderManager::RenderManager(int w, int h, int n)
-: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(1) {
-    camera = new Camera(Vec3(8, 5, 8), Vec3(0, 0, 0), Vec3(0, 1, 0));
+: width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(4) {
+    camera = new Camera(Vec3(8, 0, 0), Vec3(0, 0, 0), Vec3(0, 0, 1));
     camera->setSize(w, h);
     
     frontBuffer = new QImage(w, h, QImage::Format_RGB32);
@@ -101,20 +101,23 @@ void RenderManager::render() {
     int centerY = height / 2;
     int distance = 0;
     
+    int samples = 5;
+    
     while (true) {
         bool nodeAdded = false;
-        
-        for (int i = centerX - distance; i <= centerX + distance; i++) {
-            for (int j = centerY - distance; j <= centerY + distance; j++) {
-                if (i == centerX - distance || i == centerX + distance
-                    || j == centerY - distance || j == centerY + distance) {
-                    if (i >= 0 && i < width && j >= 0 && j < height) {
-                        vector<Ray*> cameraRays = camera->getCameraRays(i, j);
-                        for (Ray* r : cameraRays) {
-                            RenderNode* node = new RenderNode(r, i, j, 0, Vec3(1.f / cameraRays.size()));
-                            addTask(node);
+        for (int n = 0; n < samples; n++) {
+            for (int i = centerX - distance; i <= centerX + distance; i++) {
+                for (int j = centerY - distance; j <= centerY + distance; j++) {
+                    if (i == centerX - distance || i == centerX + distance
+                        || j == centerY - distance || j == centerY + distance) {
+                        if (i >= 0 && i < width && j >= 0 && j < height) {
+                            vector<Ray*> cameraRays = camera->getCameraRays(i, j);
+                            for (Ray* r : cameraRays) {
+                                RenderNode* node = new RenderNode(r, i, j, 0, Vec3(1.f / cameraRays.size() / samples));
+                                addTask(node);
+                            }
+                            nodeAdded = true;
                         }
-                        nodeAdded = true;
                     }
                 }
             }

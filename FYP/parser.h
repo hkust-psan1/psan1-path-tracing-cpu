@@ -22,7 +22,7 @@ public:
     const string& getType();
     const string& getName();
     
-    /* get one value corresponding to the given key */
+    // get one value corresponding to the given key
     const string& getOneValue(const string& key);
     vector<ObjKVPair> kvPairs;
 };
@@ -33,7 +33,7 @@ public:
     
     void scenePostProcess(Scene* scene);
     
-    /* check if a symbol mean the start of a new node */
+    // check if a symbol mean the start of a new node
     bool isNewNodeSymbol(string symbol);
     
     Object* processObject(ObjFileNode* node);
