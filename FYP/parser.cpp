@@ -164,7 +164,7 @@ Material* Parser::processMaterial(ObjFileNode *node) {
             QPixmap map((directory + "/" + pair.value).c_str());
             mat->specularMap = new QImage(map.toImage());
         } else if (pair.key == "Alpha") {
-            mat->alpha = atof(pair.value.c_str());
+            mat->refractFactor = 1 - atof(pair.value.c_str());
         } else if (pair.key == "IOR") {
             mat->ior = atof(pair.value.c_str());
             mat->ior_inverse = 1.0f / mat->ior;

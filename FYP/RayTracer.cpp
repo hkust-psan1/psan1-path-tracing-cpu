@@ -190,44 +190,95 @@ Vec3 RayTracer::tracePath(RenderNode* n) {
         return intc->mat->kd * intc->mat->ke;
     }
 
+    // intersection point
+    Vec3 point = n->ray->at(intc->t);
     
-    Vec3 point = n->ray->at(intc->t); // intersection point
+    // generated secondary ray
+    Vec3 nextRay;
     
-    int numLights = scene->getLights().size();
-    
-    int numLightRays = 10;
-    for (int i = 0; i < numLightRays; i++) {
-        for (_Light* light : scene->getLights()) {
-            Ray* lightRay = new Ray(point, light->getRandomPos() - point); // ray from intc to light source
-            Intersection* lightRayIntc = scene->intersect(lightRay);
+    // random number used for determining type of next ray
+    float nextRayRand = (float)rand() / (float)RAND_MAX;
+
+    if (nextRayRand < intc->mat->reflectFactor) { // handle reflection
+        float NL = - dot(intc->normal, n->ray->dir);
+        nextRay = intc->normal * (2 * NL) + n->ray->dir;
+    } else if (nextRayRand < intc->mat->reflectFactor + intc->mat->refractFactor) { // handle refraction
+        float NL = - dot(intc->normal, n->ray->dir);
+        if (NL > 0) {
+            float pn = intc->mat->ior_inverse;
+            float longTerm = pn * NL - sqrt(1 - pn * pn * (1 - NL * NL));
+            nextRay = intc->normal * longTerm + n->ray->dir * pn;
+        } else {
             
-            if (lightRayIntc && lightRayIntc->obj == light) { // nearest intersection is light
-                color += intc->mat->kd * light->mat->kd * light->mat->ke / numLightRays;
-                
-                // TODO: add distance attenuation
-                color.clamp();
+        }
+        /*
+        if (NL > 0)
+        {
+            pn = mat->ior_inverse;
+            float LONG_TERM = pn * NL - sqrt(1 - pn * pn * (1 - NL * NL));
+            Vec3 refr = intc->normal * LONG_TERM + n->ray->dir * pn;
+            if (abs(refrGloss) < EPSILON) { // no glossy refraction
+                Ray* T = new Ray(point, refr);
+                RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->refractFactor * n->p);
+                manager->addTask(t);
+            } else { // glossy
+                for (int i = 0; i < 10; i++) {
+                    Ray* T = new Ray(point, refr.randomize(refrGloss));
+                    RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->refractFactor * n->p * 0.1f);
+                    manager->addTask(t);
+                }
             }
         }
+        */
+
+    } else { // handle diffuse lighting
+        int numLightRays = 10;
+        for (int i = 0; i < numLightRays; i++) {
+            for (_Light* light : scene->getLights()) {
+                Ray* lightRay = new Ray(point, light->getRandomPos() - point); // ray from intc to light source
+                Intersection* lightRayIntc = scene->intersect(lightRay);
+                
+                if (lightRayIntc && lightRayIntc->obj == light) { // nearest intersection is light
+                    Vec3 diffuse;
+                    
+                    if (intc->mat->diffuseMap) { // has diffuse map
+                        int x = intc->mat->diffuseMap->width() * intc->texCoord.x;
+                        int y = intc->mat->diffuseMap->height() * intc->texCoord.y;
+                        
+                        QColor diffuseColor = intc->mat->diffuseMap->pixel(x, y);
+                        diffuse = Vec3(diffuseColor.red() / 255.0, diffuseColor.green() / 255.0, diffuseColor.blue() / 255.0);
+
+                    } else {
+                        diffuse = intc->mat->kd;
+                    }
+                    
+                    color += diffuse * light->mat->kd * light->mat->ke / numLightRays;
+                    
+                    // TODO: add distance attenuation
+                    color.clamp();
+                }
+            }
+        }
+        
+        float rand1 = (float)rand() / (float)RAND_MAX;
+        float rand2 = (float)rand() / (float)RAND_MAX * 2 - 1;
+        float rand3 = (float)rand() / (float)RAND_MAX * 2 - 1;
+        
+        float tanx = intc->normal.x - 1;
+        float tany = intc->normal.y - 1;
+        float tanz = - (intc->normal.x * tanx + intc->normal.y * tany) / intc->normal.z;
+        
+        Vec3 tangent(tanx, tany, tanz);
+        tangent.normalize();
+        
+        Vec3 bitangent = cross(tangent, intc->normal);
+        bitangent.normalize();
+        
+        nextRay = intc->normal * rand1 + tangent * rand2 + bitangent * rand3;
+        nextRay.normalize();
     }
-
-    float rand1 = (float)rand() / (float)RAND_MAX;
-    float rand2 = (float)rand() / (float)RAND_MAX * 2 - 1;
-    float rand3 = (float)rand() / (float)RAND_MAX * 2 - 1;
-
-    float tanx = intc->normal.x - 1;
-    float tany = intc->normal.y - 1;
-    float tanz = - (intc->normal.x * tanx + intc->normal.y * tany) / intc->normal.z;
     
-    Vec3 tangent(tanx, tany, tanz);
-    tangent.normalize();
-    
-    Vec3 bitangent = cross(tangent, intc->normal);
-    bitangent.normalize();
-    
-    Vec3 refl = intc->normal * rand1 + tangent * rand2 + bitangent * rand3;
-    refl.normalize();
-    
-    Ray* ray = new Ray(point, refl);
+    Ray* ray = new Ray(point, nextRay);
     
     manager->addTask(new RenderNode(ray, n->x, n->y, n->depth + 1, intc->mat->kd * n->p));
     return color;
@@ -347,7 +398,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
 	}
     */
 
-    I *= 1 - (mat->reflectFactor + (1 - mat->alpha)) * n->p;
+    I *= 1 - (mat->reflectFactor + mat->refractFactor) * n->p;
     
     // reflection
     const float NL = -dot(intc->normal, n->ray->dir);
@@ -371,7 +422,7 @@ Vec3 RayTracer::traceRay(RenderNode* n)
 
     //refraction
     float refrGloss = 1 - mat->refractGloss;
-	if (abs(mat->alpha - 1) > EPSILON) // alpha is not 1, refractive
+	if (mat->refractFactor > EPSILON) // refractive
 	{
         // Vec3 refraction;
         float pn;
@@ -383,12 +434,12 @@ Vec3 RayTracer::traceRay(RenderNode* n)
             Vec3 refr = intc->normal * LONG_TERM + n->ray->dir * pn;
             if (abs(refrGloss) < EPSILON) { // no glossy refraction
                 Ray* T = new Ray(point, refr);
-                RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p);
+                RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->refractFactor * n->p);
                 manager->addTask(t);
             } else { // glossy
                 for (int i = 0; i < 10; i++) {
                     Ray* T = new Ray(point, refr.randomize(refrGloss));
-                    RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p * 0.1f);
+                    RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->refractFactor * n->p * 0.1f);
                     manager->addTask(t);
                 }
             }
@@ -405,12 +456,12 @@ Vec3 RayTracer::traceRay(RenderNode* n)
             Vec3 refr = intc->normal * LONG_TERM + n->ray->dir * pn;
             if (abs(refrGloss) < EPSILON) { // no glossy refraction
                 Ray* T = new Ray(point, refr);
-                RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p);
+                RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->refractFactor * n->p);
                 manager->addTask(t);
             } else { // glossy
                 for (int i = 0; i < 10; i++) {
                     Ray* T = new Ray(point, refr.randomize(refrGloss));
-                    RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, (1 - mat->alpha) * n->p * 0.1f);
+                    RenderNode* t = new RenderNode(T, n->x, n->y, n->depth + 1, mat->refractFactor * n->p * 0.1f);
                     manager->addTask(t);
                 }
             }

@@ -15,9 +15,9 @@ public:
 
     std::string name;
     
-    float alpha;
     float ior;
 	float ior_inverse;
+    float refractFactor;
     float refractGloss;
     float reflectFactor;
     float reflectGloss;

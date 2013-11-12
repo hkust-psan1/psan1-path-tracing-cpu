@@ -2,7 +2,7 @@
 
 RenderManager::RenderManager(int w, int h, int n)
 : width(w), height(h), maxDepth(10), threshold(Vec3(0.01)), numOfThreads(4) {
-    camera = new Camera(Vec3(8, 0, 0), Vec3(0, 0, 0), Vec3(0, 0, 1));
+    camera = new Camera(Vec3(8, 1, 0), Vec3(0, 0, 0), Vec3(0, 0, 1));
     camera->setSize(w, h);
     
     frontBuffer = new QImage(w, h, QImage::Format_RGB32);
@@ -101,7 +101,7 @@ void RenderManager::render() {
     int centerY = height / 2;
     int distance = 0;
     
-    int samples = 5;
+    int samples = 3;
     
     while (true) {
         bool nodeAdded = false;
